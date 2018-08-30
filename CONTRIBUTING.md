@@ -6,7 +6,7 @@ This document is a set of guidelines for contributing to the project.
 These are just guidelines, but they are here to ensure an efficient and fool proof workflow. 
 Use your best judgement if in doubt, or just ask on the [Discord Server]()
 
-This whole document is derived from the [Atom CONTRIBUTING.md](https://github.com/atom/atom/blob/master/CONTRIBUTING.md)
+This whole document is derived from the [Atom CONTRIBUTING.md](https://github.com/atom/atom/blob/master/CONTRIBUTING.md). If something looks like they wrote, then they probably did.
 
 ### Table Of Contents
 
@@ -25,8 +25,9 @@ This whole document is derived from the [Atom CONTRIBUTING.md](https://github.co
   * [Pull Requests](#pull-requests)
 
 [Styleguides](#styleguides)
+  * [Art Style](#art-style)
   * [Git Commit Messages](#git-commit-messages)
-  * [C# Styleguide](#c-sharp-styleguide)
+  * [C# Styleguide](#c#-styleguide)
 
 ## Code of Conduct
 
@@ -100,6 +101,8 @@ Submitting suggestions is functionally similar to reporting bugs, but without al
 When you are creating an enhancement suggestion, please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion). 
 Use [the template](ISSUE_TEMPLATE.md) as usual, including the steps that you imagine you would take if the feature you're requesting existed.
 
+> *Note:* This is only for suggestions. If you have produced actual code or assets, go the [next section](#code-or-asset-contributions)
+
 #### How Do I Submit A (Good) Enhancement Suggestion?
 
 Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com/features/issues/). After you've determined [which repository](#atom-and-packages) your enhancement suggestion is related to, create an issue on that repository and provide the following information:
@@ -113,25 +116,58 @@ Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com
 
 Making an actual change in the project is really admirable and also a simple but complicated process. This section will guide you through said process.
 
-After reading through the next subsections don't forget to head over to the [Pull Requests](#pull-requests) on how to submit your changes.
+After reading through the next subsections don't forget to head over to the [Pull Requests section](#pull-requests) on how to submit your changes.
 
-#### Tools
+#### Tools and Setup
 
-Unity 2018.2.5 currently.
+The game is developed in **Unity 2018.2.5**. New upgrade is expected to happen when the next LTS version comes out. Regardless of if you make code or art, installing will be helpful for getting your contribution in.
+
+For coding, you can use whatever you want, but [Visual Studio](https://visualstudio.microsoft.com/) is probably the most popular choice. It's free and integrates well with Unity. If you're a student, we recommend getting a copy of [ReSharper](https://www.jetbrains.com/resharper/?gclid=CjwKCAjwq57cBRBYEiwAdpx0vQ8IFQoIbF0cUP89TCZbITKIMsDYGVqQIJXBMfXodtZzL35s5g0BiBoC2qAQAvD_BwE&gclsrc=aw.ds.ds&dclid=CNuQ2IKdlN0CFY3QdwoducANHg), which adds a lot of code hints and shortcuts that will greatly improve your code quality.
+
+The art styleguide recommends using **Blender** for 3D models, but as long as the look and performance matches the existing assets, any 3D modelling tool is allowed.
+
+To get a hold of the project, you need **git client**. Git is the software that manages the source. GitHub is the website that we use host it. Some of the popular options are:
+ * [GitHub Desktop](https://desktop.github.com/)
+ * [Sourcetree](https://www.sourcetreeapp.com/)
+ * [Smart Git](https://www.syntevo.com/smartgit/)
+ * [Git Kraken](https://www.gitkraken.com/)
+ * [Git CLI](https://git-scm.com/), if you know what you're doing
+ 
+Regardless of what client you use, we recommend installing the latest version of git seperately, to make sure you have all the latest features, specifically LFS.
+
+Once you have your tools in order, you should fork this repository on GitHub, using the Fork button on this page. This naturally requires a GitHub account. You will commit your changes to that repository and make a [pull request](#pull-requests) to merge it into our repository.
+
+After forking, you should clone your repository to your local machine. This might take a whíle. Once it's done cloning, you're ready to start.
 
 #### Git Flow
 
-I'll do it tomorrow.
+The repository is structured using [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/). Basically we have five types of branches: the *master* branch, and the *develop* branch, are probably the only ones that are a concern. Additionally maintainers can make *release*, *feature*, and *hotfix* branches.
+
+The *master* branch always contains the latest released version. No one is allowed to push directly to the *master* branch, not even maintainers. The only exception is if structural changes need to applied to the repository.
+
+The *develop* branch will contain the latest accepted code. This is the branch that pull requests should merge into. Every once in a while the *develop* branch will be merged into *master*, and a new build will be released with the new changes.
+
+Maintainers may also create the following types of branches, and all of them should have [pull requests](#pull-requests) associated with them:
+* *hotfix* branches are created to quickly fix critical bugs found on the *master* branch. When the issue has been fixed they are merged directly into the *master* and *develop* branches.
+* *release* branches are used to test the changes before merging them into *master*. After branching, no new pull requests will be merged into it. Once the build is determined to be stable, it is merged into *master* and *develop*.
+* *feature* branches branch off *develop* and contain any new changes, whether it be new art, code, bugfixes or tweaks. They are practically identical to forking the repository. They are merged into *develop* once the changes has been accepted.
 
 ### Pull Requests
 
+Pull requests allow the maintainers to verify that any changes are wanted and don't break the existing code, before they are merged into the latest version. Note that pull requests should merge from your own *develop* or *feature* branch into this repository's *develop* branch.
+
+Here are some general guidelines for pull requests:
 * Fill in [the template](PULL_REQUEST_TEMPLATE.md)
 * Do not include issue numbers in the PR title
 * Include screenshots and/or animated GIFs in your pull request whenever possible.
 
 ## Styleguides
 
-Follow theses for good luck.
+Follow theses guidelines for good luck.
+
+### Art Style
+
+Have a link to the art styleguide here.
 
 ### Git Commit Messages
 

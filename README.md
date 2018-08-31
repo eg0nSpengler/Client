@@ -1,3 +1,7 @@
 # Fish-Orientation-Tracking-System
 
-This README needs to be filled
+Welcome to the repository
+
+## Contributing
+
+Have a look at [CONTRIBUTING.md](CONTRIBUTING.md) for documentation on how to get your stuff in the game.

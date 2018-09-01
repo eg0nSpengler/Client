@@ -25,10 +25,10 @@ This whole document is derived from the [Atom CONTRIBUTING.md](https://github.co
   * [Code or Asset Contributions](#code-or-asset-contributions)
   * [Pull Requests](#pull-requests)
 
-[Styleguides](#styleguides)
+[Styleguides](#style-guides)
   * [Art Style](#art-style)
-  * [Git Commit Messages](#git-commit-messages)
   * [C# Styleguide](#c-styleguide)
+  * [Git Commit Messages](#git-commit-messages)
 
 ## Code of Conduct
 
@@ -64,7 +64,13 @@ Someone needs to link the game design document here.
 
 ### Code Maintainers
 
-Something about the people on the team
+A set of people are responsible for making sure the runs smoothly and that the contributions made to project are wanted, correct, and functional.
+These people are refered to as maintainers.
+
+The project maintainers have the follow goals:
+* To prioritize issues and pull requests so the most urgent and most wanted changes gets into the build quickly.
+* To make sure even minor contributions don't get overlooked. All contributions are created equal.
+* Make sure the contributions comply with our standards, will not break the project, and are wanted, before they are merged.
 
 ## How To Contribute
 
@@ -78,7 +84,7 @@ If your bug report meets all three of those conditions, then we can quickly and 
 
 Before creating a bug report, please check [this list](#before-submitting-a-bug-report) as you might find out that you don't need to create one. 
 When you are creating a bug report, please [include as many relevant details as possible](#how-do-i-submit-a-good-bug-report). Feel free to remove any non-applicable junk.
-Use [the template](ISSUE_TEMPLATE.md), as the information it asks for helps you help us help you more efficiently.
+Use a template when creating the issue, as the information it asks for helps you help us help you more efficiently.
 
 #### Before Submitting A Bug Report
 
@@ -89,7 +95,7 @@ Use [the template](ISSUE_TEMPLATE.md), as the information it asks for helps you 
 #### How Do I Submit A (Good) Bug Report?
 
 Bugs are tracked as [GitHub issues](https://guides.github.com/features/issues/). 
-Your first step in creating the issue is to use [the template](ISSUE_TEMPLATE.md).
+Your first step in creating the issue is to use a template when creating your bug report.
 
 Explain the problem clearly and include additional details to help maintainers reproduce the problem:
 
@@ -108,7 +114,7 @@ You may have a good idea on how to improve the game, whether it be a new feature
 Submitting suggestions is functionally similar to reporting bugs but without all the boring stuff.
 
 When you are creating an enhancement suggestion, please [include as many details as possible](#how-do-i-submit-a-good-enhancement-suggestion). 
-Use [the template](ISSUE_TEMPLATE.md) as usual, including the steps that you imagine you would take if the feature you're requesting existed.
+Use the templates as usual, including the steps that you imagine you would take if the feature you're requesting existed.
 
 > *Note:* This is only for suggestions. If you have produced actual code or assets, go the [next section](#code-or-asset-contributions)
 
@@ -124,6 +130,8 @@ Enhancement suggestions are tracked as [GitHub issues](https://guides.github.com
 ### Code or Asset Contributions
 
 Making an actual change in the project is really admirable and also a simple but complicated process. This section will guide you through said process.
+
+Regardless of kind of asset you produce remember to head over to the [Style guide section](#style-guides) to make sure your contribution fits in with everyone else's.
 
 After reading through the next subsections don't forget to head over to the [Pull Requests section](#pull-requests) on how to submit your changes.
 
@@ -152,16 +160,11 @@ After forking, you should clone your repository to your local machine. This migh
 
 #### Git Flow
 
-The repository is roughly structured using [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/). There are five types of branches, only two of which are relevant for non-maintainers: the *master* branch, and the *develop* branch. Additionally, maintainers can make *release*, *feature*, and *hotfix* branches in this repository.
+The repository is strucuted based on [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/), but only using two branches: the *master* branch, and the *develop* branch.
 
 The *master* branch always contains the latest released version. No one is allowed to push directly to the *master* branch, not even maintainers. The only exception is if structural changes need to be applied to the repository.
 
 The *develop* branch will contain the latest accepted code. This is the branch that pull requests should merge into. Every once in a while the *develop* branch will be merged into *master*, and a new build will be released with the new changes.
-
-Maintainers with write access are also free to create the following types of branches, and all of them should have [pull requests](#pull-requests) associated with them:
-* *hotfix* branches are created to quickly fix critical bugs found on the *master* branch. When the issue has been fixed, they are merged directly into the *master*, and *develop* branches.
-* *release* branches are used to test the changes before merging them into *master*. After branching, no new pull requests will be merged into it. Once the build is determined to be stable, it is merged into *master*, and *develop*.
-* *feature* branches branch off *develop* and contain any new changes, whether it be new art, code, bugfixes or tweaks. They are practically identical to forking the repository because they are also required to go through a pull request. They are merged into *develop* once the changes have been accepted.
 
 ### Pull Requests
 
@@ -174,13 +177,17 @@ Here are some general guidelines for pull requests:
 * Do not include issue numbers in the PR title
 * Include screenshots and/or animated GIFs in your pull request whenever possible.
 
-## Styleguides
+## Style guides
 
 Follow these guidelines for good luck.
 
 ### Art Style
 
-Have a link to the art style guide here.
+The art style of all assets should adhere to the **[Art Style Guide](StyleGuides/ART.md)**. The style guide was created by *beep.
+
+### C# Styleguide
+
+All C# code should follow the [Style Guide](StyleGuides/C_SHARP.md). The style is open to debate, especially when it is about clarity or readability, but anything that comes down purely to personal preference should fall back on official style guides or community convention.
 
 ### Git Commit Messages
 
@@ -193,7 +200,6 @@ Have a link to the art style guide here.
     * :art: `:art:` when improving the format/structure of the code
     * :racehorse: `:racehorse:` when improving performance
     * :non-potable_water: `:non-potable_water:` when plugging memory leaks
-    * :memo: `:memo:` when writing docs
     * :penguin: `:penguin:` when fixing something on Linux
     * :apple: `:apple:` when fixing something on macOS
     * :checkered_flag: `:checkered_flag:` when fixing something on Windows
@@ -202,10 +208,4 @@ Have a link to the art style guide here.
     * :green_heart: `:green_heart:` when fixing the CI build
     * :white_check_mark: `:white_check_mark:` when adding tests
     * :lock: `:lock:` when dealing with security
-    * :arrow_up: `:arrow_up:` when upgrading dependencies
-    * :arrow_down: `:arrow_down:` when downgrading dependencies
     * :shirt: `:shirt:` when removing linter warnings
-
-### C# Styleguide
-
-All C# code should follow the [Style Guide](C_SHARP_STYLEGUIDE.md). The style is open to debate, especially when it is about clarity or readability, but anything that comes down purely to personal preference should fall back on official style guides or community convention.

@@ -19,11 +19,10 @@ Stylisation involves emphasizing the defining parts of an
 object. When modeling something that exists in reality don't try to
 accurately reproduce it, even with reference the goal is just to make a caricature of the real thing.
 
-<div style="overflow: auto">
-<img src="Images/ss3dstyleguide2018-02-16-001.png" style="float: right; width:25%">
-<img src="Images/ss3dstyleguide2018-02-16-002.png" style="float: right; width:25%">
-<img src="Images/ss3dstyleguide2018-02-16-003.png" style="float: right; width:25%">
-</div>
+![Header](Images/ss3dstyleguide2018-02-16-001.png)
+![Header](Images/ss3dstyleguide2018-02-16-004.png)
+![Header](Images/ss3dstyleguide2018-02-16-002.png)
+![Header](Images/ss3dstyleguide2018-02-16-003.png)
 
 ### Detail
 
@@ -62,17 +61,11 @@ from the Shading panel on the right, regular Blender lighting is
 distractingly shiny and bumpy. Matcaps don’t affect the material
 whatsoever, it’s just a preview within Blender.
 
-```
-Nuts and bolts, 4 to 6 sides
-```
-```
-Cryo tube, 2x2 tiles
-24 sides
-```
-```
-Small objects
-8 sides (can), 12 sides (burger and bucket)
-```
+* Nuts and bolts: 4 to 6 sides
+* Cryo tube, 2x2 tiles: 24 sides
+* Small objects: 8 sides (can), 12 sides (burger and bucket)
+
+![Header](Images/ss3dstyleguide2018-02-16-005.png)
 
 ## Bevels
 Bevels are very useful in hard surface modeling since they catch
@@ -84,26 +77,21 @@ which otherwise would look like a tall box. Small objects or small parts of
 larger objects don’t need them, since it would have little impact on the
 silhouette.
 
-```
 Alternatively use the Bevel Modifier in
 combination with bevel weights,
 which you can set individually for
 edges in the model.
-```
-```
-It’s easier to tweak but I recommend
-applying the modifier after you’re
-done with it.
-```
-```
+It’s easier to tweak but I recommend applying the modifier after you’re done with it.
+![Header](Images/ss3dstyleguide2018-02-16-009.png)
+
 Sawn-off, stock without modifiers
-```
-```
+![Header](Images/ss3dstyleguide2018-02-16-006.png)
+
 Bevel weights in blue, darker = less bevel
-```
-```
+![Header](Images/ss3dstyleguide2018-02-16-008.png)
+
 Result
-```
+![Header](Images/ss3dstyleguide2018-02-16-007.png)
 
 ## Value
 
@@ -116,27 +104,19 @@ to you. If computers could draw an infinite amount of polygons you
 wouldn’t have to worry about anything else, since you could just
 perfectly describe the surface of any object.
 
+![Header](Images/ss3dstyleguide2018-02-16-010.png)
+
 ### Normals
 
 But we have a limited polygon budget so we rely on normals to make up for it. Normals are just the direction the
 surface is facing, which by default is straight up from each individual face. By tweaking these directions you’re “bending” the
 surface even though its shape hasn’t really changed.
 
-```
-A flat quad. The normals are
-sticking straight up as
-expected.
-```
-```
-Slice of a sphere with way
-too many polygons.
-```
-```
-Taking the normals from the sphere and
-onto the quad, we get a plane that
-appears to be round, for no extra
-rendering cost over the original.
-```
+* A flat quad. The normals are sticking straight up as expected.
+* Slice of a sphere with way too many polygons.
+* Taking the normals from the sphere and onto the quad, we get a plane that appears to be round, for no extra rendering cost over the original.
+
+![Header](Images/ss3dstyleguide2018-02-16-011.png)
 
 Mood in a single SS13 round can vary wildly, and lighting needs to lend itself
 to both calm and spooky situations. Under regular conditions, like well lit Medbay or
@@ -151,26 +131,27 @@ sharp edges is very easy, just put them down wherever there should be a disconti
 the surface. The base of a bolt sticking out of plating, two different materials making up
 the same surface, or the seam where parts of an object would be welded together.
 
-```
 Use smooth shading on the whole model and then
 enable Auto Smooth in the mesh tab to make use
 of sharp edges.
 Values lower than 180° will “auto sharpen” angles
 below this value, which can be handy if your model
 is complex.
-```
-```
-ADD PICTURE Flat colors
-```
-```
-Edges (sharp edges in cyan)
-```
-```
-Resulting shading
-```
+![Header](Images/ss3dstyleguide2018-02-16-012.png)
+
+* Edges (sharp edges in cyan)
+* Resulting shading
+
+![Header](Images/ss3dstyleguide2018-02-16-013.png)
 
 Some examples. The tubes going into the cryo don’t need it, since sharp edges are used to split continuous meshes
 and the tubes are separate from the base.
+
+![Header](Images/ss3dstyleguide2018-02-16-014.png)
+![Header](Images/ss3dstyleguide2018-02-16-015.png)
+![Header](Images/ss3dstyleguide2018-02-16-016.png)
+![Header](Images/ss3dstyleguide2018-02-16-017.png)
+![Header](Images/ss3dstyleguide2018-02-16-018.png)
 
 ## Color
 
@@ -181,6 +162,13 @@ and also UV unwrapping, which is a tedious mechanical process that would raise t
 entry barrier to making SS3D content. It makes it really easy to try different color
 variations, and it helps with cohesion.
 
+```
+The current palette is a mess, but use it whenever
+possible. Adding new colors is fine.
+```
+
+![Header](Images/ss3dstyleguide2018-02-16-019.png)
+
 ### Baked in shadows
 
 By coloring parts of the mesh with a darker shade of the same color you
@@ -189,14 +177,10 @@ Old games did this a lot, but it should be used very sparingly— it can look
 very wrong when light shines directly on the darkened part. The disposals bin can’t
 rotate, so it’s safe to assume light will be hitting it from above.
 
-```
-The current palette is a mess, but use it whenever
-possible. Adding new colors is fine.
-```
+![Header](Images/ss3dstyleguide2018-02-16-020.png)
 
 ### Using the palette
 
-```
 At this point the
 model has no UV
 mapping. Select all
@@ -205,16 +189,19 @@ Reset which is the
 most unwrapping
 you’ll need for most
 things.
-```
-```
-Select the faces you
-want to color, then
-drag the corresponding
-points in the UV editor
-to a swatch in the
-palette.
-```
-```
+
+![Header](Images/ss3dstyleguide2018-02-16-021.png)
+
+Select the faces you want to color, then
+drag the corresponding points in the UV editor
+to a swatch in the palette.
+
+![Header](Images/ss3dstyleguide2018-02-16-022.png)
+
+This toggle in the UV editor can help.
+
+![Header](Images/ss3dstyleguide2018-02-16-032.png)
+
 To speed up selection,
 you can make use of
 sharp edges to flood-fill
@@ -225,12 +212,21 @@ is selected in the UV
 editor then scale it all
 down into a single
 point (S 0)
-```
-```
-This toggle in
-the UV editor
-can help.
-```
+
+![Header](Images/ss3dstyleguide2018-02-16-023.png)
+![Header](Images/ss3dstyleguide2018-02-16-024.png)
+
+![Header](Images/ss3dstyleguide2018-02-16-025.png)
+![Header](Images/ss3dstyleguide2018-02-16-026.png)
+
+![Header](Images/ss3dstyleguide2018-02-16-027.png)
+![Header](Images/ss3dstyleguide2018-02-16-028.png)
+
+![Header](Images/ss3dstyleguide2018-02-16-029.png)
+![Header](Images/ss3dstyleguide2018-02-16-030.png)
+
+![Header](Images/ss3dstyleguide2018-02-16-031.png)
+
 
 ## Textures
 
@@ -243,10 +239,13 @@ These simple decorations are floating just above the object’s surface.
 This also includes the “fake” grates on the lockers. They’re too small and
 the camera too far for the player to ever notice.
 ```
+![Header](Images/ss3dstyleguide2018-02-16-034.png)
+![Header](Images/ss3dstyleguide2018-02-16-037.png)
+![Header](Images/ss3dstyleguide2018-02-16-036.png)
 
-```
-Textures.
-```
+Example textures.
+![Header](Images/ss3dstyleguide2018-02-16-035.png)
+![Header](Images/ss3dstyleguide2018-02-16-033.png)
 
 ## Theme
 
@@ -257,15 +256,16 @@ uses dot-matrix PDAs to send messages to each other.
 This happens in reality, even now the military is carrying literal nuke disks, while the navy organizes their documents on computers running MSDOS. In the end it's both funny and good
 since it gives creators the liberty to add almost whatever they want, present or future. I fully expect the HoP’s account database
 to be stored in tape drives.
+![Header](Images/ss3dstyleguide2018-02-16-038.png)
 
 ```
 Published 3:52 PM ET Wed, 25 May 2016 Updated 9:51 AM ET Thu, 26 May 2016
-```
 
-```markdown
 The U.S. Defense Department is still using — after several decades — 8-inch floppy disks in a computer system that coordinates the operational functions of the nation's
 nuclear forces, a jaw-dropping new report reveals.
 ```
+
+![Header](Images/ss3dstyleguide2018-02-16-039.png)
 
 ## Geometry
 

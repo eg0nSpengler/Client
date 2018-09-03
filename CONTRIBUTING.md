@@ -4,7 +4,7 @@ Hello there! Thanks for coming by. You'll always be welcome regardless no matter
 
 This document is a set of guidelines for contributing to the project. 
 These are just guidelines, but they are here to ensure an efficient and foolproof workflow. 
-Use your best judgment if in doubt, or ask on the [Discord Server]((https://discord.gg/Z3sPhyS)
+Use your best judgment if in doubt, or ask on the [Discord Server](https://discord.gg/Z3sPhyS)
 
 This whole document is derived from the [Atom CONTRIBUTING.md](https://github.com/atom/atom/blob/master/CONTRIBUTING.md). If something looks like they wrote, then they probably did.
 

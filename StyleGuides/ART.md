@@ -21,8 +21,6 @@ accurately reproduce it, even with reference the goal is just to make a caricatu
 
 ![Header](Images/ss3dstyleguide2018-02-16-001.png)
 ![Header](Images/ss3dstyleguide2018-02-16-004.png)
-![Header](Images/ss3dstyleguide2018-02-16-002.png)
-![Header](Images/ss3dstyleguide2018-02-16-003.png)
 
 ### Detail
 
@@ -37,6 +35,9 @@ it can be seen from far away.
 Don’t get attached to close shots of your model. Too fine or
 complex detail might just become noise when viewed from the proper
 distance, so zoom out often.
+
+![Header](Images/ss3dstyleguide2018-02-16-002.png)
+![Header](Images/ss3dstyleguide2018-02-16-003.png)
 
 ### Polycount
 
@@ -82,15 +83,19 @@ combination with bevel weights,
 which you can set individually for
 edges in the model.
 It’s easier to tweak but I recommend applying the modifier after you’re done with it.
+
 ![Header](Images/ss3dstyleguide2018-02-16-009.png)
 
 Sawn-off, stock without modifiers
+
 ![Header](Images/ss3dstyleguide2018-02-16-006.png)
 
 Bevel weights in blue, darker = less bevel
+
 ![Header](Images/ss3dstyleguide2018-02-16-008.png)
 
 Result
+
 ![Header](Images/ss3dstyleguide2018-02-16-007.png)
 
 ## Value
@@ -244,6 +249,7 @@ the camera too far for the player to ever notice.
 ![Header](Images/ss3dstyleguide2018-02-16-036.png)
 
 Example textures.
+
 ![Header](Images/ss3dstyleguide2018-02-16-035.png)
 ![Header](Images/ss3dstyleguide2018-02-16-033.png)
 
@@ -256,6 +262,7 @@ uses dot-matrix PDAs to send messages to each other.
 This happens in reality, even now the military is carrying literal nuke disks, while the navy organizes their documents on computers running MSDOS. In the end it's both funny and good
 since it gives creators the liberty to add almost whatever they want, present or future. I fully expect the HoP’s account database
 to be stored in tape drives.
+
 ![Header](Images/ss3dstyleguide2018-02-16-038.png)
 
 ```

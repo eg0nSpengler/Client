@@ -426,7 +426,6 @@ This section includes some rules of thumb for design patterns and code structure
 Avoid throwing exceptions. Instead log and error. Methods returning values should return null in addition to logging an error
 
 **BAD:**
-
 ```csharp
 public List<Transform> FindAThing(int arg){
     ...
@@ -437,7 +436,6 @@ public List<Transform> FindAThing(int arg){
 ```
 
 **GOOD:**
-
 ```csharp
 public List<Transform> FindAThing(int arg){
     ...
@@ -446,4 +444,88 @@ public List<Transform> FindAThing(int arg){
         return null;
     }
 }
+```
+
+### Default Script Comments
+
+We know what Start and Update does. Please remove their comments when you create them through the editor.
+
+***NO:***
+```csharp
+// Use this for initialization
+void Start() {
+    ...
+}
+```
+
+**YES:**
+```csharp
+private void Start() {
+    ...
+}
+```
+
+### Finding references
+
+Don't use Find or in other ways refer to game objects by name or child index *when possible*. Reference by reference is less error prone and more flexible. 
+Expect people to set the fields in the inspector and log warnings if they don't.
+
+**BAD:**
+```csharp
+private GameObject someMember;
+
+private void Start() {
+    someMember = GameObject.Find("ObjectName");
+}
+```
+
+**GOOD:**
+```csharp
+public GameObject someMember;
+```
+
+### RequireComponent
+
+Prefer RequireComponent and GetComponent over AddComponent. Having the components in the inspector let's us edit them. AddComponent limits us.
+
+**BAD:**
+```csharp
+public class : MonoBehaviour
+{
+    private AudioSource audioSource;
+
+    private void Start() {
+        audioSource = gameObject.AddCompenent<AudioSource>();
+    }
+}
+```
+
+**GOOD:**
+```csharp
+[RequireComponent(typeof(AudioSource))]
+public class : MonoBehaviour
+{
+    private AudioSource audioSource;
+
+    private void Start() {
+        audioSource = GetCompenent<AudioSource>();
+    }
+}
+```
+
+### Properties with backing fields
+
+Properties can be used for access control to fields, and when using backing fields they can be private and let us change them in the inspector. Consider when a fields should be public and prefer properties with backing fields.
+
+Sometimes it's just nice to see them for debugging, even if we don't change them, so consider making more of your private fields visible.
+
+**OKAY:**
+```csharp
+public GameObject someMember;
+```
+
+**BETTER:**
+```csharp
+[SerializeField] private GameObject someMember;
+public GameObject SomeMember => someMember;
 ```

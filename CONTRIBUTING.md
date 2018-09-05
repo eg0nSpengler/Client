@@ -173,7 +173,7 @@ Pull requests allow the maintainers to verify that any changes are wanted and do
 Pull requests are mandatory for any changes and are required to be reviewed by maintainers and should pass any CI test.
 
 Here are some general guidelines for pull requests:
-* Fill in [the template](PULL_REQUEST_TEMPLATE.md)
+* Fill in [the template](.github/PULL_REQUEST_TEMPLATE.md)
 * Do not include issue numbers in the PR title
 * Include screenshots and/or animated GIFs in your pull request whenever possible.
 

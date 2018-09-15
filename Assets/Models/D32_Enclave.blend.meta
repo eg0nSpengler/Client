@@ -375,6 +375,7 @@ ModelImporter:
     2100182: Linen_Saxon_Red
     2100184: Linen_Beige_2
     2100186: Wolf_Fur_Grey
+    2100188: Material
     2300000: Brows_2
     2300002: Cube
     2300004: Cube_002
@@ -412,6 +413,7 @@ ModelImporter:
     2300068: Misc_-_PDA_Medic
     2300070: Misc_-_PDA_Security
     2300072: Sphere
+    2300074: //RootNode
     3300000: Brows_2
     3300002: Cube
     3300004: Cube_002
@@ -449,6 +451,7 @@ ModelImporter:
     3300068: Misc_-_PDA_Medic
     3300070: Misc_-_PDA_Security
     3300072: Sphere
+    3300074: //RootNode
     4300000: Item_-_Blood_Tome
     4300002: Item_-_Cult_Dagger_Kris
     4300004: Item_-_Cult_Dagger

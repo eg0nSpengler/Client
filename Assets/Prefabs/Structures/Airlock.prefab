@@ -36,9 +36,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4622233374650618}
   - component: {fileID: 114272676967279346}
-  - component: {fileID: 65108838286810528}
+  - component: {fileID: 114921286136226544}
   m_Layer: 0
-  m_Name: AirlockMedical
+  m_Name: Airlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1496086865773650}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.203, y: 0, z: -1.867}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4683752981585992}
@@ -247,18 +247,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1883258625860546}
   m_Mesh: {fileID: 4300154, guid: 30a2db20bf6e842418d8cc684c7d8143, type: 3}
---- !u!65 &65108838286810528
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1496086865773650}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1.5}
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!65 &65666271475162536
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -294,8 +282,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f30b79a0ef09443408b607382528f82e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  travelDistance: 0.4
-  travelSpeed: 3
   openSound: {fileID: 0}
   closeSound: {fileID: 0}
   accessDeniedSound: {fileID: 0}
+  left: {fileID: 4683752981585992}
+  right: {fileID: 4730831616211576}
+  open: 0
+  moving: 0
+  welded: 0
+  bolted: 0
+  disabled: 0
+  openAxis: {x: 1, y: 0, z: 0}
+  openDistance: 0.5
+  openTime: 1
+  openCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.43108737
+      value: 0.5604475
+      inSlope: 0.23246542
+      outSlope: 0.23246542
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.15527093
+    - serializedVersion: 3
+      time: 0.7540337
+      value: 0.8991232
+      inSlope: 2.0930173
+      outSlope: 2.0930173
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -2.263087
+      outSlope: -2.263087
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08226471
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &114921286136226544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1496086865773650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9c6b755e3141a5a197e8fc902c57f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  powered: 1

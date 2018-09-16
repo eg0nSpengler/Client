@@ -1,34 +1,99 @@
 fileFormatVersion: 2
-guid: 0ce9d1c03a9121441931f3e5834dc04c
+guid: fd4e366614a1cc742891c56ae64e2791
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Cube
-    100002: //RootNode
-    100004: OldMesh
-    100006: Plane
-    100008: Plane_001
-    400000: Cube
-    400002: //RootNode
-    400004: OldMesh
-    400006: Plane
-    400008: Plane_001
-    2100000: Basic__Palette_png
-    2100002: Body_Alpha
-    2300000: Cube
-    2300002: OldMesh
-    2300004: Plane
-    2300006: Plane_001
-    3300000: Cube
-    3300002: OldMesh
-    3300004: Plane
-    3300006: Plane_001
-    4300000: Plane_001
-    4300002: Plane
-    4300004: Cube
-    4300006: OldMesh
+    100000: Circle
+    100002: Cylinder
+    100004: Egg
+    100006: Egg-Box_Down
+    100008: Egg-Box_Up
+    100010: Egg_001
+    100012: Egg_002
+    100014: Egg_1
+    100016: Egg_10
+    100018: Egg_2
+    100020: Egg_3
+    100022: Egg_4
+    100024: Egg_5
+    100026: Egg_6
+    100028: Egg_7
+    100030: Egg_8
+    100032: Egg_9
+    100034: //RootNode
+    400000: Circle
+    400002: Cylinder
+    400004: Egg
+    400006: Egg-Box_Down
+    400008: Egg-Box_Up
+    400010: Egg_001
+    400012: Egg_002
+    400014: Egg_1
+    400016: Egg_10
+    400018: Egg_2
+    400020: Egg_3
+    400022: Egg_4
+    400024: Egg_5
+    400026: Egg_6
+    400028: Egg_7
+    400030: Egg_8
+    400032: Egg_9
+    400034: //RootNode
+    2100000: Couleur__Palette_png
+    2300000: Circle
+    2300002: Cylinder
+    2300004: Egg
+    2300006: Egg-Box_Down
+    2300008: Egg-Box_Up
+    2300010: Egg_001
+    2300012: Egg_002
+    2300014: Egg_1
+    2300016: Egg_10
+    2300018: Egg_2
+    2300020: Egg_3
+    2300022: Egg_4
+    2300024: Egg_5
+    2300026: Egg_6
+    2300028: Egg_7
+    2300030: Egg_8
+    2300032: Egg_9
+    3300000: Circle
+    3300002: Cylinder
+    3300004: Egg
+    3300006: Egg-Box_Down
+    3300008: Egg-Box_Up
+    3300010: Egg_001
+    3300012: Egg_002
+    3300014: Egg_1
+    3300016: Egg_10
+    3300018: Egg_2
+    3300020: Egg_3
+    3300022: Egg_4
+    3300024: Egg_5
+    3300026: Egg_6
+    3300028: Egg_7
+    3300030: Egg_8
+    3300032: Egg_9
+    4300000: Circle
+    4300002: Egg_002
+    4300004: Egg_001
+    4300006: Cylinder
+    4300008: Egg-Box_Down
+    4300010: Egg-Box_Up
+    4300012: Egg_10
+    4300014: Egg_9
+    4300016: Egg_8
+    4300018: Egg_7
+    4300020: Egg_6
+    4300022: Egg_5
+    4300024: Egg_4
+    4300026: Egg_3
+    4300028: Egg_2
+    4300030: Egg
+    4300032: Egg_1
     7400000: Default Take
     9500000: //RootNode
+    2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -87,7 +152,7 @@ ModelImporter:
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2

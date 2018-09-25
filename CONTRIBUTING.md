@@ -144,15 +144,13 @@ For coding, you can use whatever you want, but [Visual Studio](https://visualstu
 The art style guide recommends using **Blender** for 3D models, but as long as the look and performance match the existing assets, any 3D modeling tool is allowed.
 
 To get a hold of the project, you need **git client**. Git is the software that manages the source. GitHub is the website that we use to host it. Some of the popular options are:
- * [GitHub Desktop](https://desktop.github.com/)
+ * [GitHub Desktop](https://desktop.github.com/), recommended for beginners
  * [Sourcetree](https://www.sourcetreeapp.com/)
  * [Smart Git](https://www.syntevo.com/smartgit/)
  * [Git Kraken](https://www.gitkraken.com/)
  * [Git CLI](https://git-scm.com/), if you know what you're doing
  
-Regardless of what client you use, we recommend installing the latest version of git separately, to make sure you have all the latest features, specifically LFS.
-
-For many binary and large files, the repository uses **Git LFS**, which is a separate module that slightly more efficiently stores binary files, such that they don't clog our pipes and make git slow. LFS is installed with the latest version of git by default, so if you experience issues with it, try downloading the latest version of git first.
+Regardless of what client you use, we recommend installing the latest version of git separately, to make sure you have all the latest features.
 
 Once you have your tools in order, you should fork this repository on GitHub, using the Fork button on this page. This naturally requires a GitHub account. You will commit your changes to that repository and make a [pull request](#pull-requests) to merge it into our repository.
 
@@ -160,7 +158,7 @@ After forking, you should clone your repository to your local machine. This migh
 
 #### Git Flow
 
-The repository is strucuted based on [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/), but only using two branches: the *master* branch, and the *develop* branch.
+The repository is strucuted based on a subset of [GitFlow](https://nvie.com/posts/a-successful-git-branching-model/), using only using two branches: the *master* branch, and the *develop* branch.
 
 The *master* branch always contains the latest released version. No one is allowed to push directly to the *master* branch, not even maintainers. The only exception is if structural changes need to be applied to the repository.
 
@@ -173,7 +171,7 @@ Pull requests allow the maintainers to verify that any changes are wanted and do
 Pull requests are mandatory for any changes and are required to be reviewed by maintainers and should pass any CI test.
 
 Here are some general guidelines for pull requests:
-* Fill in [the template](.github/PULL_REQUEST_TEMPLATE.md)
+* Fill in [the template](.github/PULL_REQUEST_TEMPLATE.md). It'll pop up when you create the Pull Request.
 * Do not include issue numbers in the PR title
 * Include screenshots and/or animated GIFs in your pull request whenever possible.
 
@@ -187,7 +185,7 @@ The art style of all assets should adhere to the **[Art Style Guide](StyleGuides
 
 ### C# Styleguide
 
-All C# code should follow the [Style Guide](StyleGuides/C_SHARP.md). The style is open to debate, especially when it is about clarity or readability, but anything that comes down purely to personal preference should fall back on official style guides or community convention.
+All C# code should follow the **[C# Style Guide](StyleGuides/C_SHARP.md)**. The style is open to debate, especially when it is about clarity or readability, but anything that comes down purely to personal preference should fall back on official style guides or community convention.
 
 ### Git Commit Messages
 
@@ -199,7 +197,6 @@ All C# code should follow the [Style Guide](StyleGuides/C_SHARP.md). The style i
 * Consider starting the commit message with an applicable emoji:
     * :art: `:art:` when improving the format/structure of the code
     * :racehorse: `:racehorse:` when improving performance
-    * :non-potable_water: `:non-potable_water:` when plugging memory leaks
     * :penguin: `:penguin:` when fixing something on Linux
     * :apple: `:apple:` when fixing something on macOS
     * :checkered_flag: `:checkered_flag:` when fixing something on Windows
@@ -208,4 +205,3 @@ All C# code should follow the [Style Guide](StyleGuides/C_SHARP.md). The style i
     * :green_heart: `:green_heart:` when fixing the CI build
     * :white_check_mark: `:white_check_mark:` when adding tests
     * :lock: `:lock:` when dealing with security
-    * :shirt: `:shirt:` when removing linter warnings

@@ -544,6 +544,43 @@ ModelImporter:
     4300178: 03_Hair_-_Fry
     4300180: 01_Body_-_Body
     4300182: Jumpsuit_-_Saxon_Huscarl_s_Hauberk
+    6400000: Brows_2
+    6400002: Cube
+    6400004: Cube_002
+    6400006: Hair_-_Poofy_Bans_short
+    6400008: Headgear_-_Command_Garrison
+    6400010: Headgear_-_Command_Garrison_001
+    6400012: Headgear_-_Nasal_Helm_With_Coif
+    6400014: Headgear_-_Saxon_Thegn_Helm
+    6400016: Headgear_-_Sec_Cap
+    6400018: Headgear_-_Sec_Helmet
+    6400020: Headgear_-_Sec_Helmet_001
+    6400022: Headgear_-_Trucker_Cap
+    6400024: Headgear_-_Viking_Helm_Coif
+    6400026: Item_-_Blood_Tome
+    6400028: Item_-_Claymore
+    6400030: Item_-_Cult_Dagger
+    6400032: Item_-_Cult_Dagger_Kris
+    6400034: Item_-_Horn
+    6400036: Item_-_Jumpsuit_Item_Dress_Shirt
+    6400038: Item_-_Jumpsuit_Item_Dress_Shirt_001
+    6400040: Item_-_Jumpsuit_Item_Grey
+    6400042: Item_-_Jumpsuit_Item_Security
+    6400044: Item_-_Round_Shield_1
+    6400046: Item_-_Stunbaton
+    6400048: Item_-_Taser
+    6400050: Item_-_Vendel_Spear_1
+    6400052: Item_-_Vendel_Sword_1
+    6400054: Jumpsuit_-_Saxon_Huscarl_s_Hauberk
+    6400056: Mask_-_Sec_Glasses_001
+    6400058: Misc_-_Headset_001
+    6400060: Misc_-_Headset_Command
+    6400062: Misc_-_Headset_Sec
+    6400064: Misc_-_PDA
+    6400066: Misc_-_PDA_Command
+    6400068: Misc_-_PDA_Medic
+    6400070: Misc_-_PDA_Security
+    6400072: Sphere
     7400000: Default Take
     9500000: //RootNode
     13700000: 01_Body_-_Body
@@ -635,7 +672,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1

@@ -160,6 +160,11 @@ namespace Atmos
 		{
 			return state;
 		}
+
+		public void Block()
+		{
+			state = TileStates.Blocked;
+		}
 		
 		public float GetTemperature()
 		{
@@ -184,21 +189,28 @@ namespace Atmos
 
 
 		#region Gas Manipulation
-		public void AddGasses(float[] gas)
+		public void AddGas(Gasses index, float amount)
 		{
-			for (int i = 0; i < Mathf.Min(gas.GetLength(0), Atmosphere.numOfGases); ++i)
+			gasses[(int)index] = Mathf.Max(gasses[(int)index] + amount, 0);
+
+			state = TileStates.Active;
+		}
+
+		public void AddGasses(float[] amounts)
+		{
+			for (int i = 0; i < Mathf.Min(amounts.GetLength(0), Atmosphere.numOfGases); ++i)
 			{
-				gasses[i] = Mathf.Max(gasses[i] + gas[i], 0);
+				gasses[i] = Mathf.Max(gasses[i] + amounts[i], 0);
 			}
 
 			state = TileStates.Active;
 		}
 
-		public void SetGasses(float[] gas)
+		public void SetGasses(float[] amounts)
 		{
-			for (int i = 0; i < Mathf.Min(gas.GetLength(0), Atmosphere.numOfGases); ++i)
+			for (int i = 0; i < Mathf.Min(amounts.GetLength(0), Atmosphere.numOfGases); ++i)
 			{
-				gasses[i] = Mathf.Max(gas[i], 0);
+				gasses[i] = Mathf.Max(amounts[i], 0);
 			}
 
 			state = TileStates.Active;
@@ -360,7 +372,7 @@ namespace Atmos
 						fluxLeft = 0f;
 					}
 				}
-				Tile rightTile = owner.GetTile(x - 1, y);
+				Tile rightTile = owner.GetTile(x + 1, y);
 				if (rightTile != null && rightTile.state != TileStates.Blocked)
 				{
 					fluxRight = Mathf.Min(flux.w * drag + (GetPressure() - rightTile.GetPressure()) * dt, 1000f);
@@ -502,7 +514,7 @@ namespace Atmos
 						tempSetting = true;
 					}
 				}
-				if (left)
+				if (left && leftTile != null)
 				{
 					difference = (temperature - leftTile.temperature) * thermalRate;
 
@@ -513,7 +525,7 @@ namespace Atmos
 						tempSetting = true;
 					}
 				}
-				if (right)
+				if (right && rightTile != null)
 				{
 					difference = (temperature - rightTile.temperature) * thermalRate;
 

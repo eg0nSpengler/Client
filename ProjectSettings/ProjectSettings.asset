@@ -659,12 +659,15 @@ PlayerSettings:
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
     Build: 0
-    UNet: 1
+    Collab: 0
+    ErrorHub: 0
+    Hub: 0
+    UNet: 0
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 3
-  cloudProjectId: 7339bd42-11e1-4a61-9439-a6a530475a88
-  projectName: Fish Orientation Tracking System
-  organizationId: re-ss3d
+  cloudProjectId: 
+  projectName: 
+  organizationId: 
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

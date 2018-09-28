@@ -8,24 +8,24 @@ AnimatorController:
   m_Name: Controller
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Walking
+  - m_Name: Speed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: LyingBack
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: LyingFront
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -70,7 +70,7 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Walking
     m_Mirror: 0
-  m_BlendParameter: Walking
+  m_BlendParameter: Speed
   m_BlendParameterY: Blend
   m_MinThreshold: 0
   m_MaxThreshold: 1

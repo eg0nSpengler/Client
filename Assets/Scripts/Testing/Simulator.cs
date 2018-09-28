@@ -75,7 +75,7 @@ public class Simulator : MonoBehaviour
 			}
 			else if (Input.GetMouseButton(1))
 			{
-				tile.SetGasses(new float[] { 0f, 0f, 0f, 0f });
+				tile.MakeEmpty();
 			}
 			else if (Input.GetMouseButton(2))
 			{

@@ -216,12 +216,20 @@ namespace Atmos
 			state = TileStates.Active;
 		}
 
+		public void MakeEmpty()
+		{
+			for (int i = 0; i < Atmosphere.numOfGases; ++i)
+			{
+				gasses[i] = 0;
+			}
+		}
+
 		public void MakeAir()
 		{
-			gasses[(int)Gasses.Oxygen] = 20.79f;	// Oxygen
-			gasses[(int)Gasses.Nitrogen] = 83.17f;	// Nitrogen
-			gasses[(int)Gasses.CarbonDioxide] = 0f;	// Carbon Dioxide
-			gasses[(int)Gasses.Plasma] = 0f;	// Plasma
+			MakeEmpty();
+
+			gasses[(int)Gasses.Oxygen] = 20.79f;
+			gasses[(int)Gasses.Nitrogen] = 83.17f;
 			temperature = 293f;
 		}
 		#endregion

@@ -81,6 +81,14 @@ public class Simulator : MonoBehaviour
 			{
 				tile.Block();
 			}
+			else if (Input.GetMouseButton(3))
+			{
+				tile.Heat(2000f);
+			}
+			else if (Input.GetMouseButton(4))
+			{
+				tile.Cool(0f);
+			}
 		}
 
 		//atmos.GetTile(i, j).SetGasses(new float[] { (Mathf.Max(i, j) + 1f) * 15f, 0f, 0f, 0f });

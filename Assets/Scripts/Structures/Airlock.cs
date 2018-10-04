@@ -33,7 +33,7 @@ namespace Structures.Doors
         private AudioSource audioSource;
         private Electrical electrical;
 
-        public bool Stuck => welded || bolted || disabled || electrical.Powered;
+        public bool Stuck => welded || bolted || disabled || !electrical.Powered;
 
         
         private void Awake()
@@ -72,11 +72,16 @@ namespace Structures.Doors
             right.transform.localPosition = -openAxis * openDistance * openCurve.Evaluate(target);
             moving = false;
         }
-        
-        public void Interact(GameObject obj)
+
+        // TODO: Add logic for restrictions
+        public bool IsInteractable(GameObject source)
         {
-            if (moving || Stuck)
-            {
+            return !moving && !Stuck;
+        }
+        
+        public void Interact(GameObject source)
+        {
+            if (!IsInteractable(source)) {
                 return;
             }
 

@@ -152,4 +152,10 @@ public class CharacterIK : MonoBehaviour
         animator.SetIKHintPosition(hint, 
             Vector3.LerpUnclamped(spine.position + generalDirection[goal], spine.position - spine.up, dot));
     }
+
+    // TODO: Rework this so it actually places in the hand in a non-arbitrary way
+    public Transform GetItemHoldTransform(int handIndex) {
+        handIndex %= 2;
+        return handIndex == 0 ? leftHand : rightHand; 
+    }
 }

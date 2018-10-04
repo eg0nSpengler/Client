@@ -15,8 +15,8 @@ TagManager:
   - 
   - PostProcessing
   - Character
-  - 
-  - 
+  - Item
+  - IgnoreInteractorRaycast
   - 
   - 
   - 

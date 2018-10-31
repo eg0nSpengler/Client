@@ -43,7 +43,7 @@ On the whole, naming should follow C# standards.
 
 Namespaces are all **PascalCase**, multiple words concatenated together, without hypens ( - ) or underscores ( \_ ):
 
-Namespaces are encouraged to match the folder structure.
+Namespaces should be used for major systems, such as Atmospherics, or Electrics. Everything else should be without namespace.
 
 **BAD**:
 

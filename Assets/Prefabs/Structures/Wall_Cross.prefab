@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4506085134664108}
   - component: {fileID: 33704003902614542}
   - component: {fileID: 23552525894482562}
-  - component: {fileID: 65252890903047346}
+  - component: {fileID: 64285280360269868}
   m_Layer: 10
   m_Name: Wall_Cross
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1587757481006914}
   m_Mesh: {fileID: 4300004, guid: 2703851fab865c04f97c8f2bdd3f29e6, type: 3}
---- !u!65 &65252890903047346
-BoxCollider:
+--- !u!64 &64285280360269868
+MeshCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -93,6 +93,8 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0000005, y: 1, z: 2.0000005}
-  m_Center: {x: 0, y: 0, z: 1.0000002}
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300004, guid: 2703851fab865c04f97c8f2bdd3f29e6, type: 3}

@@ -4,11 +4,52 @@ public class CameraTarget : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private Vector2 positionAngle = new Vector2(0, 45);
-    [SerializeField] private float distance = 5;
+    [SerializeField] private float distance = 6;
     [SerializeField] private float viewAngle = 45;
+
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+
+            positionAngle.x += 90;
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+
+            positionAngle.x -= 90;
+
+        }
+
+        if(Input.GetKeyDown(KeyCode.Equals))
+        {
+
+            distance = distance + 2;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            distance = distance - 2;
+        }
+
+        if (distance < 6)
+        {
+            distance = distance + 1;
+            return;
+        }
+
+        if (distance > 15)
+        {
+            distance = distance - 1;
+            return;
+        }
+
+
+
         if (target == null)
         {
             return;

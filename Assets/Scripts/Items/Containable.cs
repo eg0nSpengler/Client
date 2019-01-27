@@ -51,4 +51,7 @@ public class Containable : MonoBehaviour, IInteractable {
     public ContainableSize GetWeight() {
         return size;
     }
+
+    public Vector3 PickPosition;
+    public Vector3 PickRotation;
 }

@@ -25,6 +25,7 @@ public class CharacterMovement : MonoBehaviour
         var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         currentDirection = Vector2.MoveTowards(currentDirection, input, acceleration * Time.deltaTime);
         
+
         if(currentDirection.magnitude > 0)
         {
             // Move relative to the camera

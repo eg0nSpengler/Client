@@ -26,7 +26,7 @@ public class Gun : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.R))
         {
 
             Shoot();

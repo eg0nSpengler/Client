@@ -1,0 +1,258 @@
+fileFormatVersion: 2
+guid: 74c695bd1e6f4a34bbbfc8f03a0bf509
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Character_Animation_Rig:Default_Character_DefMesh:Armature_Root
+    100002: Character_Animation_Rig:Default_Character_DefMesh:Clavicle_L
+    100004: Character_Animation_Rig:Default_Character_DefMesh:Clavicle_R
+    100006: Character_Animation_Rig:Default_Character_DefMesh:Elbow_L
+    100008: Character_Animation_Rig:Default_Character_DefMesh:Elbow_R
+    100010: Character_Animation_Rig:Default_Character_DefMesh:Foot_L
+    100012: Character_Animation_Rig:Default_Character_DefMesh:Foot_R
+    100014: Character_Animation_Rig:Default_Character_DefMesh:Forearm_L
+    100016: Character_Animation_Rig:Default_Character_DefMesh:ForeArm_R
+    100018: Character_Animation_Rig:Default_Character_DefMesh:Head
+    100020: Character_Animation_Rig:Default_Character_DefMesh:Head_Extra
+    100022: Character_Animation_Rig:Default_Character_DefMesh:Index1_L
+    100024: Character_Animation_Rig:Default_Character_DefMesh:Index1_R
+    100026: Character_Animation_Rig:Default_Character_DefMesh:Index2_L
+    100028: Character_Animation_Rig:Default_Character_DefMesh:Index2_R
+    100030: Character_Animation_Rig:Default_Character_DefMesh:Index3_L
+    100032: Character_Animation_Rig:Default_Character_DefMesh:Index3_R
+    100034: Character_Animation_Rig:Default_Character_DefMesh:Index_Extra_L
+    100036: Character_Animation_Rig:Default_Character_DefMesh:Index_Extra_R
+    100038: Character_Animation_Rig:Default_Character_DefMesh:LowerLeg_L
+    100040: Character_Animation_Rig:Default_Character_DefMesh:LowerLeg_R
+    100042: Character_Animation_Rig:Default_Character_DefMesh:Middle1_L
+    100044: Character_Animation_Rig:Default_Character_DefMesh:Middle1_R
+    100046: Character_Animation_Rig:Default_Character_DefMesh:Middle2_L
+    100048: Character_Animation_Rig:Default_Character_DefMesh:Middle2_R
+    100050: Character_Animation_Rig:Default_Character_DefMesh:Middle3_L
+    100052: Character_Animation_Rig:Default_Character_DefMesh:Middle3_R
+    100054: Character_Animation_Rig:Default_Character_DefMesh:Middle_Extra_L
+    100056: Character_Animation_Rig:Default_Character_DefMesh:Middle_Extra_R
+    100058: Character_Animation_Rig:Default_Character_DefMesh:Neck
+    100060: Character_Animation_Rig:Default_Character_DefMesh:Pinky1_L
+    100062: Character_Animation_Rig:Default_Character_DefMesh:Pinky1_R
+    100064: Character_Animation_Rig:Default_Character_DefMesh:Pinky1_R 1
+    100066: Character_Animation_Rig:Default_Character_DefMesh:Pinky2_L
+    100068: Character_Animation_Rig:Default_Character_DefMesh:Pinky2_R
+    100070: Character_Animation_Rig:Default_Character_DefMesh:Pinky3_L
+    100072: Character_Animation_Rig:Default_Character_DefMesh:Pinky3_R
+    100074: Character_Animation_Rig:Default_Character_DefMesh:Pinky_Extra_L
+    100076: Character_Animation_Rig:Default_Character_DefMesh:Ring1_L
+    100078: Character_Animation_Rig:Default_Character_DefMesh:Ring1_R
+    100080: Character_Animation_Rig:Default_Character_DefMesh:Ring2_L
+    100082: Character_Animation_Rig:Default_Character_DefMesh:Ring2_R
+    100084: Character_Animation_Rig:Default_Character_DefMesh:Ring3_L
+    100086: Character_Animation_Rig:Default_Character_DefMesh:Ring3_R
+    100088: Character_Animation_Rig:Default_Character_DefMesh:Ring_Extra_L
+    100090: Character_Animation_Rig:Default_Character_DefMesh:Ring_Extra_R
+    100092: Character_Animation_Rig:Default_Character_DefMesh:Root
+    100094: Character_Animation_Rig:Default_Character_DefMesh:Shoulder_L
+    100096: Character_Animation_Rig:Default_Character_DefMesh:Shoulder_R
+    100098: Character_Animation_Rig:Default_Character_DefMesh:Spine1
+    100100: Character_Animation_Rig:Default_Character_DefMesh:Spine2
+    100102: Character_Animation_Rig:Default_Character_DefMesh:Thumb1_L
+    100104: Character_Animation_Rig:Default_Character_DefMesh:Thumb1_R
+    100106: Character_Animation_Rig:Default_Character_DefMesh:Thumb2_L
+    100108: Character_Animation_Rig:Default_Character_DefMesh:Thumb2_R
+    100110: Character_Animation_Rig:Default_Character_DefMesh:Thumb3_L
+    100112: Character_Animation_Rig:Default_Character_DefMesh:Thumb3_R
+    100114: Character_Animation_Rig:Default_Character_DefMesh:Thumb_Extra_L
+    100116: Character_Animation_Rig:Default_Character_DefMesh:Thumb_Extra_R
+    100118: Character_Animation_Rig:Default_Character_DefMesh:Toe_L
+    100120: Character_Animation_Rig:Default_Character_DefMesh:Toe_R
+    100122: Character_Animation_Rig:Default_Character_DefMesh:ToeExtra_L
+    100124: Character_Animation_Rig:Default_Character_DefMesh:ToeExtra_R
+    100126: Character_Animation_Rig:Default_Character_DefMesh:UpperLeg_L
+    100128: Character_Animation_Rig:Default_Character_DefMesh:UpperLeg_R
+    100130: Character_Animation_Rig:Default_Character_DefMesh:Wrist_L
+    100132: Character_Animation_Rig:Default_Character_DefMesh:Wrist_R
+    100134: //RootNode
+    100136: Character_Animation_Rig:Default_Character_DefMesh:Character_Default
+    400000: Character_Animation_Rig:Default_Character_DefMesh:Armature_Root
+    400002: Character_Animation_Rig:Default_Character_DefMesh:Clavicle_L
+    400004: Character_Animation_Rig:Default_Character_DefMesh:Clavicle_R
+    400006: Character_Animation_Rig:Default_Character_DefMesh:Elbow_L
+    400008: Character_Animation_Rig:Default_Character_DefMesh:Elbow_R
+    400010: Character_Animation_Rig:Default_Character_DefMesh:Foot_L
+    400012: Character_Animation_Rig:Default_Character_DefMesh:Foot_R
+    400014: Character_Animation_Rig:Default_Character_DefMesh:Forearm_L
+    400016: Character_Animation_Rig:Default_Character_DefMesh:ForeArm_R
+    400018: Character_Animation_Rig:Default_Character_DefMesh:Head
+    400020: Character_Animation_Rig:Default_Character_DefMesh:Head_Extra
+    400022: Character_Animation_Rig:Default_Character_DefMesh:Index1_L
+    400024: Character_Animation_Rig:Default_Character_DefMesh:Index1_R
+    400026: Character_Animation_Rig:Default_Character_DefMesh:Index2_L
+    400028: Character_Animation_Rig:Default_Character_DefMesh:Index2_R
+    400030: Character_Animation_Rig:Default_Character_DefMesh:Index3_L
+    400032: Character_Animation_Rig:Default_Character_DefMesh:Index3_R
+    400034: Character_Animation_Rig:Default_Character_DefMesh:Index_Extra_L
+    400036: Character_Animation_Rig:Default_Character_DefMesh:Index_Extra_R
+    400038: Character_Animation_Rig:Default_Character_DefMesh:LowerLeg_L
+    400040: Character_Animation_Rig:Default_Character_DefMesh:LowerLeg_R
+    400042: Character_Animation_Rig:Default_Character_DefMesh:Middle1_L
+    400044: Character_Animation_Rig:Default_Character_DefMesh:Middle1_R
+    400046: Character_Animation_Rig:Default_Character_DefMesh:Middle2_L
+    400048: Character_Animation_Rig:Default_Character_DefMesh:Middle2_R
+    400050: Character_Animation_Rig:Default_Character_DefMesh:Middle3_L
+    400052: Character_Animation_Rig:Default_Character_DefMesh:Middle3_R
+    400054: Character_Animation_Rig:Default_Character_DefMesh:Middle_Extra_L
+    400056: Character_Animation_Rig:Default_Character_DefMesh:Middle_Extra_R
+    400058: Character_Animation_Rig:Default_Character_DefMesh:Neck
+    400060: Character_Animation_Rig:Default_Character_DefMesh:Pinky1_L
+    400062: Character_Animation_Rig:Default_Character_DefMesh:Pinky1_R
+    400064: Character_Animation_Rig:Default_Character_DefMesh:Pinky1_R 1
+    400066: Character_Animation_Rig:Default_Character_DefMesh:Pinky2_L
+    400068: Character_Animation_Rig:Default_Character_DefMesh:Pinky2_R
+    400070: Character_Animation_Rig:Default_Character_DefMesh:Pinky3_L
+    400072: Character_Animation_Rig:Default_Character_DefMesh:Pinky3_R
+    400074: Character_Animation_Rig:Default_Character_DefMesh:Pinky_Extra_L
+    400076: Character_Animation_Rig:Default_Character_DefMesh:Ring1_L
+    400078: Character_Animation_Rig:Default_Character_DefMesh:Ring1_R
+    400080: Character_Animation_Rig:Default_Character_DefMesh:Ring2_L
+    400082: Character_Animation_Rig:Default_Character_DefMesh:Ring2_R
+    400084: Character_Animation_Rig:Default_Character_DefMesh:Ring3_L
+    400086: Character_Animation_Rig:Default_Character_DefMesh:Ring3_R
+    400088: Character_Animation_Rig:Default_Character_DefMesh:Ring_Extra_L
+    400090: Character_Animation_Rig:Default_Character_DefMesh:Ring_Extra_R
+    400092: Character_Animation_Rig:Default_Character_DefMesh:Root
+    400094: Character_Animation_Rig:Default_Character_DefMesh:Shoulder_L
+    400096: Character_Animation_Rig:Default_Character_DefMesh:Shoulder_R
+    400098: Character_Animation_Rig:Default_Character_DefMesh:Spine1
+    400100: Character_Animation_Rig:Default_Character_DefMesh:Spine2
+    400102: Character_Animation_Rig:Default_Character_DefMesh:Thumb1_L
+    400104: Character_Animation_Rig:Default_Character_DefMesh:Thumb1_R
+    400106: Character_Animation_Rig:Default_Character_DefMesh:Thumb2_L
+    400108: Character_Animation_Rig:Default_Character_DefMesh:Thumb2_R
+    400110: Character_Animation_Rig:Default_Character_DefMesh:Thumb3_L
+    400112: Character_Animation_Rig:Default_Character_DefMesh:Thumb3_R
+    400114: Character_Animation_Rig:Default_Character_DefMesh:Thumb_Extra_L
+    400116: Character_Animation_Rig:Default_Character_DefMesh:Thumb_Extra_R
+    400118: Character_Animation_Rig:Default_Character_DefMesh:Toe_L
+    400120: Character_Animation_Rig:Default_Character_DefMesh:Toe_R
+    400122: Character_Animation_Rig:Default_Character_DefMesh:ToeExtra_L
+    400124: Character_Animation_Rig:Default_Character_DefMesh:ToeExtra_R
+    400126: Character_Animation_Rig:Default_Character_DefMesh:UpperLeg_L
+    400128: Character_Animation_Rig:Default_Character_DefMesh:UpperLeg_R
+    400130: Character_Animation_Rig:Default_Character_DefMesh:Wrist_L
+    400132: Character_Animation_Rig:Default_Character_DefMesh:Wrist_R
+    400134: //RootNode
+    400136: Character_Animation_Rig:Default_Character_DefMesh:Character_Default
+    7400000: Human Idle
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Human Idle
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 175
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 1
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 289538a27e2f65643814ca7ea941afc4,
+    type: 3}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

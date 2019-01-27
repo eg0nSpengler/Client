@@ -4,5 +4,5 @@ public interface IInteractable
 {
     bool IsInteractable(GameObject source);
 
-    void Interact(GameObject source); 
+    void Interact(GameObject source);
 }

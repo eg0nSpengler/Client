@@ -1,0 +1,261 @@
+fileFormatVersion: 2
+guid: 88432e01a27ab174d8d2e5e18d7a4dcb
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature_Root
+    100002: Brows_Male_Default
+    100004: //RootNode
+    100006: Clavicle_L
+    100008: Clavicle_R
+    100010: Elbow_L
+    100012: Elbow_R
+    100014: Eyes_Male_Default
+    100016: Foot_L
+    100018: Foot_R
+    100020: Footwear_Male_Sneakers_Black
+    100022: Forearm_L
+    100024: ForeArm_R
+    100026: Gun_Bolt
+    100028: Gun_Extra
+    100030: Gun_Magazine
+    100032: Gun_Magazine_Extra
+    100034: Gun_Root
+    100036: Hair_Male_Fry
+    100038: Head
+    100040: Head_Extra
+    100042: Headset_Default_Assistant
+    100044: Index1_L
+    100046: Index1_R
+    100048: Index2_L
+    100050: Index2_R
+    100052: Index3_L
+    100054: Index3_R
+    100056: Jumpsuit_Male_Grey_Default_Detailed
+    100058: LowerLeg_L
+    100060: LowerLeg_R
+    100062: Middle1_L
+    100064: Middle1_R
+    100066: Middle2_L
+    100068: Middle2_R
+    100070: Middle3_L
+    100072: Middle3_R
+    100074: Neck
+    100076: PDA_Default_Assistant
+    100078: Pinky1_L
+    100080: Pinky1_R
+    100082: Pinky1_R 1
+    100084: Pinky2_L
+    100086: Pinky2_R
+    100088: Pinky3_L
+    100090: Ring1_L
+    100092: Ring1_R
+    100094: Ring2_L
+    100096: Ring2_R
+    100098: Ring3_L
+    100100: Ring3_R
+    100102: Root
+    100104: Shoulder_L
+    100106: Shoulder_R
+    100108: Skin_Cut_Full
+    100110: Spine1
+    100112: Spine2
+    100114: Thumb1_L
+    100116: Thumb1_R
+    100118: Thumb2_L
+    100120: Thumb2_R
+    100122: Thumb3_L
+    100124: Thumb3_R
+    100126: Toe_L
+    100128: Toe_R
+    100130: UpperLeg_L
+    100132: UpperLeg_R
+    100134: Wrist_L
+    100136: Wrist_R
+    400000: Armature_Root
+    400002: Brows_Male_Default
+    400004: //RootNode
+    400006: Clavicle_L
+    400008: Clavicle_R
+    400010: Elbow_L
+    400012: Elbow_R
+    400014: Eyes_Male_Default
+    400016: Foot_L
+    400018: Foot_R
+    400020: Footwear_Male_Sneakers_Black
+    400022: Forearm_L
+    400024: ForeArm_R
+    400026: Gun_Bolt
+    400028: Gun_Extra
+    400030: Gun_Magazine
+    400032: Gun_Magazine_Extra
+    400034: Gun_Root
+    400036: Hair_Male_Fry
+    400038: Head
+    400040: Head_Extra
+    400042: Headset_Default_Assistant
+    400044: Index1_L
+    400046: Index1_R
+    400048: Index2_L
+    400050: Index2_R
+    400052: Index3_L
+    400054: Index3_R
+    400056: Jumpsuit_Male_Grey_Default_Detailed
+    400058: LowerLeg_L
+    400060: LowerLeg_R
+    400062: Middle1_L
+    400064: Middle1_R
+    400066: Middle2_L
+    400068: Middle2_R
+    400070: Middle3_L
+    400072: Middle3_R
+    400074: Neck
+    400076: PDA_Default_Assistant
+    400078: Pinky1_L
+    400080: Pinky1_R
+    400082: Pinky1_R 1
+    400084: Pinky2_L
+    400086: Pinky2_R
+    400088: Pinky3_L
+    400090: Ring1_L
+    400092: Ring1_R
+    400094: Ring2_L
+    400096: Ring2_R
+    400098: Ring3_L
+    400100: Ring3_R
+    400102: Root
+    400104: Shoulder_L
+    400106: Shoulder_R
+    400108: Skin_Cut_Full
+    400110: Spine1
+    400112: Spine2
+    400114: Thumb1_L
+    400116: Thumb1_R
+    400118: Thumb2_L
+    400120: Thumb2_R
+    400122: Thumb3_L
+    400124: Thumb3_R
+    400126: Toe_L
+    400128: Toe_R
+    400130: UpperLeg_L
+    400132: UpperLeg_R
+    400134: Wrist_L
+    400136: Wrist_R
+    2100000: PDA
+    2100002: Black
+    2100004: PDA1
+    2100006: Eye
+    2100008: Ohgodwhat_Jumspuit - Grey (detailed)SG1
+    2100010: Ohgodwhat_Item - Jumpsuit Item GreySG1
+    2100012: Ohgodwhat_Item - Jumpsuit Item GreySG3
+    2100014: Hair
+    2100016: Button
+    2100018: PDA3
+    2100020: PDA4
+    2100022: PDA2
+    2100024: Black1
+    2100026: Skin
+    2100028: Sneakers2
+    2100030: Jumpsuit_Male_Grey_Default_Detail2
+    2100032: Sneakers1
+    2100034: Sneakers
+    4300000: Headset_Default_Assistant
+    4300002: Eyes_Male_Default
+    4300004: Jumpsuit_Male_Grey_Default_Detailed
+    4300006: Hair_Male_Fry
+    4300008: Brows_Male_Default
+    4300010: PDA_Default_Assistant
+    4300012: Skin_Cut_Full
+    4300014: Footwear_Male_Sneakers_Black
+    9500000: //RootNode
+    13700000: Brows_Male_Default
+    13700002: Eyes_Male_Default
+    13700004: Footwear_Male_Sneakers_Black
+    13700006: Hair_Male_Fry
+    13700008: Headset_Default_Assistant
+    13700010: Jumpsuit_Male_Grey_Default_Detailed
+    13700012: PDA_Default_Assistant
+    13700014: Skin_Cut_Full
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

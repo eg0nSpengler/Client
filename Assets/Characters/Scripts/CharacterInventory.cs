@@ -5,10 +5,8 @@ using System;
 using System.Linq;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CharacterIK))]
-public class CharacterInventory : MonoBehaviour {
-
-
+public class CharacterInventory : MonoBehaviour 
+{
 
     public Sprite LeftDefault;
     public Sprite LeftMain;
@@ -17,8 +15,6 @@ public class CharacterInventory : MonoBehaviour {
     public GameObject LeftHand;
     public GameObject RightHand;
 
-    private CharacterIK characterIK;
-
     [SerializeField] private int numHands = 2;
 
     private Container[] hands;
@@ -26,7 +22,6 @@ public class CharacterInventory : MonoBehaviour {
     private int activeHand = 0;
 
     private void Awake() {
-        characterIK = GetComponent<CharacterIK>();
         SetupHands();
     }
 
@@ -130,10 +125,8 @@ public class CharacterInventory : MonoBehaviour {
     }
 
     private void OnAddedToHand(Containable containable) {
-        int handIndex = Array.FindIndex(hands, hand => (hand == containable.Container));
-        containable.transform.parent = characterIK.GetItemHoldTransform(handIndex);
-        containable.transform.localPosition = (containable as Containable).PickPosition;
-        containable.transform.localEulerAngles = (containable as Containable).PickRotation;
+        containable.transform.localPosition = containable.PickPosition;
+        containable.transform.localEulerAngles = containable.PickRotation;
         Rigidbody containableRB = containable.GetComponent<Rigidbody>();
         if (containableRB) {
             containableRB.isKinematic = true;

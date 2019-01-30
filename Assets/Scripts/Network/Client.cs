@@ -1,4 +1,6 @@
-﻿using Lidgren.Network;
+﻿using System;
+using System.Collections;
+using Lidgren.Network;
 using Network.Config;
 using UnityEngine;
 
@@ -8,56 +10,72 @@ namespace Network
     {
         [SerializeField] private ServerConfig config = null;
         [SerializeField] private string host = "localhost";
+        [SerializeField] private float connectTimeout = 10f;
 
-        private NetClient client;
-        
+        private readonly Peer<NetClient> client = new Peer<NetClient>();
+
+        private bool isConnecting;
         
         private void Awake()
         {
-            // Find some ServerConfig in Resources if it's not already assigned
-            if (config == null)
-            {
-                var allSettings = Resources.FindObjectsOfTypeAll<ServerConfig>();
-                if (allSettings.Length == 0)
-                {
-                    Debug.LogError(
-                        Application.isEditor
-                            ? @"No Server Config found. Please create one using the ""Assets/Create/Network/Server Config"" menu item."
-                            : @"No Server Config found.");
-                    return;
-                }
-
-                if (allSettings.Length > 1)
-                {
-                    Debug.LogError(
-                        "More than one Server Config found in Resources. Please delete on or assign one to this Server component");
-                    return;
-                }
-
-                config = allSettings[0];
-            }
-
             if (string.IsNullOrWhiteSpace(host))
             {
                 Debug.LogError("No host server specified");
                 return;
             }
             
-            // Prepare a config
-            var netConfig = new NetPeerConfiguration(config.AppName);
+            var success = client.Start(ref config, false);
 
-            // Connect to the server
-            client = new NetClient(netConfig);
-            client.Start();
-            client.Connect(host, config.Port);
+            if (!success) return;
+            client.Connected += ClientConnected;
+            client.Disconnected +=ClientDisconnected;
+            client.Data += ClientData;
+
+            var resolved = client.Connect(host, config.Port);
+            if (!resolved)
+                Debug.Log($"Could not resolve host: {host}:{config.Port}");
+            else
+                StartCoroutine(CheckNoConnection());
+        }
+
+        private IEnumerator CheckNoConnection()
+        {
+            isConnecting = true;
+            yield return new WaitForSeconds(connectTimeout);
+
+            if (isConnecting)
+                Debug.Log("Could not connect to server");
+        }
+
+        private void ClientDisconnected(NetConnection connection)
+        {
+            Debug.Log("Disconnecting");
+        }
+
+        private void ClientConnected(NetConnection connection)
+        {
+            isConnecting = false;
+            Debug.Log("Connected to server: " + connection.RemoteEndPoint);
             
-            Debug.Log($"Connected to server");
+            var msg = client.NetPeer.CreateMessage();
+            msg.Write("test");
+            client.NetPeer.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
         }
 
         private void OnDestroy()
         {
-            Debug.Log("Disconnecting.");
-            client.Shutdown("Disconnecting.");
+            client.Stop("Disconnecting");
+        }
+
+        private void Update()
+        {
+            client.Data -= ClientData;
+            client.Update();
+        }
+
+        private void ClientData(NetIncomingMessage msg)
+        {
+            Debug.Log(msg);
         }
     }
 }

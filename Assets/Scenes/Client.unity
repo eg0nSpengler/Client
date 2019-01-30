@@ -158,3 +158,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: c2a8c2ac91a95f0459d3d6e4cc9f24c6, type: 2}
   host: localhost
+  connectTimeout: 3

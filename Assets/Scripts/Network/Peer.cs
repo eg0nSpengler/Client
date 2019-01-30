@@ -91,7 +91,7 @@ namespace Network
 
         #region Main Loop
 
-        public void Update()
+        public void Receive()
         {
             NetIncomingMessage msg;
             while ((msg = peer.ReadMessage()) != null)
@@ -133,17 +133,15 @@ namespace Network
                                 Disconnected?.Invoke(msg.SenderConnection);
                                 break;
                             default:
-                                throw new ArgumentOutOfRangeException();
+                                Debug.LogWarning($"Unhandled connection status: {msg.SenderConnection.Status}");
+                                break;
                         }
                         break;
-                    case NetIncomingMessageType.UnconnectedData:
-                        break;
                     case NetIncomingMessageType.ConnectionApproval:
+                        // TODO connection approval
                         break;
                     case NetIncomingMessageType.Data:
                         Data?.Invoke(msg);
-                        break;
-                    case NetIncomingMessageType.Receipt:
                         break;
                     case NetIncomingMessageType.DiscoveryRequest:
                         var response = peer.CreateMessage();
@@ -153,12 +151,11 @@ namespace Network
                     case NetIncomingMessageType.DiscoveryResponse:
                         peer.Connect(msg.SenderEndPoint);
                         break;
-                    case NetIncomingMessageType.NatIntroductionSuccess:
-                        break;
                     case NetIncomingMessageType.ConnectionLatencyUpdated:
+                        // TODO keep track of latency
                         break;
                     default:
-                        Debug.LogWarning("Unhandled message type: " + msg.MessageType);
+                        Debug.LogWarning($"Unhandled message type: {msg.MessageType}");
                         break;
                 }
                 peer.Recycle(msg);

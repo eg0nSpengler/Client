@@ -69,7 +69,7 @@ public static class Build
             scenes = new[] { scene },
             locationPathName = $"Build/{(server ? "Server" : "Client")}/{platform}/{filename}",
             target = platform,
-            options = server ? BuildOptions.StrictMode | BuildOptions.EnableHeadlessMode : BuildOptions.StrictMode,
+            options = server ? BuildOptions.StrictMode | BuildOptions.EnableHeadlessMode | BuildOptions.Development : BuildOptions.StrictMode | BuildOptions.Development,
         };
 
         var report = BuildPipeline.BuildPlayer(buildPlayerOptions);

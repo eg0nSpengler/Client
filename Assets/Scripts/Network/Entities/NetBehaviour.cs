@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Network.Components
+namespace Network.Entities
 {
     [RequireComponent(typeof(NetEntity))]
     public abstract class NetBehaviour : MonoBehaviour

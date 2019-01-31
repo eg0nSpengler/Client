@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Lidgren.Network;
-using Network.Components;
 using Network.Config;
+using Network.Entities;
 using UnityEngine;
 
 namespace Network
@@ -88,7 +88,7 @@ namespace Network
                 msg.Write(entities.Count(entity => entity.Local));
             
                 foreach (var entity in entities)
-                    entity.Serialize(msg);
+                    entity.Send(msg);
 
                 client.NetPeer.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
             }

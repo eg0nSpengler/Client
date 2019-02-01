@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using Lidgren.Network;
@@ -14,9 +15,13 @@ namespace Network
         private readonly Peer<NetServer> server = new Peer<NetServer>();
         private readonly List<NetConnection> clients = new List<NetConnection>();
 
+        private AssetBundle assets;
+
 
         private void Awake()
         {
+            assets = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/assets");
+            
             server.Connected += ServerOnConnected;
             server.Disconnected += ServerOnDisconnected;
             server.Data += ServerOnData;
@@ -43,6 +48,10 @@ namespace Network
         private void ServerOnConnected(NetConnection connection)
         {
             clients.Add(connection);
+
+            var msg = server.NetPeer.CreateMessage();
+            msg.Write((byte) NetOp.SystemInfo);
+            connection.SendMessage(msg, NetDeliveryMethod.ReliableUnordered, 0);
             Debug.Log(connection.RemoteEndPoint + " connected");
         }
 
@@ -52,24 +61,15 @@ namespace Network
             Debug.Log(connection.RemoteEndPoint + " disconnected");
         }
 
-        private void ServerOnData(NetIncomingMessage msg)
+        private void ServerOnData(ref NetMessage msg)
         {
-            var e = msg.ReadInt32();
-            for (var i = 0; i < e; i++)
+            switch (msg.op)
             {
-                foreach (var client in clients)
-                {
-                    if (Equals(client, msg.SenderConnection)) continue;
-
-                    var fwd = server.NetPeer.CreateMessage();
-
-                    fwd.Write(msg.ReadInt32());
-                    fwd.Write(msg.ReadFloat());
-                    fwd.Write(msg.ReadFloat());
-                    fwd.Write(msg.ReadFloat());
-
-                    server.NetPeer.SendMessage(fwd, client, NetDeliveryMethod.ReliableOrdered);
-                }
+                case NetOp.SystemInfo:
+                    Debug.Log("Received platform info: "+ (RuntimePlatform)msg.msg.ReadByte());
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }

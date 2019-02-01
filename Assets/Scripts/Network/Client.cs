@@ -81,7 +81,7 @@ namespace Network
             while (true)
             {
                 yield return wait;
-
+/*
                 if (!connected) continue;
 
                 var msg = client.NetPeer.CreateMessage();
@@ -90,7 +90,7 @@ namespace Network
                 foreach (var entity in entities)
                     entity.Send(msg);
 
-                client.NetPeer.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+                client.NetPeer.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);*/
             }
         }
 
@@ -99,16 +99,18 @@ namespace Network
             client.Receive();
         }
 
-        private void ClientData(NetIncomingMessage msg)
+        private void ClientData(ref NetMessage msg)
         {
-            var id = msg.ReadInt32();
-            var pos = new Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
-
-            var entity = entities.SingleOrDefault(e => e.Id == id);
-            if (entity != null)
-                entity.transform.position = pos;
-            else
-                Debug.LogWarning("Not found: "+id);
+            switch (msg.op)
+            {
+                case NetOp.SystemInfo:
+                    Debug.Log("Sending platform info");
+                    msg.res.Write((byte)NetOp.SystemInfo);
+                    msg.res.Write((byte)Application.platform);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public void Register(NetEntity entity)
@@ -119,6 +121,12 @@ namespace Network
         public void Deregister(NetEntity entity)
         {
             entities.Remove(entity);
+        }
+
+        private void Start()
+        {
+            var bundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/assets");
+            NetEntity.Deserialize(bundle, Resources.Load<SerializedEntity>("Entities/Player"));
         }
     }
 }

@@ -1,0 +1,32 @@
+ManifestFileVersion: 0
+CRC: 3400571391
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3e37ccbd599416cf3227079c1259405c
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: da869911090449ccfac3e6eca2b87de3
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/Structures/Wall_Cross.prefab
+Dependencies: []

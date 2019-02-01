@@ -8,7 +8,7 @@ namespace Network
 {
     public sealed class Peer<T> where T : NetPeer
     {
-        public delegate void DataHandler(NetIncomingMessage msg);
+        public delegate void DataHandler(ref NetMessage msg);
         public event DataHandler Data;
         public delegate void ConnectionHandler(NetConnection connection);
         public event ConnectionHandler Connected;
@@ -141,7 +141,9 @@ namespace Network
                         // TODO connection approval
                         break;
                     case NetIncomingMessageType.Data:
-                        Data?.Invoke(msg);
+                        var req = new NetMessage(peer, msg.ReadByte(), msg);
+                        Data?.Invoke(ref req);
+                        if (req.hasResponse) peer.SendMessage(req.res, msg.SenderConnection, NetDeliveryMethod.ReliableUnordered);
                         break;
                     case NetIncomingMessageType.DiscoveryRequest:
                         var response = peer.CreateMessage();

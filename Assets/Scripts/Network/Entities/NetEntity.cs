@@ -60,22 +60,32 @@ namespace Network.Entities
                     x = transform.position.x,
                     y = transform.position.y,
                     z = transform.position.z,
+                    asset = "Wall_Cross",
                 });
                 return ms.ToArray();
             }
         }
 
-        [ContextMenu("Test")]
-        private void Deserialize()
+        public static NetEntity Deserialize(AssetBundle bundle, SerializedEntity entity)
         {
+            var gameObject = new GameObject(entity.title, typeof(NetEntity));
+            var netEntity = gameObject.GetComponent<NetEntity>();
+            netEntity.entity = entity;
+            
             var ms = new MemoryStream(entity.data);
             
             using (var reader = new BsonReader(ms))
             {
                 var serializer = new JsonSerializer();
                 var e = serializer.Deserialize<Entity>(reader);
-                Debug.Log($"{e.x} {e.y} {e.z}");
+
+                netEntity.transform.position = new Vector3(e.x, e.y, e.z);
+
+                if(e.asset != null)
+                    Instantiate(bundle.LoadAsset(e.asset), netEntity.transform);
             }
+
+            return netEntity;
         }
 
 #if UNITY_EDITOR

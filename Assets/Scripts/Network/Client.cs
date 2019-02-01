@@ -21,6 +21,10 @@ namespace Network
 
         private bool isConnecting;
         private bool connected;
+
+        private AssetBundle assets;
+        private byte[] assetsData;
+        private int assetsProgress;
         
         private void Awake()
         {
@@ -65,33 +69,12 @@ namespace Network
             isConnecting = false;
             connected = true;
             Debug.Log("Connected to server: " + connection.RemoteEndPoint);
-
-            StartCoroutine(SendData());
         }
 
         private void OnDestroy()
         {
             client.Data -= ClientData;
             client.Stop("Disconnecting");
-        }
-
-        private IEnumerator SendData()
-        {
-            var wait = new WaitForSeconds(1/sendRate);
-            while (true)
-            {
-                yield return wait;
-/*
-                if (!connected) continue;
-
-                var msg = client.NetPeer.CreateMessage();
-                msg.Write(entities.Count(entity => entity.Local));
-            
-                foreach (var entity in entities)
-                    entity.Send(msg);
-
-                client.NetPeer.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);*/
-            }
         }
 
         private void Update()
@@ -104,12 +87,29 @@ namespace Network
             switch (msg.op)
             {
                 case NetOp.SystemInfo:
-                    Debug.Log("Sending platform info");
                     msg.res.Write((byte)NetOp.SystemInfo);
                     msg.res.Write((byte)Application.platform);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                case NetOp.AssetsStart:
+                    msg.res.Write((byte)NetOp.AssetsStart);
+                    msg.res.Write((byte)Application.platform);
+                    assetsData = new byte[msg.msg.ReadInt32()];
+                    break;
+                case NetOp.AssetsData:
+                    var p = msg.msg.ReadInt32();
+                    var n = msg.msg.ReadInt32();
+                    var bytes = msg.msg.ReadBytes(n);
+                    for (var i = 0; i < n; i++)
+                        assetsData[i + p] = bytes[i];
+                    assetsProgress += n;
+
+                    if (assetsProgress == assetsData.Length)
+                    {
+                        assets = AssetBundle.LoadFromMemory(assetsData);
+                        
+                        msg.res.Write((byte)NetOp.Ready);
+                    }
+                    break;
             }
         }
 
@@ -121,12 +121,6 @@ namespace Network
         public void Deregister(NetEntity entity)
         {
             entities.Remove(entity);
-        }
-
-        private void Start()
-        {
-            var bundle = AssetBundle.LoadFromFile(Application.streamingAssetsPath + "/assets");
-            NetEntity.Deserialize(bundle, Resources.Load<SerializedEntity>("Entities/Player"));
         }
     }
 }

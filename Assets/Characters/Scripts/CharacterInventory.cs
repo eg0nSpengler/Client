@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Lidgren.Network;
 using UnityEngine.UI;
 
 public class CharacterInventory : MonoBehaviour 
@@ -41,7 +42,7 @@ public class CharacterInventory : MonoBehaviour
     public void SetHighlightedLeft()
     {
 
-        if (RightHand.GetComponent<Image>().sprite = RightMain)
+        if (RightHand.GetComponent<Image>().sprite == RightMain)
         {
 
             RightHand.GetComponent<Image>().sprite = RightDefault;
@@ -57,7 +58,7 @@ public class CharacterInventory : MonoBehaviour
     public void SetHighlightedRight()
     {
 
-        if (LeftHand.GetComponent<Image>().sprite = LeftMain)
+        if (LeftHand.GetComponent<Image>().sprite == LeftMain)
         {
 
             LeftHand.GetComponent<Image>().sprite = LeftDefault;
@@ -108,7 +109,6 @@ public class CharacterInventory : MonoBehaviour
 
     public Container GetActiveHand() {
         return hands[activeHand];
-
 
 
     }

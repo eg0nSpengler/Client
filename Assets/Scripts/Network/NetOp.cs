@@ -9,6 +9,7 @@ namespace Network
         Error       = 0x01,
         Warning     = 0x02,
         SystemInfo  = 0x03,
+        Ready       = 0x04,
         
         AssetsStart = 0x10,
         AssetsData  = 0x11,

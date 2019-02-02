@@ -1,12 +1,13 @@
 using System;
 using System.Net.Sockets;
 using Lidgren.Network;
+using Network.Assets;
 using Network.Config;
 using UnityEngine;
 
 namespace Network
 {
-    public sealed class Peer<T> where T : NetPeer
+    internal sealed class Peer<T> where T : NetPeer
     {
         public delegate void DataHandler(ref NetMessage msg);
         public event DataHandler Data;
@@ -15,6 +16,8 @@ namespace Network
         public event ConnectionHandler Disconnected;
         
         public T NetPeer => peer as T;
+        
+        public readonly AssetManager AssetManager = new AssetManager();
 
         private NetPeer peer;
 

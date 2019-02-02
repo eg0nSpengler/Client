@@ -18,12 +18,13 @@ namespace Network
         private readonly Peer<NetServer> server = new Peer<NetServer>();
         private readonly List<NetConnection> clients = new List<NetConnection>();
 
-        private byte[] assets;
-
 
         private void Awake()
         {
-            assets = File.ReadAllBytes($"{Application.streamingAssetsPath}/assets");
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+            Application.SetStackTraceLogType(LogType.Warning, StackTraceLogType.None);
+            
+            server.AssetManager.LoadFromFile($"{Application.streamingAssetsPath}/assets");
             
             server.Connected += ServerOnConnected;
             server.Disconnected += ServerOnDisconnected;
@@ -67,73 +68,40 @@ namespace Network
         private void ServerOnData(ref NetMessage msg)
         {
             RuntimePlatform platform;
-            byte[] bundle;
             switch (msg.op)
             {
                 case NetOp.SystemInfo:
                     platform = (RuntimePlatform) msg.msg.ReadByte();
-                    bundle = Bundle(platform);
-                    if (bundle != null)
+                    if (server.AssetManager.Available(platform))
                     {
                         msg.res.Write((byte)NetOp.AssetsStart);
-                        msg.res.Write(bundle.Length);
+                        msg.res.Write(server.AssetManager.Size(platform));
                     }
                     break;
                 case NetOp.AssetsStart:
                     platform = (RuntimePlatform) msg.msg.ReadByte();
-                    bundle = Bundle(platform);
-                    if (bundle != null) StartCoroutine(SendAssetBundle(bundle, msg.msg.SenderConnection));
+                    if (server.AssetManager.Available(platform))
+                    {
+                        var connection = msg.msg.SenderConnection;
+                        StartCoroutine(server.AssetManager.SendAssetBundle(
+                            platform, 
+                            msg.msg.SenderConnection.CurrentMTU - 100, 
+                            msg.msg.SenderConnection.AverageRoundtripTime, (start, length, data) =>
+                            {
+                                var m = server.NetPeer.CreateMessage();
+                                m.Write((byte) NetOp.AssetsData);
+                                m.Write(start);
+                                m.Write(length);
+                                m.Write(data);
+
+                                connection.SendMessage(m, NetDeliveryMethod.ReliableUnordered, 0);
+                            }));
+                    }
+
                     break;
                 case NetOp.Ready:
                     Debug.Log(msg.msg.SenderEndPoint + " is ready");
                     break;
-            }
-        }
-
-        private byte[] Bundle(RuntimePlatform platform)
-        {
-            switch (platform)
-            {
-                case RuntimePlatform.OSXEditor:
-                case RuntimePlatform.OSXPlayer:
-                    return assets;
-                case RuntimePlatform.WindowsEditor:
-                case RuntimePlatform.WindowsPlayer:
-                    return assets;
-                case RuntimePlatform.LinuxEditor:
-                case RuntimePlatform.LinuxPlayer:
-                    return assets;
-                default:
-                    Debug.LogErrorFormat("Platform not supported: {0}", platform);
-                    return null;
-            }
-        }
-
-        private IEnumerator SendAssetBundle(byte[] bundle, NetConnection connection)
-        {
-            if (bundle == null) yield break;
-            if (connection == null) yield break;
-
-            var data = new byte[connection.CurrentMTU - 100];
-
-            for (var i = 0; i < bundle.Length; i += data.Length)
-            {
-                yield return new WaitForSeconds(connection.AverageRoundtripTime);
-
-                var size = Mathf.Min(data.Length, bundle.Length - i);
-                
-                for (var j = 0; j < size; j++)
-                {
-                    data[j] = bundle[i + j];
-                }
-
-                var msg = server.NetPeer.CreateMessage();
-                msg.Write((byte) NetOp.AssetsData);
-                msg.Write(i);
-                msg.Write(size);
-                msg.Write(data);
-
-                connection.SendMessage(msg, NetDeliveryMethod.ReliableUnordered, 0);
             }
         }
     }

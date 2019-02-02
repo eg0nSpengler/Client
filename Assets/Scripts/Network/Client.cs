@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Lidgren.Network;
+using Network.Assets;
 using Network.Config;
 using Network.Entities;
 using UnityEngine;
@@ -21,10 +22,6 @@ namespace Network
 
         private bool isConnecting;
         private bool connected;
-
-        private AssetBundle assets;
-        private byte[] assetsData;
-        private int assetsProgress;
         
         private void Awake()
         {
@@ -93,22 +90,14 @@ namespace Network
                 case NetOp.AssetsStart:
                     msg.res.Write((byte)NetOp.AssetsStart);
                     msg.res.Write((byte)Application.platform);
-                    assetsData = new byte[msg.msg.ReadInt32()];
+                    client.AssetManager.InitializeDataGet(msg.msg.ReadInt32());
                     break;
                 case NetOp.AssetsData:
-                    var p = msg.msg.ReadInt32();
-                    var n = msg.msg.ReadInt32();
-                    var bytes = msg.msg.ReadBytes(n);
-                    for (var i = 0; i < n; i++)
-                        assetsData[i + p] = bytes[i];
-                    assetsProgress += n;
-
-                    if (assetsProgress == assetsData.Length)
-                    {
-                        assets = AssetBundle.LoadFromMemory(assetsData);
-                        
+                    var start = msg.msg.ReadInt32();
+                    var length = msg.msg.ReadInt32();
+                    var data = msg.msg.ReadBytes(length);
+                    if (client.AssetManager.DataGet(start,length,data))
                         msg.res.Write((byte)NetOp.Ready);
-                    }
                     break;
             }
         }

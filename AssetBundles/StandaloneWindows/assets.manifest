@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 3400571391
+CRC: 1091034169
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3e37ccbd599416cf3227079c1259405c
+    Hash: a6d2993c511f0d856bc2ae77b4f59d34
   TypeTreeHash:
     serializedVersion: 2
-    Hash: da869911090449ccfac3e6eca2b87de3
+    Hash: 0497089af8b614136b94e9b11a49b63f
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -27,6 +27,11 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 64
   Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 26782bd3001943ed8b764cfa2090a343, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
 Assets:
+- Assets/Resources/Entities/Player.asset
 - Assets/Prefabs/Structures/Wall_Cross.prefab
 Dependencies: []

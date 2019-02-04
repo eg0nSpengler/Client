@@ -10,14 +10,14 @@ public static class Build
     [MenuItem("Build/Build and Run Server/Windows", false, 11)]
     public static void BuildRunServerWindows()
     {
-        BuildServerWindows();
-        RunServerWindows();
+        if(BuildServerWindows())
+            RunServerWindows();
     }
     [MenuItem("Build/Build and Run Server/Linux", false, 13)]
     public static void BuildRunServerLinux()
     {
-        BuildServerLinux();
-        RunServerLinux();
+        if(BuildServerLinux())
+            RunServerLinux();
     }
     
     [MenuItem("Build/Run Server/Windows", false, 21)]
@@ -32,37 +32,37 @@ public static class Build
     }
     
     [MenuItem("Build/Server/Windows", false, 31)]
-    public static void BuildServerWindows()
+    public static bool BuildServerWindows()
     {
-        Compile("Assets/Scenes/Server.unity", "SS3D_Server.exe", true, BuildTarget.StandaloneWindows64);
+        return Compile("Assets/Scenes/Server.unity", "SS3D_Server.exe", true, BuildTarget.StandaloneWindows64);
     }
     [MenuItem("Build/Server/OSX", false, 32)]
-    public static void BuildServerOsx()
+    public static bool BuildServerOsx()
     {
-        Compile("Assets/Scenes/Server.unity", "SS3D_Server", true, BuildTarget.StandaloneOSX);
+        return Compile("Assets/Scenes/Server.unity", "SS3D_Server", true, BuildTarget.StandaloneOSX);
     }
     [MenuItem("Build/Server/Linux", false, 33)]
-    public static void BuildServerLinux()
+    public static bool BuildServerLinux()
     {
-        Compile("Assets/Scenes/Server.unity", "SS3D_Server", true, BuildTarget.StandaloneLinux64);
+        return Compile("Assets/Scenes/Server.unity", "SS3D_Server", true, BuildTarget.StandaloneLinux64);
     }
     [MenuItem("Build/Client/Windows", false, 41)]
-    public static void BuildClientWindows()
+    public static bool BuildClientWindows()
     {
-        Compile("Assets/Scenes/Client.unity", "SS3D.exe", false, BuildTarget.StandaloneWindows64);
+        return Compile("Assets/Scenes/Client.unity", "SS3D.exe", false, BuildTarget.StandaloneWindows64);
     }
     [MenuItem("Build/Client/OSX", false, 42)]
-    public static void BuildClientOsx()
+    public static bool BuildClientOsx()
     {
-        Compile("Assets/Scenes/Client.unity", "SS3D", false, BuildTarget.StandaloneOSX);
+        return Compile("Assets/Scenes/Client.unity", "SS3D", false, BuildTarget.StandaloneOSX);
     }
     [MenuItem("Build/Client/Linux", false, 43)]
-    public static void BuildClientLinux()
+    public static bool BuildClientLinux()
     {
-        Compile("Assets/Scenes/Client.unity", "SS3D", false, BuildTarget.StandaloneLinux64);
+        return Compile("Assets/Scenes/Client.unity", "SS3D", false, BuildTarget.StandaloneLinux64);
     }
 
-    private static void Compile(string scene, string filename, bool server, BuildTarget platform)
+    private static bool Compile(string scene, string filename, bool server, BuildTarget platform)
     {
         var buildPlayerOptions = new BuildPlayerOptions
         {
@@ -79,16 +79,16 @@ public static class Build
         {
             case BuildResult.Succeeded:
                 Debug.Log("Build succeeded");
-                break;
+                return true;
             case BuildResult.Failed:
                 Debug.Log("Build failed");
-                break;
+                return false;
             case BuildResult.Unknown:
                 Debug.Log("Build unknown");
-                break;
+                return false;
             case BuildResult.Cancelled:
                 Debug.Log("Build cancelled");
-                break;
+                return false;
             default:
                 throw new ArgumentOutOfRangeException();
         }

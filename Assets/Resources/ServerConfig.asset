@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   port: 3553
   appName: Space Station
+  serializer: {fileID: 11400000, guid: 75c227718baaf6b45b3cfa9839e62efe, type: 2}
+  actionSet: {fileID: 11400000, guid: 674d555aac4eb834aa249efc72be6524, type: 2}
+  updateRate: 30
+  statusReportTime: 10

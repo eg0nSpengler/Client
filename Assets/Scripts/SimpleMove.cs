@@ -11,8 +11,8 @@ public class SimpleMove : MonoBehaviour
     private void Update()
     {
         transform.Translate(
-            Input.GetAxisRaw("Horizontal")*Time.deltaTime,
+            Input.GetAxisRaw("Horizontal")*Time.deltaTime*4,
             0,
-            Input.GetAxisRaw("Vertical")*Time.deltaTime);
+            Input.GetAxisRaw("Vertical")*Time.deltaTime*4);
     }
 }

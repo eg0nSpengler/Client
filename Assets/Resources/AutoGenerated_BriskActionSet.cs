@@ -10,8 +10,7 @@ namespace Brisk.Actions {
                     ((Brisk.Entities.NetEntity)bhr).Destroy();
                 }},
                 {1, (bhr, msg) => {
-                    var arg1 = msg.ReadBoolean();
-                    ((Brisk.Entities.NetPlayer)bhr).ToggleGreen(arg1);
+                    ((Brisk.Entities.NetPlayer)bhr).Shoot();
                 }},
         };
 
@@ -25,9 +24,8 @@ namespace Brisk.Actions {
             bhr.Destroy();
             bhr.Entity.Peer.Messages.ActionLocal(0, bhr.Entity.Entity.Id, bhr.Entity.Entity.Behaviour(bhr));
         }
-        public static void Net_ToggleGreen(this Brisk.Entities.NetPlayer bhr, System.Boolean arg0) {
-            bhr.ToggleGreen(arg0);
-            bhr.Entity.Peer.Messages.ActionLocal(1, bhr.Entity.Entity.Id, bhr.Entity.Entity.Behaviour(bhr),arg0);
+        public static void Net_Shoot(this Brisk.Entities.NetPlayer bhr) {
+            bhr.Entity.Peer.Messages.ActionLocal(1, bhr.Entity.Entity.Id, bhr.Entity.Entity.Behaviour(bhr));
         }
     }
 }

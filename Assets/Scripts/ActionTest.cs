@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ActionTest : MonoBehaviour
 {
+    
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.G)) GetComponent<NetPlayer>().Net_ToggleGreen(!GetComponent<NetPlayer>().Green);
+        if (Input.GetKeyDown(KeyCode.G)) GetComponent<NetPlayer>().Net_Shoot();
     }    
 }

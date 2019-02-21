@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2261816781
+CRC: 911456471
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: df779118171bcc6974e18034e6286de6
+    Hash: 91cba26d6a45641335d833c553fc9a41
   TypeTreeHash:
     serializedVersion: 2
-    Hash: bea3ca86dd8170c1d90a8986c601ef03
+    Hash: c50ee2739a5f8b7c64f4ca421a8bf3e3
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -44,11 +44,13 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: b798bf9742a74f30bfca522c79a8b43a, type: 3}
 - Class: 114
+  Script: {fileID: 11500000, guid: 8b930e7dcff2d53438045829eb3b0d01, type: 3}
+- Class: 114
   Script: {fileID: 11500000, guid: 40a594be8f2e5744aa8917901257f003, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 93c1f86f88cfbc146b90fc6c0a87e628, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 8b930e7dcff2d53438045829eb3b0d01, type: 3}
+  Script: {fileID: 11500000, guid: 97da444e78b95da468f2125f8bd4010d, type: 3}
 - Class: 115
   Script: {instanceID: 0}
 Assets:
@@ -60,6 +62,7 @@ Assets:
 - Assets/Prefabs/Structures/LockerBasic.prefab
 - Assets/Prefabs/PlayerController.prefab
 - Assets/Prefabs/Structures/Airlock.prefab
+- Assets/Prefabs/CanisterPlasma.prefab
 - Assets/Prefabs/Structures/Floor_Panel.prefab
 - Assets/Prefabs/Structures/Wall_Corner.prefab
 Dependencies: []

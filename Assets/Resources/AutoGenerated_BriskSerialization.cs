@@ -28,6 +28,9 @@ namespace Brisk.Serialization {
                 msg.Write(obj.Rotation.x);
                 msg.Write(obj.Rotation.y);
                 msg.Write(obj.Rotation.z);
+                msg.Write(obj.Scale.x);
+                msg.Write(obj.Scale.y);
+                msg.Write(obj.Scale.z);
                 }
             },
         };
@@ -38,8 +41,9 @@ namespace Brisk.Serialization {
           new System.Collections.Generic.Dictionary<System.Type, System.Action<Brisk.Entities.NetBehaviour,Lidgren.Network.NetIncomingMessage>> {
             {typeof(Brisk.Entities.NetEntity), (bhr, msg) => {
                 var obj = (Brisk.Entities.NetEntity)bhr;
-                obj.Position = new UnityEngine.Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
-                obj.Rotation = new UnityEngine.Vector3(msg.ReadFloat(), msg.ReadFloat(), msg.ReadFloat());
+                obj.Position = new UnityEngine.Vector3(msg.ReadSingle(), msg.ReadSingle(), msg.ReadSingle());
+                obj.Rotation = new UnityEngine.Vector3(msg.ReadSingle(), msg.ReadSingle(), msg.ReadSingle());
+                obj.Scale = new UnityEngine.Vector3(msg.ReadSingle(), msg.ReadSingle(), msg.ReadSingle());
                 }
             },
         };

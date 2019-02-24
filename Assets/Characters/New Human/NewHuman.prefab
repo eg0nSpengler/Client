@@ -1723,8 +1723,9 @@ GameObject:
   - component: {fileID: 2518941019671662316}
   - component: {fileID: 2518941019671662317}
   - component: {fileID: 2518941019671662318}
+  - component: {fileID: 114086752299939632}
   m_Layer: 10
-  m_Name: NewHuman 1
+  m_Name: NewHuman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1941,6 +1942,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   weightTime: 0.5
+--- !u!114 &114086752299939632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2518941019671662319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be99e11e4e445cfb113759827a1646e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2518941019745555511
 GameObject:
   m_ObjectHideFlags: 0

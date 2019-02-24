@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using Lidgren.Network;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CharacterIK))]
-public class CharacterInventory : MonoBehaviour {
-
-
+public class CharacterInventory : MonoBehaviour 
+{
 
     public Sprite LeftDefault;
     public Sprite LeftMain;
@@ -17,8 +16,6 @@ public class CharacterInventory : MonoBehaviour {
     public GameObject LeftHand;
     public GameObject RightHand;
 
-    private CharacterIK characterIK;
-
     [SerializeField] private int numHands = 2;
 
     private Container[] hands;
@@ -26,7 +23,6 @@ public class CharacterInventory : MonoBehaviour {
     private int activeHand = 0;
 
     private void Awake() {
-        characterIK = GetComponent<CharacterIK>();
         SetupHands();
     }
 
@@ -46,7 +42,7 @@ public class CharacterInventory : MonoBehaviour {
     public void SetHighlightedLeft()
     {
 
-        if (RightHand.GetComponent<Image>().sprite = RightMain)
+        if (RightHand.GetComponent<Image>().sprite == RightMain)
         {
 
             RightHand.GetComponent<Image>().sprite = RightDefault;
@@ -61,8 +57,9 @@ public class CharacterInventory : MonoBehaviour {
 
     public void SetHighlightedRight()
     {
+        if(LeftHand == null || RightHand == null) return;
 
-        if (LeftHand.GetComponent<Image>().sprite = LeftMain)
+        if (LeftHand.GetComponent<Image>().sprite == LeftMain)
         {
 
             LeftHand.GetComponent<Image>().sprite = LeftDefault;
@@ -75,7 +72,9 @@ public class CharacterInventory : MonoBehaviour {
     }
 
 
-        private void UpdateHands() {
+    private void UpdateHands() 
+    {
+        if(LeftHand == null || RightHand == null) return;
 
         if (RightHand.GetComponent<Image>().sprite == RightMain)
         {
@@ -102,7 +101,6 @@ public class CharacterInventory : MonoBehaviour {
         }
 
 
-
         if (Input.GetKeyDown(KeyCode.F)) {
             Containable inhand = GetInhand();
             if (inhand) {
@@ -113,9 +111,6 @@ public class CharacterInventory : MonoBehaviour {
 
     public Container GetActiveHand() {
         return hands[activeHand];
-
-
-
     }
 
     public Container[] GetHands() {
@@ -130,10 +125,8 @@ public class CharacterInventory : MonoBehaviour {
     }
 
     private void OnAddedToHand(Containable containable) {
-        int handIndex = Array.FindIndex(hands, hand => (hand == containable.Container));
-        containable.transform.parent = characterIK.GetItemHoldTransform(handIndex);
-        containable.transform.localPosition = (containable as Containable).PickPosition;
-        containable.transform.localEulerAngles = (containable as Containable).PickRotation;
+        containable.transform.localPosition = containable.PickPosition;
+        containable.transform.localEulerAngles = containable.PickRotation;
         Rigidbody containableRB = containable.GetComponent<Rigidbody>();
         if (containableRB) {
             containableRB.isKinematic = true;

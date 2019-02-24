@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Brisk.Entities;
 using UnityEngine;
 
-public class CharacterInteractor : MonoBehaviour 
+public class CharacterInteractor : NetBehaviour 
 {
     [SerializeField] private LayerMask raycastMask;
 
@@ -14,11 +15,11 @@ public class CharacterInteractor : MonoBehaviour
         camera = Camera.main;
     }
 
-    private void FixedUpdate() {
+    private void Update()
+    {
+        if (Peer == null || !Entity.Owner) return;
+        
         UpdateHoverObject();
-    }
-
-    private void Update() {
         UpdateInteracts();
     }
 
@@ -70,6 +71,8 @@ public class CharacterInteractor : MonoBehaviour
 
     // Raycast from the cursor, returning the first collided with interactable object
     private GameObject FindHovered() {
+        if (camera == null) return null;
+        
         var ray = camera.ScreenPointToRay(Input.mousePosition);
 
         RaycastHit hit;
@@ -81,5 +84,6 @@ public class CharacterInteractor : MonoBehaviour
         // Call from the RigidBody if it exists,
         // In the case that this was a nested collider so we can still reach top level components
         return hit.rigidbody ? hit.rigidbody.gameObject : hit.collider.gameObject;
+
     }
 }

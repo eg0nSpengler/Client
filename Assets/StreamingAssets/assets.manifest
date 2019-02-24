@@ -1,0 +1,169 @@
+ManifestFileVersion: 0
+CRC: 2568322308
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 0393a0c093034170fe4fd89e8cad1f52
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8d64fffe9e5d0007761b1d023f7421da
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: f30b79a0ef09443408b607382528f82e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: bc2220f0f6b0d7e4cb0dfae92bc5ba82, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2be99e11e4e445cfb113759827a1646e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a55a6b21660294f468014c29b6c0239d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8e852c819bcd3394a8679de76b679db5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 888010b1b570b6548a0a66fc83d6db93, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9f267ad38b368f7429f55889d53011ce, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1b9c6b755e3141a5a197e8fc902c57f5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 75229c160abbc81468a481b04d74089f, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 75810a96ada590d41828dddc2cf2115d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b798bf9742a74f30bfca522c79a8b43a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f6c10f8adc7e9ed49a7c92103e496873, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f8923eaa8b957af48809e6a7c0f82679, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9c2568bb4473c2d44a9174f2ecd5538b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 774ef46c03cd7e14492840b2ffe928b2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8b930e7dcff2d53438045829eb3b0d01, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: af1f01fd7b14e6e42bd12f87de7c0296, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 40a594be8f2e5744aa8917901257f003, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 93c1f86f88cfbc146b90fc6c0a87e628, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d866abd9bf6a90f41bde97fad5c2ab95, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f557fed18372ebd4aab8023883b40d4b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 143
+  Script: {instanceID: 0}
+- Class: 144
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/SodaCan-01.prefab
+- Assets/Prefabs/CanisterOxygen.prefab
+- Assets/Prefabs/FloorVent.prefab
+- Assets/Prefabs/DefibrillatorWall (1).prefab
+- Assets/Prefabs/Poster4 (1).prefab
+- Assets/Prefabs/PipeCyanBent.prefab
+- Assets/Prefabs/Rollerbed (1).prefab
+- Assets/Prefabs/BorgEndoskeleton.prefab
+- Assets/Prefabs/Flashlight.prefab
+- Assets/Prefabs/Taser.prefab
+- Assets/Prefabs/Poster2.prefab
+- Assets/Prefabs/Panel E.prefab
+- Assets/Prefabs/ConnectorPort.prefab
+- Assets/Prefabs/Panel A.prefab
+- Assets/Prefabs/PipeCyanManifold.prefab
+- Assets/Prefabs/Structures/Wall_Straight.prefab
+- Assets/Prefabs/OfficeChair-01 (2).prefab
+- Assets/Prefabs/Structures/LightTube.prefab
+- Assets/Prefabs/Boombox.prefab
+- Assets/Prefabs/IDCard.prefab
+- Assets/Prefabs/Medkit.prefab
+- Assets/Prefabs/Stool.prefab
+- Assets/Prefabs/Computer (2).prefab
+- Assets/Prefabs/Table.prefab
+- Assets/Prefabs/Panel B.prefab
+- Assets/Prefabs/Items/Blender.prefab
+- Assets/Prefabs/Glock.prefab
+- Assets/Prefabs/Panel D.prefab
+- Assets/Prefabs/Table End.prefab
+- Assets/Prefabs/Structures/Wall_End.prefab
+- Assets/Prefabs/Toolbox.prefab
+- Assets/Prefabs/SodaCan-02.prefab
+- Assets/Prefabs/Structures/Wall_Cross.prefab
+- Assets/Prefabs/Crowbar.prefab
+- Assets/Prefabs/Poster1.prefab
+- Assets/Prefabs/Structures/Wall_Split.prefab
+- Assets/Prefabs/Cryotube.prefab
+- Assets/Prefabs/Table Middle.prefab
+- Assets/Prefabs/PipeCyan.prefab
+- Assets/Prefabs/PaperBin (1).prefab
+- Assets/Prefabs/Structures/LockerBasic.prefab
+- Assets/Prefabs/Human.prefab
+- Assets/Prefabs/PlayerController.prefab
+- Assets/Prefabs/PlasticChair (1).prefab
+- Assets/Prefabs/Panel C.prefab
+- Assets/Prefabs/DisposalsBin.prefab
+- Assets/Prefabs/PottedPlant.prefab
+- Assets/Prefabs/Structures/Airlock.prefab
+- Assets/Prefabs/CanisterPlasma.prefab
+- Assets/Prefabs/BikeHorn.prefab
+- Assets/Prefabs/BorgArm.prefab
+- Assets/Prefabs/Structures/Floor_Panel.prefab
+- Assets/Prefabs/SodaCan-03.prefab
+- Assets/Characters/New Human/NewHuman.prefab
+- Assets/Prefabs/BorgLeg.001.prefab
+- Assets/Prefabs/LightTube.prefab
+- Assets/Prefabs/SodaCan-02 (1).prefab
+- Assets/Prefabs/Structures/Wall_Corner.prefab
+Dependencies: []

@@ -1,8 +1,9 @@
 ﻿using System;
+using Brisk.Entities;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : NetBehaviour
 {
     public event Action<Vector2> OnMove;
     
@@ -22,6 +23,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Peer == null || !Entity.Owner) return;
+
         var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         currentDirection = Vector2.MoveTowards(currentDirection, input, acceleration * Time.deltaTime);
         

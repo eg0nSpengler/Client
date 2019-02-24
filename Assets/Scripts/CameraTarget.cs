@@ -1,65 +1,43 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Linq;
+using Brisk;
+using Brisk.Entities;
+using Cinemachine;
+using UnityEngine;
 
 public class CameraTarget : MonoBehaviour
 {
-    [SerializeField] private Transform target;
-    [SerializeField] private Vector2 positionAngle = new Vector2(0, 45);
-    [SerializeField] private float distance = 6;
-    [SerializeField] private float viewAngle = 45;
-
-
-    private void Update()
+    [SerializeField] private new CinemachineVirtualCamera camera;
+    
+    private Client client;
+    private Transform target;
+    
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
+        client = FindObjectOfType<Client>();
 
-            positionAngle.x += 90;
+        StartCoroutine(LookForPlayer());
+    }
+
+    private IEnumerator LookForPlayer()
+    {
+        while (target == null)
+        {
+            // TODO this is a hack. find a better solution. an event might be nice
+            target = client == null 
+                ? FindObjectOfType<CharacterMovement>()?.transform 
+                : FindObjectsOfType<CharacterMovement>().SingleOrDefault(c => c.GetComponent<NetEntity>().Owner)?.transform;
             
+            yield return new WaitForSeconds(0.1f);
         }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-
-            positionAngle.x -= 90;
-
-        }
-
-        if(Input.GetKeyDown(KeyCode.Equals))
-        {
-
-            distance = distance + 2;
-
-        }
-
-        if (Input.GetKeyDown(KeyCode.Minus))
-        {
-            distance = distance - 2;
-        }
-
-        if (distance < 6)
-        {
-            distance = distance + 1;
-            return;
-        }
-
-        if (distance > 15)
-        {
-            distance = distance - 1;
-            return;
-        }
-
-
-
-        if (target == null)
-        {
-            return;
-        }
-
-        transform.position = target.transform.position + new Vector3(
-                                                Mathf.Cos(Mathf.Deg2Rad * positionAngle.x),
-                                                Mathf.Sin(Mathf.Deg2Rad * positionAngle.y),
-                                                Mathf.Sin(Mathf.Deg2Rad * positionAngle.x)).normalized * distance;
         
-        transform.rotation = Quaternion.Euler(viewAngle, 270-positionAngle.x, 0);
+        // Assign the player to the camera
+        camera.Follow = target;
+        camera.LookAt = target;
+        
+        
+        // Repeat in case we lose the player
+        yield return new WaitUntil(() => target == null);
+        StartCoroutine(LookForPlayer());
     }
 }

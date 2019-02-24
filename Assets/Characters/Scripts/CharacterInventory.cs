@@ -57,6 +57,7 @@ public class CharacterInventory : MonoBehaviour
 
     public void SetHighlightedRight()
     {
+        if(LeftHand == null || RightHand == null) return;
 
         if (LeftHand.GetComponent<Image>().sprite == LeftMain)
         {
@@ -71,7 +72,9 @@ public class CharacterInventory : MonoBehaviour
     }
 
 
-        private void UpdateHands() {
+    private void UpdateHands() 
+    {
+        if(LeftHand == null || RightHand == null) return;
 
         if (RightHand.GetComponent<Image>().sprite == RightMain)
         {
@@ -98,7 +101,6 @@ public class CharacterInventory : MonoBehaviour
         }
 
 
-
         if (Input.GetKeyDown(KeyCode.F)) {
             Containable inhand = GetInhand();
             if (inhand) {
@@ -109,8 +111,6 @@ public class CharacterInventory : MonoBehaviour
 
     public Container GetActiveHand() {
         return hands[activeHand];
-
-
     }
 
     public Container[] GetHands() {

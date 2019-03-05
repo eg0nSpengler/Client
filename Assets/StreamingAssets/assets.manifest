@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2568322308
+CRC: 1541941297
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0393a0c093034170fe4fd89e8cad1f52
+    Hash: 1c7f8a64a2fd3a7102ba90fbbb24490c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 8d64fffe9e5d0007761b1d023f7421da
+    Hash: 1daaff0d02dd90c24bf3ecb20f862194
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -50,8 +50,6 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: bc2220f0f6b0d7e4cb0dfae92bc5ba82, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 2be99e11e4e445cfb113759827a1646e, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: a55a6b21660294f468014c29b6c0239d, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 8e852c819bcd3394a8679de76b679db5, type: 3}
@@ -64,25 +62,25 @@ ClassTypes:
 - Class: 114
   Script: {fileID: 11500000, guid: 75229c160abbc81468a481b04d74089f, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 75810a96ada590d41828dddc2cf2115d, type: 3}
-- Class: 114
-  Script: {fileID: 11500000, guid: b798bf9742a74f30bfca522c79a8b43a, type: 3}
-- Class: 114
   Script: {fileID: 11500000, guid: f6c10f8adc7e9ed49a7c92103e496873, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: f8923eaa8b957af48809e6a7c0f82679, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 9c2568bb4473c2d44a9174f2ecd5538b, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 774ef46c03cd7e14492840b2ffe928b2, type: 3}
+  Script: {fileID: 11500000, guid: a78f1bcb0b2ed6641aa29766ee037de6, type: 3}
 - Class: 114
-  Script: {fileID: 11500000, guid: 8b930e7dcff2d53438045829eb3b0d01, type: 3}
+  Script: {fileID: 11500000, guid: 774ef46c03cd7e14492840b2ffe928b2, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: af1f01fd7b14e6e42bd12f87de7c0296, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 40a594be8f2e5744aa8917901257f003, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: 93c1f86f88cfbc146b90fc6c0a87e628, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2be99e11e4e445cfb113759827a1646e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 32cbac16d358435a802b2754c4737720, type: 3}
 - Class: 114
   Script: {fileID: 11500000, guid: d866abd9bf6a90f41bde97fad5c2ab95, type: 3}
 - Class: 114
@@ -111,10 +109,10 @@ Assets:
 - Assets/Prefabs/SodaCan-01.prefab
 - Assets/Prefabs/CanisterOxygen.prefab
 - Assets/Prefabs/FloorVent.prefab
-- Assets/Prefabs/DefibrillatorWall (1).prefab
-- Assets/Prefabs/Poster4 (1).prefab
+- Assets/Prefabs/DefibrillatorWall.prefab
+- Assets/Prefabs/Poster4.prefab
 - Assets/Prefabs/PipeCyanBent.prefab
-- Assets/Prefabs/Rollerbed (1).prefab
+- Assets/Prefabs/Rollerbed.prefab
 - Assets/Prefabs/BorgEndoskeleton.prefab
 - Assets/Prefabs/Flashlight.prefab
 - Assets/Prefabs/Taser.prefab
@@ -124,13 +122,14 @@ Assets:
 - Assets/Prefabs/Panel A.prefab
 - Assets/Prefabs/PipeCyanManifold.prefab
 - Assets/Prefabs/Structures/Wall_Straight.prefab
-- Assets/Prefabs/OfficeChair-01 (2).prefab
+- Assets/Prefabs/OfficeChair.prefab
 - Assets/Prefabs/Structures/LightTube.prefab
 - Assets/Prefabs/Boombox.prefab
 - Assets/Prefabs/IDCard.prefab
 - Assets/Prefabs/Medkit.prefab
 - Assets/Prefabs/Stool.prefab
-- Assets/Prefabs/Computer (2).prefab
+- Assets/Prefabs/Computer.prefab
+- Assets/Prefabs/SpawnPoint.prefab
 - Assets/Prefabs/Table.prefab
 - Assets/Prefabs/Panel B.prefab
 - Assets/Prefabs/Items/Blender.prefab
@@ -147,11 +146,10 @@ Assets:
 - Assets/Prefabs/Cryotube.prefab
 - Assets/Prefabs/Table Middle.prefab
 - Assets/Prefabs/PipeCyan.prefab
-- Assets/Prefabs/PaperBin (1).prefab
+- Assets/Prefabs/PaperBin.prefab
 - Assets/Prefabs/Structures/LockerBasic.prefab
 - Assets/Prefabs/Human.prefab
-- Assets/Prefabs/PlayerController.prefab
-- Assets/Prefabs/PlasticChair (1).prefab
+- Assets/Prefabs/PlasticChair.prefab
 - Assets/Prefabs/Panel C.prefab
 - Assets/Prefabs/DisposalsBin.prefab
 - Assets/Prefabs/PottedPlant.prefab
@@ -161,9 +159,9 @@ Assets:
 - Assets/Prefabs/BorgArm.prefab
 - Assets/Prefabs/Structures/Floor_Panel.prefab
 - Assets/Prefabs/SodaCan-03.prefab
-- Assets/Characters/New Human/NewHuman.prefab
-- Assets/Prefabs/BorgLeg.001.prefab
+- Assets/Characters/New Human/Player.prefab
+- Assets/Prefabs/BorgLeg.prefab
 - Assets/Prefabs/LightTube.prefab
-- Assets/Prefabs/SodaCan-02 (1).prefab
+- Assets/Prefabs/SodaCan-04.prefab
 - Assets/Prefabs/Structures/Wall_Corner.prefab
 Dependencies: []

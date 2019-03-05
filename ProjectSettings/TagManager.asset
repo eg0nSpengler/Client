@@ -13,16 +13,14 @@ TagManager:
   - UI
   - 
   - 
-  - Walls
+  - 
   - PostProcessing
   - Character
   - Wall
   - Floor
   - Item
   - IgnoreInteractorRaycast
-  - 
-  - 
-  - 
+  - FieldOfView
   - 
   - 
   - 

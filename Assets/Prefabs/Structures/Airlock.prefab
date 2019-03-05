@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4730831616211576}
   - component: {fileID: 65666271475162536}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114921286136226544}
   - component: {fileID: 54608851255600578}
   - component: {fileID: 1230261505743364815}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Airlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be99e11e4e445cfb113759827a1646e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateType: 0
 --- !u!1 &1504326560456000
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4683752981585992}
   - component: {fileID: 65841907826913408}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +246,7 @@ GameObject:
   - component: {fileID: 33028426878376036}
   - component: {fileID: 23903790251028192}
   - component: {fileID: 114425233128655892}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AirlockMedicalRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +337,7 @@ GameObject:
   - component: {fileID: 33969140576224996}
   - component: {fileID: 23653189463255060}
   - component: {fileID: 114202143276085482}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AirlockMedicalLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Brisk.Entities;
 using UnityEngine;
 
@@ -6,48 +7,34 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class FieldOfView : MonoBehaviour
 {
-    [SerializeField]
-    private NetEntity netEntity;
-
-    [SerializeField]
-    private float viewRange = 5;
+    [SerializeField] private NetEntity netEntity = null;
+    [SerializeField] private float viewRange = 5;
 
     [Range(0, 360)]
-    [SerializeField]
     [Tooltip("The field of view width")]
-    private float viewConeWidth = 360;
-
-    [SerializeField]
+    [SerializeField] private float viewConeWidth = 360;
     [Tooltip("Which layers this can't see through")]
-    private LayerMask obstacleMask;
-
-    [SerializeField]
+    [SerializeField] private LayerMask obstacleMask = new LayerMask();
     [Tooltip("Raycasts per degree")]
-    private float meshResolution = .1f;
-
-    [SerializeField]
+    [SerializeField] private float meshResolution = .1f;
     [Tooltip("How \"deep\" the field of view penetrates the wall")]
-    private float maskCutawayDistance = 0.1f;
+    [SerializeField] private float maskCutawayDistance = 0.1f;
 
 
     [Header("Edge Detection")]
-    [SerializeField]
     [Range(0, 10)]
     [Tooltip("How many checks are done to make edges appear close to corners")]
-    private int edgeResolveIterations;
-
-    [SerializeField]
+    [SerializeField] private int edgeResolveIterations = 0;
     [Range(0, 10)]
     [Tooltip("How far a corner has to be to be checked behind another corner")]
-    private float edgeDistanceThreshold;
-
-    [SerializeField]
+    [SerializeField] private float edgeDistanceThreshold = 0;
     [Tooltip("The center of the field of view's actual wall detection")]
-    private Vector3 detectionOffset;
+    [SerializeField] private Vector3 detectionOffset = Vector3.zero;
 
     private MeshFilter viewMeshFilter;
     private Mesh viewMesh;
 
+    
     private void Start()
     {
         if (!netEntity) Debug.LogError("Net Entity not set");
@@ -57,8 +44,7 @@ public class FieldOfView : MonoBehaviour
 
         viewMeshFilter = GetComponent<MeshFilter>();
 
-        viewMesh = new Mesh();
-        viewMesh.name = "View Mesh";
+        viewMesh = new Mesh { name = "View Mesh" };
         viewMeshFilter.mesh = viewMesh;
     }
 
@@ -83,16 +69,16 @@ public class FieldOfView : MonoBehaviour
         return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
 
-    public void DrawFieldOfView()
+    private void DrawFieldOfView()
     {
         var viewPoints = CalculateViewPoints();
 
-        int vertexCount = viewPoints.Count + 1;
-        Vector3[] vertices = new Vector3[vertexCount];
-        int[] triangles = new int[(vertexCount - 2) * 3];
+        var vertexCount = viewPoints.Count + 1;
+        var vertices = new Vector3[vertexCount];
+        var triangles = new int[(vertexCount - 2) * 3];
 
         vertices[0] = Vector3.zero;
-        for (int i = 0; i < vertexCount - 1; i++)
+        for (var i = 0; i < vertexCount - 1; i++)
         {
             vertices[i + 1] = transform.InverseTransformPoint(viewPoints[i] - detectionOffset);
 
@@ -113,31 +99,31 @@ public class FieldOfView : MonoBehaviour
     // TODO: Implement RaycastCommand https://docs.unity3d.com/ScriptReference/RaycastCommand.html
     public List<Vector3> CalculateViewPoints()
     {
-        int stepCount = Mathf.RoundToInt(viewConeWidth * meshResolution);
-        float stepAngleSize = viewConeWidth / stepCount;
+        var stepCount = Mathf.RoundToInt(viewConeWidth * meshResolution);
+        var stepAngleSize = viewConeWidth / stepCount;
 
-        List<Vector3> viewPoints = new List<Vector3>();
-        ViewCastInfo oldViewCast = new ViewCastInfo();
-        for (int i = 0; i <= stepCount; i++)
+        var viewPoints = new List<Vector3>();
+        var oldViewCast = new ViewCastInfo();
+        for (var i = 0; i <= stepCount; i++)
         {
-            float angle = transform.eulerAngles.y - viewConeWidth / 2 + stepAngleSize * i;
-            ViewCastInfo newViewCast = ViewCast(angle);
+            var angle = transform.eulerAngles.y - viewConeWidth / 2 + stepAngleSize * i;
+            var newViewCast = ViewCast(angle);
 
             if (i > 0)
             {
-                bool edgeDistanceThresholdExceeded =
-                    Mathf.Abs(oldViewCast.Distance - newViewCast.Distance) > edgeDistanceThreshold;
-                if (oldViewCast.Hit != newViewCast.Hit ||
-                    (oldViewCast.Hit && newViewCast.Hit && oldViewCast.Normal != newViewCast.Normal &&
+                var edgeDistanceThresholdExceeded =
+                    Mathf.Abs(oldViewCast.distance - newViewCast.distance) > edgeDistanceThreshold;
+                if (oldViewCast.hit != newViewCast.hit ||
+                    (oldViewCast.hit && newViewCast.hit && oldViewCast.normal != newViewCast.normal &&
                      edgeDistanceThresholdExceeded))
                 {
-                    EdgeInfo edge = FindEdge(oldViewCast, newViewCast);
-                    if (edge.PointA != Vector3.zero) viewPoints.Add(edge.PointA);
-                    if (edge.PointB != Vector3.zero) viewPoints.Add(edge.PointB);
+                    var edge = FindEdge(oldViewCast, newViewCast);
+                    if (edge.pointA != Vector3.zero) viewPoints.Add(edge.pointA);
+                    if (edge.pointB != Vector3.zero) viewPoints.Add(edge.pointB);
                 }
             }
 
-            viewPoints.Add(newViewCast.Point);
+            viewPoints.Add(newViewCast.point);
             oldViewCast = newViewCast;
         }
 
@@ -146,27 +132,27 @@ public class FieldOfView : MonoBehaviour
 
     private EdgeInfo FindEdge(ViewCastInfo minViewCast, ViewCastInfo maxViewCast)
     {
-        float minAngle = minViewCast.Angle;
-        float maxAngle = maxViewCast.Angle;
-        Vector3 minPoint = Vector3.zero;
-        Vector3 maxPoint = Vector3.zero;
+        var minAngle = minViewCast.angle;
+        var maxAngle = maxViewCast.angle;
+        var minPoint = Vector3.zero;
+        var maxPoint = Vector3.zero;
 
-        for (int i = 0; i < edgeResolveIterations; i++)
+        for (var i = 0; i < edgeResolveIterations; i++)
         {
-            float angle = (minAngle + maxAngle) / 2;
-            ViewCastInfo newViewCast = ViewCast(angle);
+            var angle = (minAngle + maxAngle) / 2;
+            var newViewCast = ViewCast(angle);
 
-            bool edgeDistanceThresholdExceeded =
-                Mathf.Abs(minViewCast.Distance - newViewCast.Distance) > edgeDistanceThreshold;
-            if (newViewCast.Hit == minViewCast.Hit && !edgeDistanceThresholdExceeded)
+            var edgeDistanceThresholdExceeded =
+                Mathf.Abs(minViewCast.distance - newViewCast.distance) > edgeDistanceThreshold;
+            if (newViewCast.hit == minViewCast.hit && !edgeDistanceThresholdExceeded)
             {
                 minAngle = angle;
-                minPoint = newViewCast.Point;
+                minPoint = newViewCast.point;
             }
             else
             {
                 maxAngle = angle;
-                maxPoint = newViewCast.Point;
+                maxPoint = newViewCast.point;
             }
         }
 
@@ -175,7 +161,7 @@ public class FieldOfView : MonoBehaviour
 
     private ViewCastInfo ViewCast(float globalAngle)
     {
-        Vector3 dir = DirectionFromAngle(globalAngle, true);
+        var dir = DirectionFromAngle(globalAngle, true);
 
         if (Physics.Raycast((transform.position + detectionOffset), dir, out var hit, viewRange, obstacleMask))
         {
@@ -188,33 +174,90 @@ public class FieldOfView : MonoBehaviour
             globalAngle, hit.normal);
     }
 
-    public struct EdgeInfo
+    public struct EdgeInfo : IEquatable<EdgeInfo>
     {
-        public Vector3 PointA;
-        public Vector3 PointB;
+        public readonly Vector3 pointA;
+        public readonly Vector3 pointB;
 
         public EdgeInfo(Vector3 pointA, Vector3 pointB)
         {
-            PointA = pointA;
-            PointB = pointB;
+            this.pointA = pointA;
+            this.pointB = pointB;
+        }
+
+        public bool Equals(EdgeInfo other)
+        {
+            return pointA.Equals(other.pointA) && pointB.Equals(other.pointB);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is EdgeInfo other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return (pointA.GetHashCode() * 397) ^ pointB.GetHashCode();
+        }
+
+        public static bool operator ==(EdgeInfo left, EdgeInfo right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(EdgeInfo left, EdgeInfo right)
+        {
+            return !left.Equals(right);
         }
     }
 
-    public struct ViewCastInfo
+    public struct ViewCastInfo : IEquatable<ViewCastInfo>
     {
-        public bool Hit;
-        public Vector3 Point;
-        public float Distance;
-        public float Angle;
-        public Vector3 Normal;
+        public readonly bool hit;
+        public readonly Vector3 point;
+        public readonly float distance;
+        public readonly float angle;
+        public readonly Vector3 normal;
 
         public ViewCastInfo(bool hit, Vector3 point, float distance, float angle, Vector3 normal)
         {
-            Hit = hit;
-            Point = point;
-            Distance = distance;
-            Angle = angle;
-            Normal = normal;
+            this.hit = hit;
+            this.point = point;
+            this.distance = distance;
+            this.angle = angle;
+            this.normal = normal;
+        }
+
+        public bool Equals(ViewCastInfo other)
+        {
+            return hit == other.hit && point.Equals(other.point) && distance.Equals(other.distance) && angle.Equals(other.angle) && normal.Equals(other.normal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is ViewCastInfo other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = hit.GetHashCode();
+            hashCode = (hashCode * 397) ^ point.GetHashCode();
+            hashCode = (hashCode * 397) ^ distance.GetHashCode();
+            hashCode = (hashCode * 397) ^ angle.GetHashCode();
+            hashCode = (hashCode * 397) ^ normal.GetHashCode();
+            return hashCode;
+        }
+
+        public static bool operator ==(ViewCastInfo left, ViewCastInfo right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(ViewCastInfo left, ViewCastInfo right)
+        {
+            return !left.Equals(right);
         }
     }
 }

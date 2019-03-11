@@ -9,20 +9,19 @@ namespace Structures.Doors
     public class Airlock : MonoBehaviour, IInteractable
     {
         [Header("Sounds")] // TODO move these to some global settings somewhere
-        public AudioClip openSound;
-        public AudioClip closeSound;
-        public AudioClip accessDeniedSound;
+        [SerializeField] private AudioClip openSound = null;
+        [SerializeField] private AudioClip closeSound = null;
 
         [Header("Doors")] 
-        [SerializeField] private Transform left;
-        [SerializeField] private Transform right;
+        [SerializeField] private Transform left = null;
+        [SerializeField] private Transform right = null;
 
         [Header("States")] 
-        [SerializeField] private bool open;
-        [SerializeField] private bool moving;
-        [SerializeField] private bool welded;
-        [SerializeField] private bool bolted;
-        [SerializeField] private bool disabled;
+        [SerializeField] private bool open = false;
+        [SerializeField] private bool moving = false;
+        [SerializeField] private bool welded = false;
+        [SerializeField] private bool bolted = false;
+        [SerializeField] private bool disabled = false;
 
         [Header("Animation Settings")] 
         [SerializeField] private Vector3 openAxis = Vector3.right;

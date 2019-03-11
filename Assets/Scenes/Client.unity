@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: c2a8c2ac91a95f0459d3d6e4cc9f24c6, type: 2}
-  host: 18.144.6.58
+  host: localhost
   connectTimeout: 5
 --- !u!1 &268473829
 GameObject:

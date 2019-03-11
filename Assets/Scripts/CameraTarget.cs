@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CameraTarget : MonoBehaviour
 {
-    [SerializeField] private new CinemachineVirtualCamera camera;
+    [SerializeField] private new CinemachineVirtualCamera camera = null;
     
     private Client client;
     private Transform target;

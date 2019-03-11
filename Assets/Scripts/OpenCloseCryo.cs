@@ -4,34 +4,10 @@ using UnityEngine;
 
 public class OpenCloseCryo : MonoBehaviour
 {
+    [SerializeField] private Animator cryoTubeAnimator = null;
 
-    Animator m_Animator;
-    int animLayer = 0;
-
-    public GameObject CryoTube;
-
-    void Start()
+    private void OnMouseDown()
     {
-        m_Animator = CryoTube.GetComponent<Animator>();
-
-    }
-
-    void OnMouseDown()
-    {
-
-        if (m_Animator.GetCurrentAnimatorStateInfo(animLayer).IsName("CryoClose"))
-        {
-            m_Animator.Play("CryoOpen");
-        
-        }
-
-        else
-        {
-
-            m_Animator.Play("CryoClose");
-
-        }
-
-
+        cryoTubeAnimator.Play(cryoTubeAnimator.GetCurrentAnimatorStateInfo(0).IsName("CryoClose") ? "CryoOpen" : "CryoClose");
     }
 }

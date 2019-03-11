@@ -193,7 +193,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 291226286468625768}
-  m_LocalRotation: {x: -0.6559514, y: 0.2640602, z: 0.26406014, w: 0.65595144}
+  m_LocalRotation: {x: -0.65595037, y: 0.26406282, z: 0.26406282, w: 0.65595037}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -289,8 +289,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 2
-  PickPosition: {x: 0, y: 0, z: 0}
-  PickRotation: {x: 0, y: 0, z: 0}
+  pickPosition: {x: 0, y: 0, z: 0}
+  pickRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &291226286468625771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,13 +311,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 291226286468625768}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc2220f0f6b0d7e4cb0dfae92bc5ba82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsActive: 0
-  Torch: {fileID: 291226285806608200}
+  isActive: 0
+  torch: {fileID: 0}
 --- !u!114 &114531979252416768
 MonoBehaviour:
   m_ObjectHideFlags: 0

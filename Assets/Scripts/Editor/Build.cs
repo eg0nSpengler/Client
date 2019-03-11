@@ -28,7 +28,7 @@ public static class Build
     [MenuItem("Build/Run Server/Linux", false, 23)]
     public static void RunServerLinux()
     {
-        Run( "SS3D_Server", BuildTarget.StandaloneLinux64);
+        Run("SS3D_Server", BuildTarget.StandaloneLinux64);
     }
     
     [MenuItem("Build/Server/Windows", false, 31)]
@@ -64,6 +64,27 @@ public static class Build
 
     private static bool Compile(string scene, string filename, bool server, BuildTarget platform)
     {
+        // Build the asset bundle if server
+        if (server)
+        {
+            /*if (!Directory.Exists("Build")) 
+                Directory.CreateDirectory("Build");
+            if (!Directory.Exists("Build/AssetBundles")) 
+                Directory.CreateDirectory("Build/AssetBundles");
+            if (!Directory.Exists($"Build/AssetBundles/{platform}")) 
+                Directory.CreateDirectory($"Build/AssetBundles/{platform}");
+            
+            BuildPipeline.BuildAssetBundles(
+                $"Build/AssetBundles/{platform}", 
+                BuildAssetBundleOptions.StrictMode 
+                | BuildAssetBundleOptions.AppendHashToAssetBundleName 
+                | BuildAssetBundleOptions.DeterministicAssetBundle,
+                platform);*/
+        }
+        
+        
+        // Build the actual executable
+        
         var buildPlayerOptions = new BuildPlayerOptions
         {
             scenes = new[] { scene },

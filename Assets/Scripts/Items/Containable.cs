@@ -6,13 +6,16 @@ using UnityEngine;
 public class Containable : MonoBehaviour, IInteractable {
 
     [SerializeField] private ContainableSize size = ContainableSize.Normal;
+    [SerializeField] private Vector3 pickPosition = Vector3.zero;
+    [SerializeField] private Vector3 pickRotation = Vector3.zero;
+
+    public Vector3 PickPosition => pickPosition;
+    public Vector3 PickRotation => pickPosition;
 
     private Container container;
 
     public Container Container {
-        get {
-            return container;
-        }
+        get => container;
         set {
             if (value != null && container != null) {
                 Debug.LogError("Tried to contain an already contained object");
@@ -28,22 +31,17 @@ public class Containable : MonoBehaviour, IInteractable {
             return false;
         }
 
-        CharacterInventory inventory = source.GetComponent<CharacterInventory>();
-        if (!inventory) {
-            return false;
-        }
-        return inventory.GetActiveHand().CanContain(this);
+        var inventory = source.GetComponent<CharacterInventory>();
+        return inventory != null && inventory.GetActiveHand().CanContain(this);
     }
 
     public void Interact(GameObject source) {
         if (!IsInteractable(source)) {
             return;
         }
-        CharacterInventory inventory = source.GetComponent<CharacterInventory>();
+        var inventory = source.GetComponent<CharacterInventory>();
 
-        if (container != null) {
-            container.Remove(this);
-        }
+        container?.Remove(this);
 
         inventory.GetActiveHand().Contain(this);
     }
@@ -51,7 +49,4 @@ public class Containable : MonoBehaviour, IInteractable {
     public ContainableSize GetWeight() {
         return size;
     }
-
-    public Vector3 PickPosition;
-    public Vector3 PickRotation;
 }

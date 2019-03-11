@@ -4,25 +4,16 @@ using UnityEngine;
 
 public class SimpleOnOff : MonoBehaviour {
 
-    public bool IsActive = false;
-    public GameObject Torch;
+    [SerializeField] private bool isActive = false;
+    [SerializeField] private GameObject torch = null;
 
-	// Update is called once per frame
-	void Update () {
-
+    private void Update ()
+    {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            IsActive = !IsActive;               
+            isActive = !isActive;               
         }
 
-        if (IsActive == true)
-        {
-            Torch.SetActive(true);    
-        }                                      
-        else                                 
-        {
-            Torch.SetActive(false);  
-        }
-
+        torch.SetActive(isActive);
     }
 }

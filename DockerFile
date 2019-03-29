@@ -1,0 +1,12 @@
+FROM ubuntu:latest
+WORKDIR /server
+COPY ./Build/Server/StandaloneLinux64/ .
+
+RUN chmod +x SS3D_Server
+
+CMD "./SS3D_Server"
+
+EXPOSE 3550/tcp
+EXPOSE 3551/tcp
+EXPOSE 3552/udp
+EXPOSE 3553/udp

@@ -349,3 +349,5 @@ Assets/Plugins/Editor/JetBrains\.meta
 Assets/Plugins/Editor/JetBrains/
 
 .vscode
+AssetBundles/
+Assets/StreamingAssets/

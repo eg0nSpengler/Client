@@ -23,22 +23,19 @@ namespace Characters
 
             rootSkeleton = models[0].rootBone.GetComponentsInChildren<Transform>();
             skeletons.Add(models[0], rootSkeleton);
+            
             for (var i = 1; i < models.Length; i++)
-            {
-                var transforms = models[i].rootBone.GetComponentsInChildren<Transform>();
-                if (transforms.Length != rootSkeleton.Length)
-                {
-                    Debug.LogError($"Incorrect number of bones on {models[i].name}. Is {transforms.Length}. Should be {rootSkeleton.Length}.", models[i]);
-                    continue;
-                }
-                for (var j = 0; j < transforms.Length; j++)
-                    transforms[j].SetParent(rootSkeleton[j]);
-                skeletons.Add(models[i], transforms);
-            }
+                AddModel(models[i], false);
         }
 
         public void AddModel(SkinnedMeshRenderer model, bool reparent = true)
         {
+            if (model.rootBone == null)
+            {
+                Debug.LogWarning($"Root bone not set on {model.name}", model);
+                return;
+            }
+            
             if (reparent) model.transform.parent.SetParent(transform);
             
             var transforms = model.rootBone.GetComponentsInChildren<Transform>();

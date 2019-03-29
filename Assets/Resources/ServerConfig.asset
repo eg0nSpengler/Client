@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d8370808e6d5548a3ec822d72aa0cf, type: 3}
   m_Name: ServerConfig
   m_EditorClassIdentifier: 
-  port: 3553
-  appName: Space Station
+  defaults:
+    configs:
+    - config.yaml
+    port_game: 3553
+    port_web: 3550
+    app_name: Space Station 3D
+    update_rate: 30
+    status_report_time: 10
   serializer: {fileID: 11400000, guid: 75c227718baaf6b45b3cfa9839e62efe, type: 2}
   actionSet: {fileID: 11400000, guid: 674d555aac4eb834aa249efc72be6524, type: 2}
-  updateRate: 30
-  statusReportTime: 10

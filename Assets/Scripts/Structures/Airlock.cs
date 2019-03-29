@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Brisk.Actions;
+using Brisk.Entities;
 using UnityEngine;
 
 namespace Structures.Doors
 {
     [RequireComponent(typeof(Electrical))]
     [RequireComponent(typeof(AudioSource))]
-    public class Airlock : MonoBehaviour, IInteractable
+    public class Airlock : NetBehaviour, IInteractable
     {
         [Header("Sounds")] // TODO move these to some global settings somewhere
         [SerializeField] private AudioClip openSound = null;
@@ -55,6 +57,9 @@ namespace Structures.Doors
 
         private IEnumerator Move() // TODO make a more performant, declarative manager or these simple animations
         {
+            moving = true;
+            open = !open;
+            
             var origin = open ? 0f : 1f;
             var target = open ? 1f : 0f;
             for (var time = 0f; time < openTime; time += Time.deltaTime)
@@ -78,16 +83,23 @@ namespace Structures.Doors
             return !moving && !Stuck;
         }
         
+        [GlobalAction(false)]
+        public void Interact()
+        {
+            StartCoroutine(Move());
+
+            if (audioSource != null) audioSource.PlayOneShot(open ? openSound : closeSound);
+        }
+        
         public void Interact(GameObject source)
         {
             if (!IsInteractable(source)) {
                 return;
             }
 
-            moving = true;
-            open = !open;
-
-            StartCoroutine(Move());
+            this.Net_Interact();
+            
+            //StartCoroutine(Move());
             
             audioSource.PlayOneShot(open ? openSound : closeSound);
         }

@@ -89,20 +89,11 @@ public class Simulation : MonoBehaviour
 
         tiles = new[]
         {
-            new AtmosTile {moles = new[] {nitrogen * 2, 0}, temperature = NormalTemp},
-            new AtmosTile {moles = new[] {0, oxygen * 2}, temperature = NormalTemp / 4},
+            new AtmosTile {moles = new[] {nitrogen * 2, 0}, temperature = new []{NormalTemp,0}},
+            new AtmosTile {moles = new[] {0, oxygen * 2}, temperature = new []{0,NormalTemp / 4}},
         };
 
         StartCoroutine(Step());
-
-//        Debug.Log("BEFORE");
-//        PrintTiles();
-//
-//        var difference = Mathf.Abs(tiles[0].TotalMoles - tiles[1].TotalMoles);
-//        Move(difference / 2, ref tiles[0], ref tiles[1]);
-//
-//        Debug.Log("AFTER");
-//        PrintTiles();
     }
 
     private IEnumerator Step()
@@ -114,23 +105,31 @@ public class Simulation : MonoBehaviour
             
             PrintTiles();
 
-            pressure0Curve.AddKey(Time.time, Pressure(2, tiles[0].TotalMoles, tiles[0].temperature));
-            pressure1Curve.AddKey(Time.time, Pressure(2, tiles[1].TotalMoles, tiles[1].temperature));
+            pressure0Curve.AddKey(Time.time, Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0])));
+            pressure1Curve.AddKey(Time.time, Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1])));
             Debug.Log(velocity[0]+ " "+velocity[1]);
             
             Process(0);
             Process(1);
+
+            HeatTransfer();
         }
+    }
+
+    private void HeatTransfer()
+    {
+        var k = 0;
+        var amount = -k * Time.deltaTime / 2;
     }
 
     private bool Stable()
     {
         const float threshold = 1E-4f;
         
-        var pressure00 = tiles[0].moles[0] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, tiles[0].temperature);
-        var pressure10 = tiles[1].moles[0] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, tiles[1].temperature);
-        var pressure01 = tiles[0].moles[1] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, tiles[0].temperature);
-        var pressure11 = tiles[1].moles[1] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, tiles[1].temperature);
+        var pressure00 = tiles[0].moles[0] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0]));
+        var pressure10 = tiles[1].moles[0] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1]));
+        var pressure01 = tiles[0].moles[1] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0]));
+        var pressure11 = tiles[1].moles[1] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1]));
         Debug.Log(threshold + " " +Math.Abs(pressure00 - pressure10) +" "+ Math.Abs(pressure01 - pressure11) );
         return Math.Abs(pressure00 - pressure10) < threshold && Math.Abs(pressure01 - pressure11) < threshold;
     }
@@ -140,8 +139,8 @@ public class Simulation : MonoBehaviour
         var mass0 = tiles[0].moles[gas] * gasDefinitions[gas].mass;
         var mass1 = tiles[1].moles[gas] * gasDefinitions[gas].mass;
         
-        var pressure0 = tiles[0].moles[gas] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, tiles[0].temperature);
-        var pressure1 = tiles[1].moles[gas] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, tiles[1].temperature);
+        var pressure0 = tiles[0].moles[gas] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0]));
+        var pressure1 = tiles[1].moles[gas] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1]));
         
         if (tiles[0].moles[1] <= 0 && velocity[gas] > 0) velocity[gas] = 0;
         if (tiles[1].moles[1] <= 0 && velocity[gas] < 0) velocity[gas] = 0;
@@ -182,41 +181,18 @@ public class Simulation : MonoBehaviour
         
         amount = Mathf.Min(amount, from.moles[gas]);
         
-        var fromMoles = from.TotalMoles;
-        var toMoles = to.TotalMoles;
-        var fromEnergy = Energy(fromMoles, from.temperature);
-        var toEnergy = Energy(toMoles, to.temperature);
-
+        var fromEnergy = Energy(gas, from.moles[gas], from.temperature[gas]);
+        var toEnergy = Energy(gas, to.moles[gas], to.temperature[gas]);
+        
         if (amount <= 0) return;
 
+        var energy = Energy(gas, amount, from.temperature[gas]);
+        
         from.moles[gas] -= amount;
         to.moles[gas] += amount;
 
-        var energy = Energy(amount, from.temperature);
-
-        from.temperature = Temperature(from.TotalMoles, fromEnergy - energy);
-        to.temperature = Temperature(to.TotalMoles, toEnergy + energy);
-    }
-
-
-    private void MoveAndMix(float amount, ref AtmosTile from, ref AtmosTile to)
-    {
-        var fromMoles = from.TotalMoles;
-        var toMoles = to.TotalMoles;
-        var totalEnergy = Energy(fromMoles, from.temperature) + Energy(toMoles, to.temperature);
-        var totalMoles = fromMoles + toMoles;
-
-        if (totalMoles <= 0) return;
-
-        for (var i = 0; i < gasDefinitions.Length; i++)
-        {
-            var total = from.moles[i] + to.moles[i];
-            from.moles[i] = total * (fromMoles - amount) / totalMoles;
-            to.moles[i] = total * (toMoles + amount) / totalMoles;
-        }
-
-        from.temperature = Temperature(from.TotalMoles, totalEnergy * from.TotalMoles / totalMoles);
-        to.temperature = Temperature(to.TotalMoles, totalEnergy * to.TotalMoles / totalMoles);
+        from.temperature[gas] = Temperature(gas, from.moles[gas], fromEnergy - energy);
+        to.temperature[gas] = Temperature(gas, to.moles[gas], toEnergy + energy);
     }
 
     private void PrintTiles()
@@ -225,10 +201,10 @@ public class Simulation : MonoBehaviour
         {
             var tile = tiles[index];
             var i = 0;
-            Debug.LogFormat("[ Node: {4} Moles: {0:N1}, Pressure: {1:N1}, Temperature {2:N1}, Content: [{3} ] ]",
+            Debug.LogFormat("[ Node: {4} Moles: {0:N1}, Pressure: {1:N1}, Temperature: [{2} ], Content: [{3} ] ]",
                 tile.TotalMoles,
-                Pressure(2, tile.TotalMoles, tile.temperature),
-                tile.temperature,
+                Pressure(2, tile.TotalMoles, Temperature(tile)),
+                tile.temperature.Aggregate("", (s, t) => $"{s} {t:N2}"),
                 tile.moles.Aggregate("", (s, n) => $"{s} {gasDefinitions[i++].name}:{n / tile.TotalMoles:N2}"),
                 index);
         }
@@ -251,13 +227,43 @@ public class Simulation : MonoBehaviour
         => moles > 0 ? (pressure * volume) / (GasConstant * moles) : 0;
 
     [Pure]
+    public float Energy(int gasIndex, float moles, float temperature)
+        => gasDefinitions[gasIndex].heatCapacity * temperature * moles;
+
+    [Pure]
     public static float Energy(float moles, float temperature)
         => 1.5f * GasConstant * temperature * moles;
 
     [Pure]
+    public float Temperature(int gasIndex, float moles, float energy)
+        => moles > 0 ? energy / (gasDefinitions[gasIndex].heatCapacity * moles) : 0;
+    
+    [Pure]
     public static float Temperature(float moles, float energy)
         => moles > 0 ? energy / (1.5f * GasConstant * moles) : 0;
 
+    [Pure]
+    public float HeatEnergy(AtmosTile tile)
+    {
+        var total = 0f;
+        for (var i = 0; i < tile.moles.Length; i++)
+            total += gasDefinitions[i].heatCapacity * tile.moles[i] * tile.temperature[i];
+        return total;
+    }
+
+    [Pure]
+    public float Temperature(AtmosTile tile)
+    {
+        var totalMoles = 0f;
+        var totalEnergy = 0f;
+        for (var i = 0; i < tile.moles.Length; i++)
+        {
+            totalMoles += tile.moles[i];
+            totalEnergy += gasDefinitions[i].heatCapacity * tile.moles[i] * tile.temperature[i];
+        }
+        return Temperature(totalMoles, totalEnergy);
+    }
+    
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;

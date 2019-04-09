@@ -7,7 +7,7 @@ namespace Atmospherics
     public struct AtmosTile
     {
         public float[] moles;
-        public float temperature;
+        public float[] temperature;
 
         public float TotalMoles => moles.Sum();
     }

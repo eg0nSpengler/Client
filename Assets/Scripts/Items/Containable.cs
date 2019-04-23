@@ -4,11 +4,14 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Containable : MonoBehaviour, IInteractable {
+    public Sprite generatedIcon = null;
 
     [SerializeField] private ContainableSize size = ContainableSize.Normal;
     [SerializeField] private Vector3 pickPosition = Vector3.zero;
     [SerializeField] private Vector3 pickRotation = Vector3.zero;
+    [SerializeField] private Vector3 iconRotation = Vector3.zero;
 
+    public Vector3 IconRotation => iconRotation;
     public Vector3 PickPosition => pickPosition;
     public Vector3 PickRotation => pickPosition;
 

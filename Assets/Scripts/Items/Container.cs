@@ -62,7 +62,6 @@ public class Container
             Debug.LogError("Tried to contain an uncontainable object");
             return;
         }
-
         contained.Add(containable);
         containable.Container = this;
         OnContained(containable);

@@ -1,0 +1,265 @@
+<html lang="en">
+    <head>
+        <title>SS3D Console</title>
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    </head>
+    <body>
+        <header class="header" id="header">
+                <img src="favicon.ico" alt="🧰"> <span>SS3D</span><a href="#" class="disconnectedLabel" onclick="handleRetryClicked();">Disconnected, click to refresh</a>
+        </header>
+        <div class="sidebar">
+            <h1>SS3D Console</h1>
+            <!-- <p>Server-Name: <i>Clown-station 13</i></p>
+            <p>Players: <i>42</i></p> -->
+            <p>Frame-Time: <i id="deltaTime"></i></p>
+            <p>FPS: <i id="FPS"></i></p>
+            <p>Memory-Usage: <i id="memoryUsage"></i></p>
+            <!-- <select id="playerlist" multiple>
+                <option value="" class="Player%%">Player01</option>
+            </select> -->
+        </div>
+        <div class="actions">
+            <div>
+                <div class="searchInputWrapper">
+                    <input type="search" name="logsearch" id="logsearch">
+                </div>
+                <button onclick="handleSearchClicked();" id="searchbutton">Search</button>
+            </div>
+            <div class="logTypes">
+                <fieldset>
+                    <legend>Log-Type</legend>
+                    <label><input onclick="handleFilterCheckboxes();" type="checkbox" name="filter" id="all" checked> All</label>
+                    <label><input onclick="handleFilterCheckboxes();" type="checkbox" name="filter" id="0" checked> Errors</label>
+                    <label><input onclick="handleFilterCheckboxes();" type="checkbox" name="filter" id="1" checked> Assert</label>
+                    <label><input onclick="handleFilterCheckboxes();" type="checkbox" name="filter" id="2" checked> Warnings</label>
+                    <label><input onclick="handleFilterCheckboxes();" type="checkbox" name="filter" id="3" checked> Logs</label>
+                    <label><input onclick="handleFilterCheckboxes();" type="checkbox" name="filter" id="4" checked> Exception</label>
+                </fieldset>
+            </div>
+            <div>
+                <label><input type="checkbox" id="autorefresh" checked onclick="autorefreshChanged();"> Autorefresh</label>
+            </div>
+        </div>
+        <div class="main">
+            <table id="messageTable">
+                <thead>
+                    <th>Message</th>
+                    <th>Type</th>
+                    <th>Timestamp</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div id="traceBox">
+        </div>
+        <script>
+            var logSocket;
+            var statusSocket;
+            var table = document.getElementById("messageTable");
+            var tablebody = table.getElementsByTagName('tbody')[0];
+            var maxRowCount = 255;
+            var autorefresh = true;
+            var checkboxAll = true;
+                                // Error Assert Warning Log Exception
+            var checkboxFilter = [true, true, true, true, true];
+            var searchString = "";
+            window.onload = function () {
+                document.getElementById("header").classList.add("disconnected");
+            }
+            function onLogSocketClose() {
+                document.getElementById("header").classList.add("disconnected");
+            }
+            function onLogSocketOpen() {
+                console.log("Connected to log websocket successfully");
+                tablebody.innerHTML = "";
+                document.getElementById("header").classList.remove("disconnected");
+                logSocket.onmessage = onLogMessageHandler;
+            };
+            function createLogSocket() {
+                var query = "?";
+                for (var i = 0; i < checkboxFilter.length; i++) {
+                    query += i.toString() + "=" + checkboxFilter[i].toString() + "&";
+                }
+                query += "search=" + searchString
+                logSocket = new WebSocket("wss://localhost:5335/Log" + query);
+                logSocket.onopen = onLogSocketOpen;
+                logSocket.onclose = onLogSocketClose;
+            }
+            function createStatusSocket() {
+                statusSocket = new WebSocket("wss://localhost:5335/Status");
+                statusSocket.onopen =  onStatusSocketOpen;
+                statusSocket.onclose = onStatusSocketClose;
+            }
+            function pingStatusSocket() {
+                statusSocket.send("")
+            }
+            function onStatusSocketOpen() {;
+                statusSocket.onmessage = onStatusMessageHandler;
+                pingStatusSocket();
+            }
+            function onStatusSocketClose() {
+
+            }
+            function bytesToHuman(size) {
+                var i = Math.floor( Math.log(size) / Math.log(1024) );
+                return ( size / Math.pow(1024, i) ).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+            };
+            function onStatusMessageHandler(event) {
+                var data = JSON.parse(event.data);
+                
+                // Set text
+                document.getElementById("memoryUsage").textContent = bytesToHuman(data.memoryUsage);
+                document.getElementById("deltaTime").textContent = parseFloat(data.deltaTime).toFixed(5) + " s";
+                document.getElementById("FPS").textContent = parseFloat(1.0 / data.deltaTime).toFixed(2) + " FPS";
+
+                window.setTimeout(pingStatusSocket, 1000);
+            }
+
+            function autorefreshChanged() {
+                autorefresh = document.getElementById("autorefresh").checked;
+                if(autorefresh) {
+                    createLogSocket();
+                } else {
+                    console.log("Disconnected from log websocket");
+                    logSocket.close();
+                }
+            }
+            function typeToString(type) {
+                switch(type) {
+                    case 0:
+                        return "Error";
+                    case 1:
+                        return "Assert";
+                    case 2:
+                        return "Warning";
+                    case 3:
+                        return "Log";
+                    case 4:
+                        return "Exception";
+                    default:
+                        return "Unknown";
+                }
+            }
+            function handleRetryClicked() {
+                createLogSocket();
+            }
+            function handleSearchClicked() {
+                // This is not optimal as the string does not get encoded, so some characters like & may break things.
+                searchString = document.getElementById("logsearch").value.toLowerCase();
+                console.log("Searching for " + searchString);
+                logSocket.close();
+                console.log("Disconnected from log websocket");
+                createLogSocket();
+
+            }
+            function handleFilterCheckboxes() {
+                if(document.getElementById("all").checked != checkboxAll) {
+                    checkboxAll = !checkboxAll;
+                    for(var i = 0; i < checkboxFilter.length; i++) {
+                        document.getElementById(i.toString()).checked = checkboxAll;
+                    }
+                }
+                var checkedCount = 0;
+                for(var i = 0; i < 5; i++) {
+                    checkboxFilter[i] = document.getElementById(i.toString()).checked;
+                    if (document.getElementById(i.toString()).checked) {
+                        checkedCount++;
+                    }
+                }
+                if(checkedCount != checkboxFilter.length) {
+                    document.getElementById("all").checked = false;
+                    checkboxAll = false;
+                } else {
+                    document.getElementById("all").checked = true;
+                    checkboxAll = true;
+                }
+                if(logSocket != undefined) {
+                    logSocket.close();
+                    console.log("Disconnected from log websocket");
+                    createLogSocket();
+                }
+            }
+            function prependObjectToTableBody(object) {
+                if(isNotFiltered(object) && isSearched(object)) {
+                    var tr = document.createElement('tr');
+                    tr.dataset.trace = object.stackTrace;
+                    tr.innerHTML = '<td>' + object.condition + '</td>' +
+                    '<td>' + typeToString(object.type) + '</td>' +
+                    '<td>' + object.time + '</td>';
+                    tablebody.prepend(tr);
+                }
+            }
+            function isNotFiltered(object) {
+                return checkboxFilter[object.type];
+            }
+            function isSearched(object) {
+                if(searchString != "") {
+                    return object.condition.toLowerCase().includes(searchString);
+                } else {
+                    return true;
+                }
+            }
+            function onLogMessageHandler(event) {
+                var data = JSON.parse(event.data);
+                var rows = tablebody.getElementsByTagName("tr").length;
+                if(data.logs != undefined) {
+                    // Data is a batch of logs
+                    console.log("Received " + data.logs.length + " log messages");
+                    toBeAddedCount = data.logs.length;
+                    if(rows + data.logs.length > maxRowCount) {
+                        // Trim the table at the bottom if we reached the display limit
+                        var newRowCount = rows + data.logs.length;
+                        var toBeDeletedCount = newRowCount - maxRowCount;
+                        toBeAddedCount = newRowCount - toBeDeletedCount;
+                        for (var i = 1; i <= toBeDeletedCount && i < rows; i++) {
+                            tablebody.deleteRow(rows - i);
+                        }
+                    }
+                    for(var i = data.logs.length - toBeAddedCount; i < data.logs.length; i++) {
+                        prependObjectToTableBody(data.logs[i]);
+                    };
+                    console.log("Added " + toBeAddedCount + " log messages");
+                } else {
+                    // Data is a single log
+                    if(rows >= maxRowCount) {
+                        tablebody.deleteRow(maxRowCount - 1);
+                    }
+                    prependObjectToTableBody(data);
+                }
+                if(!autorefresh) {
+                    logSocket.close();
+                    console.log("Disconnected from log websocket because autorefresh is disabled.");
+                }
+            }
+            handleFilterCheckboxes();
+            createLogSocket();
+            createStatusSocket();
+            document.getElementById("logsearch")
+                .addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (event.keyCode === 13) {
+                    document.getElementById("searchbutton").click();
+                }
+            });
+            var oldSelectedRow;
+            document.querySelector('#messageTable').onclick = function(ev) {
+                // ev.target <== td element
+                // ev.target.parentElement <== tr
+                var index = ev.target.parentElement.rowIndex;
+                if (ev.target.parentElement.dataset.trace) {
+                    document.getElementById("traceBox").innerHTML = ev.target.parentElement.dataset.trace;
+                    ev.target.parentElement.classList.add("selected");
+                    if(oldSelectedRow) {
+                        oldSelectedRow.classList.remove("selected");
+                    }
+                    oldSelectedRow = ev.target.parentElement;
+                }
+            }
+        </script>
+    </body>
+</html>

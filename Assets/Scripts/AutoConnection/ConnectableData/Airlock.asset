@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b73f785c931df40beb6a5822abad57, type: 3}
+  m_Name: Airlock
+  m_EditorClassIdentifier: 
+  connectableType: 0
+  GlobalRotationOffset: {x: 0, y: 0, z: 0}
+  EndMesh: {fileID: 0}
+  EndRotationOffset: {x: 0, y: 0, z: 0}
+  StraightMesh: {fileID: 0}
+  StraightRotationOffset: {x: 0, y: 0, z: 0}
+  CornerMesh: {fileID: 0}
+  CornerRotationOffset: {x: 0, y: 0, z: 0}
+  SplitMesh: {fileID: 0}
+  SplitRotationOffset: {x: 0, y: 0, z: 0}
+  CrossMesh: {fileID: 0}
+  CrossRotationOffset: {x: 0, y: 0, z: 0}
+  QuadColorMaterial: {fileID: 0}
+  TriColorMaterial: {fileID: 0}
+  DoubleColorMaterial: {fileID: 0}
+  SingleColorMaterial: {fileID: 0}
+  NoColorMaterial: {fileID: 0}
+  ConnectsWith:
+  - {fileID: 11400000, guid: 69c33043a9210c74990513eb3e475288, type: 2}
+  - {fileID: 11400000, guid: 11002d85f4f29334c93cbf48df80f191, type: 2}

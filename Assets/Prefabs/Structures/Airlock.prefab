@@ -58,6 +58,9 @@ GameObject:
   - component: {fileID: 114921286136226544}
   - component: {fileID: 54608851255600578}
   - component: {fileID: 1230261505743364815}
+  - component: {fileID: 5074677204848639328}
+  - component: {fileID: 6260167507071936054}
+  - component: {fileID: 3223050418356803277}
   m_Layer: 11
   m_Name: Airlock
   m_TagString: Untagged
@@ -189,6 +192,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be99e11e4e445cfb113759827a1646e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!23 &5074677204848639328
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496086865773650}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &6260167507071936054
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496086865773650}
+  m_Mesh: {fileID: 0}
+--- !u!114 &3223050418356803277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496086865773650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b3cc54132b1468eb79f4d2a628abaa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConnectableSettings: {fileID: 11400000, guid: 7e3a048f40cf12546b5a41aeb66889f2,
+    type: 2}
+  adjacents:
+    Connections: 0
+    North: {fileID: 0}
+    East: {fileID: 0}
+    South: {fileID: 0}
+    West: {fileID: 0}
+    NorthEast: {fileID: 0}
+    SouthEast: {fileID: 0}
+    SouthWest: {fileID: 0}
+    NorthWest: {fileID: 0}
+  meshFilter: {fileID: 6260167507071936054}
+  meshRenderer: {fileID: 5074677204848639328}
 --- !u!1 &1504326560456000
 GameObject:
   m_ObjectHideFlags: 0

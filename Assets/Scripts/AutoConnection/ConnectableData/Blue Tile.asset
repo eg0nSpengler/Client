@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b73f785c931df40beb6a5822abad57, type: 3}
+  m_Name: Blue Tile
+  m_EditorClassIdentifier: 
+  connectableType: 2
+  EndMesh: {fileID: 0}
+  EndRotationOffset: {x: 0, y: 0, z: 0}
+  StraightMesh: {fileID: 0}
+  StraightRotationOffset: {x: 0, y: 0, z: 0}
+  CornerMesh: {fileID: 0}
+  CornerRotationOffset: {x: 0, y: 0, z: 0}
+  SplitMesh: {fileID: 0}
+  SplitRotationOffset: {x: 0, y: 0, z: 0}
+  CrossMesh: {fileID: 0}
+  CrossRotationOffset: {x: 0, y: 0, z: 0}
+  QuadColorMaterial: {fileID: 2100000, guid: 617ba3289a8d00a43989b8c4add9c68c, type: 2}
+  TriColorMaterial: {fileID: 2100000, guid: 3e941b2a9fc8dcf4b989fd414e5d34c7, type: 2}
+  DoubleColorMaterial: {fileID: 2100000, guid: 05b05938eb101f3498fc2e0e3088635f, type: 2}
+  SingleColorMaterial: {fileID: 2100000, guid: c87eca2021d705741804d9a04b4924d1, type: 2}
+  NoColorMaterial: {fileID: 2100000, guid: f65fc687cd8773f478d655f733a4414e, type: 2}
+  ConnectsWith:
+  - {fileID: 11400000, guid: 69c33043a9210c74990513eb3e475288, type: 2}
+  - {fileID: 11400000, guid: 11002d85f4f29334c93cbf48df80f191, type: 2}

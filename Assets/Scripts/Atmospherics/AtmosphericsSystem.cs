@@ -18,15 +18,15 @@ namespace Atmospherics
         public const float NodeSurface = 10;
         public const float ContactArea = 2;
         public const float ContactCircumference = 6;
-        public static readonly int3[] Directions = {
-            new int3(0, 0, 1),new int3(1, 0, 0),new int3(0, 0, -1),new int3(-1, 0, 0),
-        };
         
         
         private ComponentGroup gasGroup;
+        private NativeArray<int3> directions;
         private NativeArray<GasDefinition> gasConstants;
         private NativeMultiHashMap<long, Gas> gasses;
         private NativeMultiHashMap<long, MovedGas> movedGasses;
+
+        private int numGasses;
         
         protected override void OnCreateManager()
         {
@@ -53,6 +53,10 @@ namespace Atmospherics
                     viscosity = 2.055e-05f,
                 }, 
             }, Allocator.Persistent);
+            
+            directions = new NativeArray<int3>(new []{
+                new int3(0, 0, 1),new int3(1, 0, 0),new int3(0, 0, -1),new int3(-1, 0, 0),
+            }, Allocator.Persistent);
         }
 
         protected override void OnDestroyManager()
@@ -60,40 +64,51 @@ namespace Atmospherics
             if(gasConstants.IsCreated) gasConstants.Dispose();
             if(gasses.IsCreated) gasses.Dispose();
             if(movedGasses.IsCreated) movedGasses.Dispose();
+            if(directions.IsCreated) directions.Dispose();
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            if(gasses.IsCreated) gasses.Dispose();
-            if(movedGasses.IsCreated) movedGasses.Dispose();
+            var currentGasses = gasGroup.CalculateLength() * directions.Length;
 
-            var length = gasGroup.CalculateLength();
-            gasses = new NativeMultiHashMap<long, Gas>(length * Directions.Length, Allocator.TempJob);
-            movedGasses = new NativeMultiHashMap<long, MovedGas>(length * Directions.Length, Allocator.TempJob);
+            if (currentGasses != numGasses)
+            {
+                if(gasses.IsCreated) gasses.Dispose();
+                if(movedGasses.IsCreated) movedGasses.Dispose();
+
+                numGasses = currentGasses;
+                gasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);
+                movedGasses = new NativeMultiHashMap<long, MovedGas>(numGasses, Allocator.Persistent);
+            }
+            else
+            {
+                gasses.Clear();
+                movedGasses.Clear();
+            }
 
             return new GasMoveJob
             {
                 movedGasses = movedGasses,
             }.Schedule(this, new GasFluxJob
             {
+                directions = directions,
                 gasMap = gasses,
                 deltaTime = Time.deltaTime,
                 gasses = gasConstants,
                 movedGasses = movedGasses.ToConcurrent(),
+            }.Schedule(this, new PartialPressureJob
+            {
+                gasses = gasConstants,
+                gasMap = gasses,
             }.Schedule(this, new HashGridJob<Gas>
             {
                 hashedGrid = gasses.ToConcurrent()
-            }.Schedule(this, inputDeps)));
+            }.Schedule(this, inputDeps))));
         }
 
         internal static long EncodePosition(int3 pos)
         {
-            var bytes = new byte[8];
-            
-            Array.Copy(BitConverter.GetBytes(pos.x), 0, bytes, 0, 4);
-            Array.Copy(BitConverter.GetBytes(pos.z), 0, bytes, 4, 4);
-            
-            return BitConverter.ToInt64(bytes, 0);
+            return ((long)pos.x) | ((long)pos.z << 32);
         }
         
         internal static float Pressure(float volume, float moles, float temperature)

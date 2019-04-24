@@ -1,4 +1,5 @@
 using Atmospherics.Components;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -8,6 +9,7 @@ namespace Atmospherics.Jobs
     {
         [ReadOnly] public NativeMultiHashMap<long, MovedGas> movedGasses;
 
+        [BurstCompile]
         public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
         {
             var pos = AtmosphericsSystem.EncodePosition(position.value);

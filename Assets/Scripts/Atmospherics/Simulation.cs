@@ -27,14 +27,14 @@ public class Simulation : MonoBehaviour
     private NativeArray<Entity> gasses;
 
     private readonly float[] velocity = new float[2];
+    
+    [SerializeField] private int wid = 1;
+    [SerializeField] private int hei = 2;
 
     private void OnEnable()
     {
         if (manager == null) manager = World.Active.GetOrCreateManager<EntityManager>();
         var gasArchetype = manager.CreateArchetype(typeof(GridPosition), typeof(Gas));
-
-        var wid = 20;
-        var hei = 20;
 
         gasses = new NativeArray<Entity>(wid*hei*gasDefinitions.Length, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
             
@@ -228,7 +228,7 @@ public class Simulation : MonoBehaviour
     public float Temperature(int gasIndex, float moles, float energy)
         => moles > 0 ? energy / (gasDefinitions[gasIndex].heatCapacity * moles) : 0;
     
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
@@ -253,5 +253,5 @@ public class Simulation : MonoBehaviour
             var h = math.log(gas.moles) * 0.5f;
             Gizmos.DrawCube(pos.value + new float3(-0.25f + w * gas.id,h/2,0), new Vector3(w, h, 1));
         }
-    }
+    }*/
 }

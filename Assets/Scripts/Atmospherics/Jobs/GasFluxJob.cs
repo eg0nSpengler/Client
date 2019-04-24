@@ -1,4 +1,5 @@
 using Atmospherics.Components;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -11,9 +12,11 @@ namespace Atmospherics.Jobs
         [ReadOnly] public NativeArray<GasDefinition> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
         [ReadOnly] public float deltaTime;
+        [ReadOnly] public NativeArray<int3> directions;
         
         [WriteOnly]public NativeMultiHashMap<long, MovedGas>.Concurrent movedGasses;
 
+        [BurstCompile]
         public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
         {
             if (node.moles == 0)
@@ -22,12 +25,12 @@ namespace Atmospherics.Jobs
                 return;
             }
             
-            var pressure = GetPartialPressureAt(AtmosphericsSystem.EncodePosition(position.value), node.id);
+            var pressure = node.partialPressure;
             var flux = node.flux;
 
-            for (var i = 0; i < AtmosphericsSystem.Directions.Length; i++)
+            for (var i = 0; i < directions.Length; i++)
             {
-                var pos = AtmosphericsSystem.EncodePosition(position.value + AtmosphericsSystem.Directions[i]);
+                var pos = AtmosphericsSystem.EncodePosition(position.value + directions[i]);
                 var p = GetPartialPressureAt(pos, node.id);
                 var force = (pressure - p) / AtmosphericsSystem.ContactArea;
                 var acceleration = force / node.moles * gasses[node.id].molarMass;
@@ -62,21 +65,10 @@ namespace Atmospherics.Jobs
 
         private float GetPartialPressureAt(long pos, byte gasIndex)
         {
-            var moles = 0f;
-            var totalMoles = 0f;
-            var totalEnergy = 0f;
-            var totalCapacity = 0f;
             if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return 0;
-            do
-            {
-                if (gas.id == gasIndex) moles = gas.moles;
-                totalMoles += gas.moles;
-                totalEnergy += gas.energy;
-                totalCapacity += gasses[gas.id].heatCapacity * gas.moles;
-            }
+            do if (gas.id == gasIndex) return gas.partialPressure;
             while (gasMap.TryGetNextValue(out gas, ref it));
-
-            return moles/totalMoles * AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, totalEnergy / totalCapacity);
+            return 0;
         }
         private bool Exists(long pos, byte gasIndex)
         {

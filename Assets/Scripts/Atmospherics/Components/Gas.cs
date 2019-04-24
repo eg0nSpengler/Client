@@ -9,7 +9,9 @@ namespace Atmospherics.Components
         
         public float moles;
         public float energy;
+        
         public float4 flux;
+        public float partialPressure;
 
         public Gas(byte id, float moles, float energy)
         {
@@ -17,6 +19,7 @@ namespace Atmospherics.Components
             this.moles = moles;
             this.energy = energy;
             this.flux = float4.zero;
+            this.partialPressure = 0;
         }
     }
 }

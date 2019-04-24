@@ -1,11 +1,11 @@
 using System;
 using Atmospherics.Components;
 using Atmospherics.Jobs;
+using JetBrains.Annotations;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
 
 namespace Atmospherics
@@ -26,6 +26,7 @@ namespace Atmospherics
         private ComponentGroup gasGroup;
         private NativeArray<GasDefinition> gasConstants;
         private NativeMultiHashMap<long, Gas> gasses;
+        private NativeMultiHashMap<long, MovedGas> movedGasses;
         
         protected override void OnCreateManager()
         {
@@ -58,24 +59,31 @@ namespace Atmospherics
         {
             if(gasConstants.IsCreated) gasConstants.Dispose();
             if(gasses.IsCreated) gasses.Dispose();
+            if(movedGasses.IsCreated) movedGasses.Dispose();
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             if(gasses.IsCreated) gasses.Dispose();
+            if(movedGasses.IsCreated) movedGasses.Dispose();
 
             var length = gasGroup.CalculateLength();
-            gasses = new NativeMultiHashMap<long, Gas>(length * 4, Allocator.TempJob);
+            gasses = new NativeMultiHashMap<long, Gas>(length * Directions.Length, Allocator.TempJob);
+            movedGasses = new NativeMultiHashMap<long, MovedGas>(length * Directions.Length, Allocator.TempJob);
 
-            return new AtmosphericsJob
+            return new GasMoveJob
+            {
+                movedGasses = movedGasses,
+            }.Schedule(this, new GasFluxJob
             {
                 gasMap = gasses,
                 deltaTime = Time.deltaTime,
                 gasses = gasConstants,
+                movedGasses = movedGasses.ToConcurrent(),
             }.Schedule(this, new HashGridJob<Gas>
             {
                 hashedGrid = gasses.ToConcurrent()
-            }.Schedule(this, inputDeps));
+            }.Schedule(this, inputDeps)));
         }
 
         internal static long EncodePosition(int3 pos)

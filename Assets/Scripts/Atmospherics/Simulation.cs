@@ -228,11 +228,26 @@ public class Simulation : MonoBehaviour
     {
         if (!Application.isPlaying) return;
 
-        Gizmos.color = new Color(0, 0, 0, 0.3f);
         foreach (var entity in gasses)
         {
+            Gizmos.color = new Color(0, 0, 0, 0.3f);
             var pos = manager.GetComponentData<GridPosition>(entity);
+            var gas = manager.GetComponentData<Gas>(entity);
             Gizmos.DrawWireCube((float3)pos.value, new Vector3(1, 0, 1));
+
+            switch (gas.id)
+            {
+            case 0:
+                Gizmos.color = new Color(1, 0, 0, 0.3f);
+                break;
+            case 1:
+                Gizmos.color = new Color(0, 0, 1, 0.3f);
+                break;
+            }
+
+            var w = 1f/2;
+            var h = math.log(gas.moles) * 0.5f;
+            Gizmos.DrawCube(pos.value + new float3(-0.25f + w * gas.id,h/2,0), new Vector3(w, h, 1));
         }
     }
 }

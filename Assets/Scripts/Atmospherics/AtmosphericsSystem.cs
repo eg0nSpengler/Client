@@ -16,50 +16,66 @@ namespace Atmospherics
         public const float GasConstant = 8.31445984848f;
         public const float NodeVolume = 2;
         public const float NodeSurface = 10;
+        public const float ContactArea = 2;
+        public const float ContactCircumference = 6;
         public static readonly int3[] Directions = {
             new int3(0, 0, 1),new int3(1, 0, 0),new int3(0, 0, -1),new int3(-1, 0, 0),
         };
         
         
-        private ComponentGroup nodeGroup;
-        private NativeMultiHashMap<long, AtmosphericsNode> neighbors;
+        private ComponentGroup gasGroup;
+        private NativeArray<GasDefinition> gasConstants;
         private NativeMultiHashMap<long, Gas> gasses;
         
         protected override void OnCreateManager()
         {
-            nodeGroup = GetComponentGroup(
+            gasGroup = GetComponentGroup(
                 ComponentType.ReadOnly<GridPosition>(),
-                ComponentType.ReadOnly<AtmosphericsNode>());
+                ComponentType.ReadOnly<Gas>());
+            
+            gasConstants = new NativeArray<GasDefinition>(new []
+            {
+                new GasDefinition
+                {
+                    name = new NativeString64("Nitrogen"),
+                    molarMass = 0.028014f,
+                    heatCapacity = 0.743f,
+                    heatConductivity = 0.02583f,
+                    viscosity = 1.78e-05f,
+                }, 
+                new GasDefinition
+                {
+                    name = new NativeString64("Oxygen"),
+                    molarMass = 0.031998f,
+                    heatCapacity = 0.659f,
+                    heatConductivity = 0.02658f,
+                    viscosity = 2.055e-05f,
+                }, 
+            }, Allocator.Persistent);
         }
 
         protected override void OnDestroyManager()
         {
+            if(gasConstants.IsCreated) gasConstants.Dispose();
             if(gasses.IsCreated) gasses.Dispose();
-            if(neighbors.IsCreated) neighbors.Dispose();
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            if(neighbors.IsCreated) neighbors.Dispose();
             if(gasses.IsCreated) gasses.Dispose();
 
-            var length = nodeGroup.CalculateLength();
-            neighbors = new NativeMultiHashMap<long, AtmosphericsNode>(length, Allocator.TempJob);
+            var length = gasGroup.CalculateLength();
             gasses = new NativeMultiHashMap<long, Gas>(length * 4, Allocator.TempJob);
 
             return new AtmosphericsJob
             {
                 gasMap = gasses,
-                nodeMap = neighbors,
-            }.Schedule(this, JobHandle.CombineDependencies(
-                new HashGridJob<Gas>
-                {
-                    hashedGrid = gasses.ToConcurrent()
-                }.Schedule(this, inputDeps),
-                new HashGridJob<AtmosphericsNode>
-                {
-                    hashedGrid = neighbors.ToConcurrent()
-                }.Schedule(this, inputDeps)));
+                deltaTime = Time.deltaTime,
+                gasses = gasConstants,
+            }.Schedule(this, new HashGridJob<Gas>
+            {
+                hashedGrid = gasses.ToConcurrent()
+            }.Schedule(this, inputDeps));
         }
 
         internal static long EncodePosition(int3 pos)
@@ -73,6 +89,6 @@ namespace Atmospherics
         }
         
         internal static float Pressure(float volume, float moles, float temperature)
-            => (moles * AtmosphericsSystem.GasConstant * temperature) / volume;
+            => moles > 0 ? (moles * GasConstant * temperature) / volume : 0;
     }
 }

@@ -8,15 +8,21 @@ using UnityEngine;
 
 namespace Atmospherics.Jobs
 {
-    public struct AtmosphericsJob : IJobProcessComponentData<GridPosition, AtmosphericsNode>
+    public struct AtmosphericsJob : IJobProcessComponentData<GridPosition, Gas>
     {
-        [ReadOnly] public NativeMultiHashMap<long, AtmosphericsNode> nodeMap;
+        [ReadOnly] public NativeArray<GasDefinition> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
+        [ReadOnly] public float deltaTime;
 
-        public void Execute([ReadOnly] ref GridPosition position, ref AtmosphericsNode node)
+        public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
         {
-            var pos = AtmosphericsSystem.EncodePosition(position.value);
-            var pressure = GetPressureAt(pos);
+            if (node.moles == 0)
+            {
+                // TODO remove the gas entity when empty
+                return;
+            }
+            
+            var pressure = GetPartialPressureAt(AtmosphericsSystem.EncodePosition(position.value), node.moles);
 
             //Debug.Log($"{position.value} -> {pressure}");
 
@@ -24,11 +30,17 @@ namespace Atmospherics.Jobs
 
             for (var i = 0; i < AtmosphericsSystem.Directions.Length; i++)
             {
-                var p = 
-                    GetPressureAt(AtmosphericsSystem.EncodePosition(position.value + AtmosphericsSystem.Directions[i]));
-                //flux[i] += (p - pressure) / AtmosphericsSystem.NodeSurface;
+                var p = GetPartialPressureAt(AtmosphericsSystem.EncodePosition(position.value + AtmosphericsSystem.Directions[i]), node.id);
+                var force = (pressure - p) / AtmosphericsSystem.ContactArea;
+                var acceleration = force / node.moles * gasses[node.id].molarMass;
+                Debug.Log($"{position.value} -> {(position.value+AtmosphericsSystem.Directions[i])}: {pressure} {p} -> {force}");
+
+                flux[i] += 0.5f * acceleration * deltaTime;
+                var amount = 2 * (flux[i] * deltaTime + 0.5f * acceleration * deltaTime * deltaTime);
+                //Move(amount, gas, ref tiles[0], ref tiles[1]);
                 
-                //Debug.Log(position.value + " "+pressure +" "+p+" "+flux[i]);
+                flux[i] *= 0.95f;
+                if (flux[i] < 0) flux[i] = 0;
             }
 
             node.flux = flux;
@@ -36,17 +48,36 @@ namespace Atmospherics.Jobs
 
         private float GetPressureAt(long pos)
         {
-            if (!nodeMap.TryGetFirstValue(pos, out var node, out _)) return 0;
-
             var totalMoles = 0f;
+            var totalEnergy = 0f;
+            var totalCapacity = 0f;
             if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return 0;
             do
             {
                 totalMoles += gas.moles;
+                totalEnergy += gas.energy;
+                totalCapacity += gasses[gas.id].heatCapacity * gas.moles;
             }
             while (gasMap.TryGetNextValue(out gas, ref it));
 
-            return AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, node.temperature);
+            return AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, totalEnergy / totalCapacity);
+        }
+
+        private float GetPartialPressureAt(long pos, float moles)
+        {
+            var totalMoles = 0f;
+            var totalEnergy = 0f;
+            var totalCapacity = 0f;
+            if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return 0;
+            do
+            {
+                totalMoles += gas.moles;
+                totalEnergy += gas.energy;
+                totalCapacity += gasses[gas.id].heatCapacity * gas.moles;
+            }
+            while (gasMap.TryGetNextValue(out gas, ref it));
+
+            return moles/totalMoles * AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, totalEnergy / totalCapacity);
         }
     }
 }

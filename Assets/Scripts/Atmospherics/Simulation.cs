@@ -24,62 +24,57 @@ public class Simulation : MonoBehaviour
     private const float NormalPres = 101325;
 
     private EntityManager manager;
-    private NativeArray<Entity> nodes;
+    private NativeArray<Entity> gasses;
 
     private readonly float[] velocity = new float[2];
-    
-    [SerializeField] private AnimationCurve pressure0Curve = AnimationCurve.Constant(0,0,0);
-    [SerializeField] private AnimationCurve pressure1Curve = AnimationCurve.Constant(0,0,0);
 
     private void OnEnable()
     {
         if (manager == null) manager = World.Active.GetOrCreateManager<EntityManager>();
-        var nodeArchetype = manager.CreateArchetype(typeof(GridPosition), typeof(AtmosphericsNode));
         var gasArchetype = manager.CreateArchetype(typeof(GridPosition), typeof(Gas));
 
-        nodes = new NativeArray<Entity>(2, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
+        var wid = 1;
+        var hei = 2;
+
+        gasses = new NativeArray<Entity>(wid*hei*gasDefinitions.Length, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
             
-        manager.CreateEntity(nodeArchetype, nodes);
+        manager.CreateEntity(gasArchetype, gasses);
 
         var maxMoles = Moles(2, NormalPres, NormalTemp);
         var nitrogen = maxMoles * 0.78f;
         var oxygen = maxMoles * 0.22f;
         
-        for (var i = 0; i < nodes.Length; i++)
+        for (var x = 0; x < wid; x++)
+        for (var y = 0; y < hei; y++)
+        for (byte i = 0; i < gasDefinitions.Length; i++)
         {
-            manager.SetComponentData(nodes[i], new GridPosition (new int3(i % 4, 0, i / 4)));
-            manager.SetComponentData(nodes[i], new AtmosphericsNode (NormalTemp));
+            var gas = gasses[i + x * gasDefinitions.Length + y * gasDefinitions.Length * wid];
+            manager.SetComponentData(gas, new GridPosition (new int3(x, 0, y)));
 
-            for (byte j = 0; j < gasDefinitions.Length; j++)
+            if (y == 0)
             {
-                var gas = manager.CreateEntity(gasArchetype);
-                manager.SetComponentData(gas, new GridPosition (new int3(i % 4, 0, i / 4)));
-
-                if (i == 0)
-                {
-                    if(j == 0) manager.SetComponentData(gas, new Gas(j, nitrogen*2));
-                    if(j == 1) manager.SetComponentData(gas, new Gas(j, 0));
-                }
-                if (i == 1)
-                {
-                    if(j == 0) manager.SetComponentData(gas, new Gas(j, 0));
-                    if(j == 1) manager.SetComponentData(gas, new Gas(j, oxygen*2));
-                }
+                if(i == 0) manager.SetComponentData(gas, new Gas(i, nitrogen*2, NormalTemp));
+                if(i == 1) manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
+            }
+            if (y == 1)
+            {
+                if(i == 0) manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
+                if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*2, NormalTemp/2f));
             }
         }
     }
 
     private void OnDisable()
     {
-        if (!nodes.IsCreated) return;
+        if (!gasses.IsCreated) return;
         if (Application.isPlaying)
-            manager.DestroyEntity(nodes);
-        nodes.Dispose();
+            manager.DestroyEntity(gasses);
+        gasses.Dispose();
     }
 
     private void OnApplicationQuit()
     {
-        if (nodes.IsCreated) nodes.Dispose();
+        if (gasses.IsCreated) gasses.Dispose();
     }
 
     private void Start()
@@ -94,21 +89,15 @@ public class Simulation : MonoBehaviour
             new AtmosTile {moles = new[] {0, oxygen * 2}, temperature = new []{0,NormalTemp / 4}},
         };
 
-        StartCoroutine(Step());
+        //StartCoroutine(Step());
     }
 
     private IEnumerator Step()
     {
         yield return new WaitForSeconds(5);
-        while (!Stable())
+        while (true)
         {
             yield return new WaitForFixedUpdate();
-            
-            PrintTiles();
-
-            pressure0Curve.AddKey(Time.time, Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0])));
-            pressure1Curve.AddKey(Time.time, Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1])));
-            Debug.Log(velocity[0]+ " "+velocity[1]);
             
             ProcessPressure(0);
             ProcessPressure(1);
@@ -148,28 +137,17 @@ public class Simulation : MonoBehaviour
         tiles[1].temperature[gasIndex] = Temperature(gasIndex, tiles[1].moles[gasIndex], toEnergy + amount);
     }
 
-    private bool Stable()
-    {
-        const float threshold = 1E-4f;
-        
-        var pressure00 = tiles[0].moles[0] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0]));
-        var pressure10 = tiles[1].moles[0] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1]));
-        var pressure01 = tiles[0].moles[1] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0]));
-        var pressure11 = tiles[1].moles[1] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1]));
-        Debug.Log(threshold + " " +Math.Abs(pressure00 - pressure10) +" "+ Math.Abs(pressure01 - pressure11) );
-        return Math.Abs(pressure00 - pressure10) < threshold && Math.Abs(pressure01 - pressure11) < threshold;
-    }
-
+    
     private void ProcessPressure(int gas)
     {
-        var mass0 = tiles[0].moles[gas] * gasDefinitions[gas].mass;
-        var mass1 = tiles[1].moles[gas] * gasDefinitions[gas].mass;
+        var mass0 = tiles[0].moles[gas] * gasDefinitions[gas].molarMass;
+        var mass1 = tiles[1].moles[gas] * gasDefinitions[gas].molarMass;
         
-        var pressure0 = tiles[0].moles[gas] / tiles[0].TotalMoles * Pressure(2, tiles[0].TotalMoles, Temperature(tiles[0]));
-        var pressure1 = tiles[1].moles[gas] / tiles[1].TotalMoles * Pressure(2, tiles[1].TotalMoles, Temperature(tiles[1]));
+        var pressure0 = GasConstant * tiles[0].temperature[gas] * tiles[0].moles[gas] / 2;
+        var pressure1 = GasConstant * tiles[1].temperature[gas] * tiles[1].moles[gas] / 2;
         
-        if (tiles[0].moles[1] <= 0 && velocity[gas] > 0) velocity[gas] = 0;
-        if (tiles[1].moles[1] <= 0 && velocity[gas] < 0) velocity[gas] = 0;
+        if (tiles[0].moles[gas] <= 0 && velocity[gas] > 0) velocity[gas] = 0;
+        if (tiles[1].moles[gas] <= 0 && velocity[gas] < 0) velocity[gas] = 0;
         
         var force1 = (pressure0 - pressure1) / 10;
         if (force1 > 0)
@@ -234,81 +212,24 @@ public class Simulation : MonoBehaviour
             tile.temperature[i] = totalEnergy / totalCapacity;
     }
 
-    private void PrintTiles()
-    {
-        for (var index = 0; index < tiles.Length; index++)
-        {
-            var tile = tiles[index];
-            var i = 0;
-            Debug.LogFormat("[ Node: {4} Moles: {0:N1}, Pressure: {1:N1}, Temperature: [{2} ], Content: [{3} ] ]",
-                tile.TotalMoles,
-                Pressure(2, tile.TotalMoles, Temperature(tile)),
-                tile.temperature.Aggregate("", (s, t) => $"{s} {t:N2}"),
-                tile.moles.Aggregate("", (s, n) => $"{s} {gasDefinitions[i++].name}:{n / tile.TotalMoles:N2}"),
-                index);
-        }
-    }
-
-    [Pure]
-    public static float Pressure(float volume, float moles, float temperature)
-        => (moles * GasConstant * temperature) / volume;
-
-    [Pure]
-    public static float Volume(float pressure, float moles, float temperature)
-        => (moles * GasConstant * temperature) / pressure;
-
     [Pure]
     public static float Moles(float volume, float pressure, float temperature)
         => temperature > 0 ? (pressure * volume) / (GasConstant * temperature) : 0;
-
-    [Pure]
-    public static float Temperature(float volume, float pressure, float moles)
-        => moles > 0 ? (pressure * volume) / (GasConstant * moles) : 0;
 
     [Pure]
     public float Energy(int gasIndex, float moles, float temperature)
         => gasDefinitions[gasIndex].heatCapacity * temperature * moles;
 
     [Pure]
-    public static float Energy(float moles, float temperature)
-        => 1.5f * GasConstant * temperature * moles;
-
-    [Pure]
     public float Temperature(int gasIndex, float moles, float energy)
         => moles > 0 ? energy / (gasDefinitions[gasIndex].heatCapacity * moles) : 0;
-    
-    [Pure]
-    public static float Temperature(float moles, float energy)
-        => moles > 0 ? energy / (1.5f * GasConstant * moles) : 0;
-
-    [Pure]
-    public float HeatEnergy(AtmosTile tile)
-    {
-        var total = 0f;
-        for (var i = 0; i < tile.moles.Length; i++)
-            total += gasDefinitions[i].heatCapacity * tile.moles[i] * tile.temperature[i];
-        return total;
-    }
-
-    [Pure]
-    public float Temperature(AtmosTile tile)
-    {
-        var totalMoles = 0f;
-        var totalEnergy = 0f;
-        for (var i = 0; i < tile.moles.Length; i++)
-        {
-            totalMoles += tile.moles[i];
-            totalEnergy += gasDefinitions[i].heatCapacity * tile.moles[i] * tile.temperature[i];
-        }
-        return Temperature(totalMoles, totalEnergy);
-    }
     
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
         Gizmos.color = new Color(0, 0, 0, 0.3f);
-        foreach (var entity in nodes)
+        foreach (var entity in gasses)
         {
             var pos = manager.GetComponentData<GridPosition>(entity);
             Gizmos.DrawWireCube((float3)pos.value, new Vector3(1, 0, 1));

@@ -5,17 +5,17 @@ namespace Atmospherics.Components
 {
     public struct Gas : IComponentData
     {
-        public byte id;
+        public readonly byte id;
         
         public float moles;
-        public float temperature;
+        public float energy;
         public float4 flux;
 
-        public Gas(byte id, float moles)
+        public Gas(byte id, float moles, float energy)
         {
             this.id = id;
             this.moles = moles;
-            this.temperature = 0;
+            this.energy = energy;
             this.flux = float4.zero;
         }
     }

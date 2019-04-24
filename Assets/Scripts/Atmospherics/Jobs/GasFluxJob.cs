@@ -22,7 +22,7 @@ namespace Atmospherics.Jobs
                 return;
             }
             
-            var pressure = GetPartialPressureAt(AtmosphericsSystem.EncodePosition(position.value), node.moles);
+            var pressure = GetPartialPressureAt(AtmosphericsSystem.EncodePosition(position.value), node.id);
             var flux = node.flux;
 
             for (var i = 0; i < AtmosphericsSystem.Directions.Length; i++)
@@ -42,7 +42,7 @@ namespace Atmospherics.Jobs
 
                     if (Exists(pos, node.id))
                     {
-                        Debug.Log($"{position.value} -> {(position.value+AtmosphericsSystem.Directions[i])}: {pressure} {p} -> {force}");
+                        //Debug.Log($"{position.value} -> {(position.value+AtmosphericsSystem.Directions[i])}: {pressure} {p} -> {force}");
                         
                         node.moles -= amount;
                         node.energy -= energy;
@@ -60,14 +60,16 @@ namespace Atmospherics.Jobs
             node.flux = flux;
         }
 
-        private float GetPartialPressureAt(long pos, float moles)
+        private float GetPartialPressureAt(long pos, byte gasIndex)
         {
+            var moles = 0f;
             var totalMoles = 0f;
             var totalEnergy = 0f;
             var totalCapacity = 0f;
             if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return 0;
             do
             {
+                if (gas.id == gasIndex) moles = gas.moles;
                 totalMoles += gas.moles;
                 totalEnergy += gas.energy;
                 totalCapacity += gasses[gas.id].heatCapacity * gas.moles;

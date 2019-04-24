@@ -33,8 +33,8 @@ public class Simulation : MonoBehaviour
         if (manager == null) manager = World.Active.GetOrCreateManager<EntityManager>();
         var gasArchetype = manager.CreateArchetype(typeof(GridPosition), typeof(Gas));
 
-        var wid = 1;
-        var hei = 2;
+        var wid = 20;
+        var hei = 20;
 
         gasses = new NativeArray<Entity>(wid*hei*gasDefinitions.Length, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
             
@@ -55,11 +55,15 @@ public class Simulation : MonoBehaviour
             {
                 if(i == 0) manager.SetComponentData(gas, new Gas(i, nitrogen*2, NormalTemp));
                 if(i == 1) manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
-            }
+            }else
             if (y == 1)
             {
                 if(i == 0) manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
                 if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*2, NormalTemp/2f));
+            }
+            else
+            {
+                manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
             }
         }
     }

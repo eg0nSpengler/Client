@@ -1,4 +1,5 @@
 using System;
+using UnityEngine.Serialization;
 
 namespace Atmospherics
 {
@@ -6,7 +7,9 @@ namespace Atmospherics
     public struct GasDefinition
     {
         public string name;
-        public float mass;
+        [FormerlySerializedAs("mass")] public float molarMass;
         public float heatCapacity;
+        public float heatConductivity;
+        public float viscosity;
     }
 }

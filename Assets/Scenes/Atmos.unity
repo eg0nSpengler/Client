@@ -145,9 +145,13 @@ MonoBehaviour:
   - name: Nitrogen
     mass: 0.028014
     heatCapacity: 0.743
+    heatConductivity: 0.02583
+    viscosity: 0.0000178
   - name: Oxygen
     mass: 0.031998
     heatCapacity: 0.659
+    heatConductivity: 0.02658
+    viscosity: 0.00002055
   pressure0Curve:
     serializedVersion: 2
     m_Curve:

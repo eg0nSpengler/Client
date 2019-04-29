@@ -124,10 +124,10 @@ public class Simulation : MonoBehaviour
         var tb = tiles[1].temperature[gasIndex];
 
         const float d = 8f / 6f;
-        var h = (gasDefinitions[gasIndex].heatConductivity 
-                 * 0.023f 
-                 * (((velocity[gasIndex]+BaseFlux)*d)/gasDefinitions[gasIndex].viscosity) 
-                 * math.pow((gasDefinitions[gasIndex].viscosity*gasDefinitions[gasIndex].heatCapacity)/gasDefinitions[gasIndex].heatConductivity,0.4f)) 
+        var h = gasDefinitions[gasIndex].heatConductivity 
+                * 0.023f 
+                * ((velocity[gasIndex]+BaseFlux)*d/gasDefinitions[gasIndex].viscosity) 
+                * math.sqrt(gasDefinitions[gasIndex].viscosity*gasDefinitions[gasIndex].heatCapacity/gasDefinitions[gasIndex].heatConductivity) 
                     / d;
         
         var amount = h * 2 * (ta-tb) * Time.fixedDeltaTime;
@@ -228,7 +228,7 @@ public class Simulation : MonoBehaviour
     public float Temperature(int gasIndex, float moles, float energy)
         => moles > 0 ? energy / (gasDefinitions[gasIndex].heatCapacity * moles) : 0;
     
-    /*private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
@@ -250,8 +250,8 @@ public class Simulation : MonoBehaviour
             }
 
             var w = 1f/2;
-            var h = math.log(gas.moles) * 0.5f;
-            Gizmos.DrawCube(pos.value + new float3(-0.25f + w * gas.id,h/2,0), new Vector3(w, h, 1));
+            var h = gas.moles * 0.02f;
+            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id,h/2,0), new Vector3(w, h, 1));
         }
-    }*/
+    }
 }

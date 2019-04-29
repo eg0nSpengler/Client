@@ -33,7 +33,8 @@ namespace Atmospherics.Jobs
             }
             while (gasMap.TryGetNextValue(out gas, ref it));
 
-            return moles/totalMoles * AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, totalEnergy / totalCapacity);
+            return (moles/totalMoles) * 
+                   AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, totalEnergy / totalCapacity);
         }
     }
 }

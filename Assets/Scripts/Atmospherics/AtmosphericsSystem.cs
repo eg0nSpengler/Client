@@ -18,6 +18,7 @@ namespace Atmospherics
         public const float NodeSurface = 10;
         public const float ContactArea = 2;
         public const float ContactCircumference = 6;
+        public const float BaseFlux = 5;
         
         
         private ComponentGroup gasGroup;
@@ -78,7 +79,7 @@ namespace Atmospherics
 
                 numGasses = currentGasses;
                 gasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);
-                movedGasses = new NativeMultiHashMap<long, MovedGas>(numGasses, Allocator.Persistent);
+                movedGasses = new NativeMultiHashMap<long, MovedGas>(numGasses * 2, Allocator.Persistent);
             }
             else
             {
@@ -113,5 +114,14 @@ namespace Atmospherics
         
         internal static float Pressure(float volume, float moles, float temperature)
             => moles > 0 ? (moles * GasConstant * temperature) / volume : 0;
+        
+        [Pure]
+        public static bool Exists(NativeMultiHashMap<long, Gas> gasMap, long pos, byte gasIndex)
+        {
+            if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return false;
+            do if (gas.id == gasIndex) return true;
+            while (gasMap.TryGetNextValue(out gas, ref it));
+            return false;
+        }
     }
 }

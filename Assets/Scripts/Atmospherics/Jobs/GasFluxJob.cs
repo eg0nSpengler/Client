@@ -74,14 +74,14 @@ namespace Atmospherics.Jobs
 
                 // ## Calculate how much we're actually trying to move for moles
 
-                molesMoved[i] = AtmosphericsSystem.ContactArea *
-                                (flux[i] * deltaTime + 0.5f * acceleration * deltaTime * deltaTime);
+                const float d = 2 * AtmosphericsSystem.ContactArea / AtmosphericsSystem.ContactCircumference;
+                
+                molesMoved[i] = d * (flux[i] * deltaTime + 0.5f * acceleration * deltaTime * deltaTime);
                 if (molesMoved[i] < 0) molesMoved[i] = 0;
 
 
                 // ## Calculate how much we're actually trying to move for energy
 
-                const float d = 2 * AtmosphericsSystem.ContactArea / AtmosphericsSystem.ContactCircumference;
                 var h = gasses[node.id].heatConductivity
                         * 0.023f
                         * ((node.flux[i] + AtmosphericsSystem.BaseFlux) * d / gasses[node.id].viscosity)
@@ -90,7 +90,7 @@ namespace Atmospherics.Jobs
                         / d;
 
                 energyMoved[i] = node.energy * (molesMoved[i] / node.moles);
-                energyMoved[i] += deltaTime * h * 2 * 
+                energyMoved[i] += deltaTime * h * AtmosphericsSystem.ContactArea * 
                                   ((neighbor[i].energy - node.energy) 
                                    / (gasses[node.id].heatCapacity * (neighbor[i].moles + node.moles)));
                 if (energyMoved[i] < 0) energyMoved[i] = 0;

@@ -231,7 +231,7 @@ public class Simulation : MonoBehaviour
             switch (gas.id)
             {
             case 0:
-                Gizmos.color = new Color(1, 0, 0, 1f);
+                Gizmos.color = new Color(1, 1, 0, 1f);
                 break;
             case 1:
                 Gizmos.color = new Color(0, 0, 1, 1f);
@@ -240,7 +240,9 @@ public class Simulation : MonoBehaviour
 
             var w = 1f/2;
             var h = gas.moles * 0.02f;
-            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id,h/2,0), new Vector3(w, h, 1));
+            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 1/3f), new Vector3(w, h, 1/3f));
+            Gizmos.color = new Color(1, 0, 0, 1f);
+            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 1/3f), new Vector3(w, h, 1/3f));
         }
     }
 }

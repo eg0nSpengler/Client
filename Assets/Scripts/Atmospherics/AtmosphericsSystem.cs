@@ -26,6 +26,7 @@ namespace Atmospherics
         private NativeArray<GasDefinition> gasConstants;
         private NativeMultiHashMap<long, Gas> gasses;
         private NativeMultiHashMap<long, MovedGas> movedGasses;
+        private NativeMultiHashMap<long, Gas> postMovedGasses;
 
         private int numGasses;
         
@@ -65,6 +66,7 @@ namespace Atmospherics
             if(gasConstants.IsCreated) gasConstants.Dispose();
             if(gasses.IsCreated) gasses.Dispose();
             if(movedGasses.IsCreated) movedGasses.Dispose();
+            if(postMovedGasses.IsCreated) postMovedGasses.Dispose();
             if(directions.IsCreated) directions.Dispose();
         }
 
@@ -80,16 +82,23 @@ namespace Atmospherics
                 numGasses = currentGasses;
                 gasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);
                 movedGasses = new NativeMultiHashMap<long, MovedGas>(numGasses * 2, Allocator.Persistent);
+                postMovedGasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);
             }
             else
             {
                 gasses.Clear();
                 movedGasses.Clear();
+                postMovedGasses.Clear();
             }
 
-            return new GasMoveJob
+            return new EqualizeTemperatureJob
+            {
+                gasses = gasConstants,
+                gasMap = postMovedGasses,
+            }.Schedule(this, new GasMoveJob
             {
                 movedGasses = movedGasses,
+                resultGasses = postMovedGasses.ToConcurrent(),
             }.Schedule(this, new GasFluxJob
             {
                 directions = directions,
@@ -104,7 +113,7 @@ namespace Atmospherics
             }.Schedule(this, new HashGridJob<Gas>
             {
                 hashedGrid = gasses.ToConcurrent()
-            }.Schedule(this, inputDeps))));
+            }.Schedule(this, inputDeps)))));
         }
 
         internal static long EncodePosition(int3 pos)
@@ -114,14 +123,5 @@ namespace Atmospherics
         
         internal static float Pressure(float volume, float moles, float temperature)
             => moles > 0 ? (moles * GasConstant * temperature) / volume : 0;
-        
-        [Pure]
-        public static bool Exists(NativeMultiHashMap<long, Gas> gasMap, long pos, byte gasIndex)
-        {
-            if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return false;
-            do if (gas.id == gasIndex) return true;
-            while (gasMap.TryGetNextValue(out gas, ref it));
-            return false;
-        }
     }
 }

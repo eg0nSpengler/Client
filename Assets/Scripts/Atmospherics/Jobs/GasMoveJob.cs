@@ -9,6 +9,7 @@ namespace Atmospherics.Jobs
     public struct GasMoveJob : IJobProcessComponentData<GridPosition, Gas>
     {
         [ReadOnly] public NativeMultiHashMap<long, MovedGas> movedGasses;
+        [WriteOnly]public NativeMultiHashMap<long, Gas>.Concurrent resultGasses;
 
         [BurstCompile]
         public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
@@ -22,6 +23,8 @@ namespace Atmospherics.Jobs
                 node.energy += moved.energy;
             }
             while (movedGasses.TryGetNextValue(out moved, ref it));
+            
+            resultGasses.Add(pos, node);
         }
     }
 

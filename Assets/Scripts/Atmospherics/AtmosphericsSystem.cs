@@ -19,6 +19,7 @@ namespace Atmospherics
         public const float ContactArea = 2;
         public const float ContactCircumference = 6;
         public const float BaseFlux = 5;
+        public const float Drag = 0.99f;
         
         
         private ComponentGroup gasGroup;

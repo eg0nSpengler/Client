@@ -150,8 +150,8 @@ MonoBehaviour:
     heatCapacity: 0.659
     heatConductivity: 0.02658
     viscosity: 0.00002055
-  wid: 2
-  hei: 2
+  wid: 10
+  hei: 10
 --- !u!4 &224150574
 Transform:
   m_ObjectHideFlags: 0

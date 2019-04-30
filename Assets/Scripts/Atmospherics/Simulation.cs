@@ -10,6 +10,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Entity = Unity.Entities.Entity;
+using Random = UnityEngine.Random;
 
 public class Simulation : MonoBehaviour
 {
@@ -51,20 +52,8 @@ public class Simulation : MonoBehaviour
             var gas = gasses[i + x * gasDefinitions.Length + y * gasDefinitions.Length * wid];
             manager.SetComponentData(gas, new GridPosition (new int3(x, 0, y)));
 
-            if (y == 0)
-            {
-                if(i == 0) manager.SetComponentData(gas, new Gas(i, nitrogen*2, NormalTemp));
-                if(i == 1) manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
-            }else
-            if (y == 1)
-            {
-                if(i == 0) manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
-                if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*2, NormalTemp/2f));
-            }
-            else
-            {
-                manager.SetComponentData(gas, new Gas(i, 0, NormalTemp));
-            }
+            if(i == 0) manager.SetComponentData(gas, new Gas(i, nitrogen*Random.value*4, NormalTemp));
+            if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*Random.value*4, NormalTemp/2f));
         }
     }
 
@@ -242,10 +231,10 @@ public class Simulation : MonoBehaviour
             switch (gas.id)
             {
             case 0:
-                Gizmos.color = new Color(1, 0, 0, 0.3f);
+                Gizmos.color = new Color(1, 0, 0, 1f);
                 break;
             case 1:
-                Gizmos.color = new Color(0, 0, 1, 0.3f);
+                Gizmos.color = new Color(0, 0, 1, 1f);
                 break;
             }
 

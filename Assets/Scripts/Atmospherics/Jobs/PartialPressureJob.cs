@@ -8,7 +8,7 @@ namespace Atmospherics.Jobs
 {
     public struct PartialPressureJob : IJobProcessComponentData<GridPosition, Gas>
     {
-        [ReadOnly] public NativeArray<GasDefinition> gasses;
+        [ReadOnly] public NativeArray<GasData> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
         
         [BurstCompile]

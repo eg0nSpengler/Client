@@ -10,7 +10,7 @@ namespace Atmospherics.Jobs
 {
     public struct GasFluxJob : IJobProcessComponentData<GridPosition, Gas>
     {
-        [ReadOnly] public NativeArray<GasDefinition> gasses;
+        [ReadOnly] public NativeArray<GasData> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
         [ReadOnly] public float deltaTime;
         [ReadOnly] public NativeArray<int3> directions;

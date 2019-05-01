@@ -24,11 +24,11 @@ namespace Atmospherics
         
         private ComponentGroup gasGroup;
         private NativeArray<int3> directions;
-        private NativeArray<GasDefinition> gasConstants;
         private NativeMultiHashMap<long, Gas> gasses;
         private NativeMultiHashMap<long, MovedGas> movedGasses;
         private NativeMultiHashMap<long, Gas> postMovedGasses;
 
+        private NativeArray<GasData> gasData;
         private int numGasses;
         
         protected override void OnCreateManager()
@@ -37,26 +37,6 @@ namespace Atmospherics
                 ComponentType.ReadOnly<GridPosition>(),
                 ComponentType.ReadOnly<Gas>());
             
-            gasConstants = new NativeArray<GasDefinition>(new []
-            {
-                new GasDefinition
-                {
-                    name = new NativeString64("Nitrogen"),
-                    molarMass = 0.028014f,
-                    heatCapacity = 0.743f,
-                    heatConductivity = 0.02583f,
-                    viscosity = 1.78e-05f,
-                }, 
-                new GasDefinition
-                {
-                    name = new NativeString64("Oxygen"),
-                    molarMass = 0.031998f,
-                    heatCapacity = 0.659f,
-                    heatConductivity = 0.02658f,
-                    viscosity = 2.055e-05f,
-                }, 
-            }, Allocator.Persistent);
-            
             directions = new NativeArray<int3>(new []{
                 new int3(0, 0, 1),new int3(1, 0, 0),new int3(0, 0, -1),new int3(-1, 0, 0),
             }, Allocator.Persistent);
@@ -64,11 +44,16 @@ namespace Atmospherics
 
         protected override void OnDestroyManager()
         {
-            if(gasConstants.IsCreated) gasConstants.Dispose();
+            if(gasData.IsCreated) gasData.Dispose();
             if(gasses.IsCreated) gasses.Dispose();
             if(movedGasses.IsCreated) movedGasses.Dispose();
             if(postMovedGasses.IsCreated) postMovedGasses.Dispose();
             if(directions.IsCreated) directions.Dispose();
+        }
+
+        public void RegisterGasses(GasData[] data)
+        {
+            gasData = new NativeArray<GasData>(data, Allocator.Persistent);
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
@@ -94,7 +79,7 @@ namespace Atmospherics
 
             return new EqualizeTemperatureJob
             {
-                gasses = gasConstants,
+                gasses = gasData,
                 gasMap = postMovedGasses,
             }.Schedule(this, new GasMoveJob
             {
@@ -105,11 +90,11 @@ namespace Atmospherics
                 directions = directions,
                 gasMap = gasses,
                 deltaTime = Time.deltaTime,
-                gasses = gasConstants,
+                gasses = gasData,
                 movedGasses = movedGasses.ToConcurrent(),
             }.Schedule(this, new PartialPressureJob
             {
-                gasses = gasConstants,
+                gasses = gasData,
                 gasMap = gasses,
             }.Schedule(this, new HashGridJob<Gas>
             {

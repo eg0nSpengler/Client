@@ -6,7 +6,7 @@ namespace Atmospherics.Jobs
 {
     public struct EqualizeTemperatureJob : IJobProcessComponentData<GridPosition, Gas>
     {
-        [ReadOnly] public NativeArray<GasDefinition> gasses;
+        [ReadOnly] public NativeArray<GasData> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
         
         public void Execute([ReadOnly] ref GridPosition position, ref Gas node)

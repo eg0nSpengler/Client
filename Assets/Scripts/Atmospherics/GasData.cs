@@ -1,12 +1,13 @@
 using System;
 using Unity.Entities;
+using UnityEngine.Serialization;
 
-namespace Atmospherics.Components
+namespace Atmospherics
 {
     [Serializable]
-    public struct GasData : IComponentData
+    public struct GasData
     {
-        public byte id;
+        public NativeString64 name;
         public float molarMass;
         public float heatCapacity;
         public float heatConductivity;

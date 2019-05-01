@@ -18,8 +18,8 @@ namespace Atmospherics
         public const float NodeSurface = 10;
         public const float ContactArea = 2;
         public const float ContactCircumference = 6;
-        public const float BaseFlux = 5;
-        public const float Drag = 0.97f;
+        public const float BaseFlux = 120f;
+        public const float Drag = 0.996f;
         
         
         private ComponentGroup gasGroup;
@@ -64,6 +64,7 @@ namespace Atmospherics
             {
                 if(gasses.IsCreated) gasses.Dispose();
                 if(movedGasses.IsCreated) movedGasses.Dispose();
+                if(postMovedGasses.IsCreated) postMovedGasses.Dispose();
 
                 numGasses = currentGasses;
                 gasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);

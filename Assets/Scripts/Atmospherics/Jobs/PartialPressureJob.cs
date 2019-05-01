@@ -10,7 +10,7 @@ namespace Atmospherics.Jobs
     {
         [ReadOnly] public NativeArray<GasData> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
-        
+
         [BurstCompile]
         public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
         {
@@ -33,8 +33,11 @@ namespace Atmospherics.Jobs
             }
             while (gasMap.TryGetNextValue(out gas, ref it));
 
-            return (moles/totalMoles) * 
-                   AtmosphericsSystem.Pressure(AtmosphericsSystem.NodeVolume, totalMoles, totalEnergy / totalCapacity);
+            return totalCapacity > 0 && totalMoles > 0
+                ? (moles / totalMoles) *
+                  (totalMoles * AtmosphericsSystem.GasConstant * (totalEnergy / totalCapacity)
+                   / AtmosphericsSystem.NodeVolume)
+                : 0;
         }
     }
 }

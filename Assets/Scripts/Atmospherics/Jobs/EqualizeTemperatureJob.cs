@@ -1,6 +1,7 @@
 using Atmospherics.Components;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Atmospherics.Jobs
 {
@@ -21,8 +22,9 @@ namespace Atmospherics.Jobs
                 totalEnergy += gas.energy;
             }
             while (gasMap.TryGetNextValue(out gas, ref it));
-            
-            node.energy = (totalEnergy / totalCapacity) * gasses[node.id].heatCapacity * node.moles;
+           
+            if(totalCapacity > 0)
+                node.energy = totalEnergy * (gasses[node.id].heatCapacity * node.moles) / totalCapacity;
         }
     }
 }

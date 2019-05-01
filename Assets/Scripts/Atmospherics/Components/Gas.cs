@@ -1,3 +1,4 @@
+using System.Globalization;
 using Unity.Entities;
 using Unity.Mathematics;
 
@@ -52,6 +53,12 @@ namespace Atmospherics.Components
             this.energy = energy;
             this.flux = float4.zero;
             this.partialPressure = 0;
+        }
+
+        public override string ToString()
+        {
+            return
+                $"[GAS {id.ToString()}, {energy.ToString(CultureInfo.InvariantCulture)} joules, {moles.ToString(CultureInfo.InvariantCulture)} moles, {partialPressure.ToString(CultureInfo.InvariantCulture)} pascal]";
         }
     }
 }

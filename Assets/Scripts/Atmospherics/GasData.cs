@@ -10,7 +10,5 @@ namespace Atmospherics
         public NativeString64 name;
         public float molarMass;
         public float heatCapacity;
-        public float heatConductivity;
-        public float viscosity;
     }
 }

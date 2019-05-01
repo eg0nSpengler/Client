@@ -48,7 +48,7 @@ public class Simulation : MonoBehaviour
             manager.SetComponentData(gas, new GridPosition (new int3(x, 0, y)));
 
             if(i == 0) manager.SetComponentData(gas, new Gas(i, nitrogen*Random.value*4, NormalTemp));
-            if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*Random.value*4, NormalTemp/2f));
+            if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*Random.value*4, NormalTemp));
         }
     }
 
@@ -69,7 +69,7 @@ public class Simulation : MonoBehaviour
     public static float Moles(float volume, float pressure, float temperature)
         => temperature > 0 ? (pressure * volume) / (AtmosphericsSystem.GasConstant * temperature) : 0;
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
@@ -79,6 +79,17 @@ public class Simulation : MonoBehaviour
             var pos = manager.GetComponentData<GridPosition>(entity);
             var gas = manager.GetComponentData<Gas>(entity);
             Gizmos.DrawWireCube((float3)pos.value, new Vector3(1, 0, 1));
+
+
+            var w = 1f/2;
+            var h = gas.partialPressure * 0.003f;
+            Gizmos.color = new Color(0, 1, 1, 1f);
+            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, -1/3f), new Vector3(w, h, 1/3f));
+            
+            
+            h = gas.energy / (gasData[gas.id].heatCapacity * gas.moles) * 0.4f;
+            Gizmos.color = new Color(1, 0, 0, 1f);
+            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 0f), new Vector3(w, h, 1/3f));
 
             switch (gas.id)
             {
@@ -90,13 +101,8 @@ public class Simulation : MonoBehaviour
                 break;
             }
 
-            var w = 1f/2;
-            var h = gas.moles * 0.02f;
+            h = gas.moles * 0.02f;
             Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 1/3f), new Vector3(w, h, 1/3f));
-
-            h = gas.energy * gasData[gas.id].heatCapacity * gas.moles * 0.00005f;
-            Gizmos.color = new Color(1, 0, 0, 1f);
-            Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 2/3f), new Vector3(w, h, 1/3f));
         }
-    }
+    }*/
 }

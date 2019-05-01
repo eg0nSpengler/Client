@@ -31,6 +31,7 @@ namespace Atmospherics.Jobs
 
             // ## Get the current state
 
+            var data = gasses[node.id];
             var pos = AtmosphericsSystem.EncodePosition(position.value);
             var pressure = node.partialPressure;
             var flux = node.flux;
@@ -62,7 +63,7 @@ namespace Atmospherics.Jobs
                 // ## Calculate the forces from the pressure difference
 
                 var force = (pressure - neighbor[i].partialPressure) / AtmosphericsSystem.ContactArea;
-                var acceleration = force / (node.moles * gasses[node.id].molarMass);
+                var acceleration = force / (node.moles * data.molarMass);
 
 
                 // ## Add to the flux
@@ -75,24 +76,15 @@ namespace Atmospherics.Jobs
                 // ## Calculate how much we're actually trying to move for moles
 
                 const float d = 2 * AtmosphericsSystem.ContactArea / AtmosphericsSystem.ContactCircumference;
-                
-                molesMoved[i] = d * (flux[i] * deltaTime + 0.5f * acceleration * deltaTime * deltaTime);
+
+                molesMoved[i] = d * (flux[i] * deltaTime + 0.5f * acceleration * deltaTime * deltaTime) +
+                    AtmosphericsSystem.BaseFlux * deltaTime;
                 if (molesMoved[i] < 0) molesMoved[i] = 0;
 
 
                 // ## Calculate how much we're actually trying to move for energy
 
-                var h = gasses[node.id].heatConductivity
-                        * 0.023f
-                        * ((node.flux[i] + AtmosphericsSystem.BaseFlux) * d / gasses[node.id].viscosity)
-                        * math.sqrt(gasses[node.id].viscosity * gasses[node.id].heatCapacity /
-                                    gasses[node.id].heatConductivity)
-                        / d;
-
                 energyMoved[i] = node.energy * (molesMoved[i] / node.moles);
-                energyMoved[i] += deltaTime * h * AtmosphericsSystem.ContactArea * 
-                                  ((neighbor[i].energy - node.energy) 
-                                   / (gasses[node.id].heatCapacity * (neighbor[i].moles + node.moles)));
                 if (energyMoved[i] < 0) energyMoved[i] = 0;
 
 

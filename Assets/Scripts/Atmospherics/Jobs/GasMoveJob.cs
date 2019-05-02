@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Atmospherics.Jobs
 {
-    public struct GasMoveJob : IJobProcessComponentData<GridPosition, Gas>
+    public struct GasMoveJob : IJobForEach<GridPosition, Gas>
     {
         [ReadOnly] public NativeMultiHashMap<long, MovedGas> movedGasses;
         [WriteOnly]public NativeMultiHashMap<long, Gas>.Concurrent resultGasses;

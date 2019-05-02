@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Atmospherics.Jobs
 {
-    public struct GasFluxJob : IJobProcessComponentData<GridPosition, Gas>
+    public struct GasFluxJob : IJobForEach<GridPosition, Gas>
     {
         [ReadOnly] public NativeArray<GasData> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;

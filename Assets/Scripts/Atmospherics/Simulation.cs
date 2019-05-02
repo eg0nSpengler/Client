@@ -27,14 +27,16 @@ public class Simulation : MonoBehaviour
 
     private void OnEnable()
     {
-        if (manager == null) manager = World.Active.GetOrCreateManager<EntityManager>();
+        if (manager == null) manager = World.Active.EntityManager;
         var gasArchetype = manager.CreateArchetype(typeof(GridPosition), typeof(Gas));
 
-        World.Active.GetOrCreateManager<AtmosphericsSystem>().RegisterGasses(gasData);
+        World.Active.GetOrCreateSystem<AtmosphericsSystem>().RegisterGasses(gasData);
 
         gasses = new NativeArray<Entity>(wid*hei*gasData.Length, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
             
         manager.CreateEntity(gasArchetype, gasses);
+
+        var blockers = FindObjectsOfType<GasBlockerProxy>().Select(b => new int3(b.transform.position)).ToList();
 
         var maxMoles = Moles(2, NormalPres, NormalTemp);
         var nitrogen = maxMoles * 0.78f;
@@ -44,6 +46,8 @@ public class Simulation : MonoBehaviour
         for (var y = 0; y < hei; y++)
         for (byte i = 0; i < gasData.Length; i++)
         {
+            if(blockers.Contains(new int3(x, 0 ,y))) continue;
+            
             var gas = gasses[i + x * gasData.Length + y * gasData.Length * wid];
             manager.SetComponentData(gas, new GridPosition (new int3(x, 0, y)));
 
@@ -69,7 +73,7 @@ public class Simulation : MonoBehaviour
     public static float Moles(float volume, float pressure, float temperature)
         => temperature > 0 ? (pressure * volume) / (AtmosphericsSystem.GasConstant * temperature) : 0;
 
-    /*private void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
 
@@ -82,7 +86,7 @@ public class Simulation : MonoBehaviour
 
 
             var w = 1f/2;
-            var h = gas.partialPressure * 0.003f;
+            var h = gas.partialPressure * 0.001f;
             Gizmos.color = new Color(0, 1, 1, 1f);
             Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, -1/3f), new Vector3(w, h, 1/3f));
             
@@ -104,5 +108,5 @@ public class Simulation : MonoBehaviour
             h = gas.moles * 0.02f;
             Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 1/3f), new Vector3(w, h, 1/3f));
         }
-    }*/
+    }
 }

@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace Atmospherics.Jobs
 {
-    public struct HashGridJob<T> : IJobProcessComponentData<GridPosition, T> where T : struct, IComponentData
+    public struct HashGridJob<T> : IJobForEach<GridPosition, T> where T : struct, IComponentData
     {
         public NativeMultiHashMap<long, T>.Concurrent hashedGrid;
         

@@ -6,7 +6,7 @@ using Unity.Mathematics;
 
 namespace Atmospherics.Jobs
 {
-    public struct PartialPressureJob : IJobProcessComponentData<GridPosition, Gas>
+    public struct PartialPressureJob : IJobForEach<GridPosition, Gas>
     {
         [ReadOnly] public NativeArray<GasData> gasses;
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;

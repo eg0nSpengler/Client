@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Atmospherics
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
+    //[UpdateInGroup(typeof(SimulationSystemGroup))]
     public class AtmosphericsSystem : JobComponentSystem
     {
         public const float GasConstant = 8.31445984848f;
@@ -22,7 +22,7 @@ namespace Atmospherics
         public const float Drag = 0.996f;
         
         
-        private ComponentGroup gasGroup;
+        private EntityQuery gasGroup;
         private NativeArray<int3> directions;
         private NativeMultiHashMap<long, Gas> gasses;
         private NativeMultiHashMap<long, MovedGas> movedGasses;
@@ -33,7 +33,7 @@ namespace Atmospherics
         
         protected override void OnCreateManager()
         {
-            gasGroup = GetComponentGroup(
+            gasGroup = GetEntityQuery(
                 ComponentType.ReadOnly<GridPosition>(),
                 ComponentType.ReadOnly<Gas>());
             

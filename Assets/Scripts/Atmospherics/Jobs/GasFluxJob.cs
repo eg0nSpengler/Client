@@ -8,30 +8,32 @@ using UnityEngine;
 
 namespace Atmospherics.Jobs
 {
-    public struct GasFluxJob : IJobForEach<GridPosition, Gas>
+    public struct GasFluxJob : IJobForEachWithEntity<GridPosition, Gas>
     {
-        [ReadOnly] public NativeArray<GasData> gasses;
-        [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
+        [ReadOnly] public NativeArray<GasData> gasData;
         [ReadOnly] public float deltaTime;
         [ReadOnly] public NativeArray<int3> directions;
+        
+        [ReadOnly] public NativeMultiHashMap<long, Gas> gasses;
+        [ReadOnly] public NativeMultiHashMap<long, GasBlocker> blockers;
 
         [WriteOnly] public NativeMultiHashMap<long, MovedGas>.Concurrent movedGasses;
 
         [BurstCompile]
-        public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
+        public void Execute(Entity entity, int index, [ReadOnly] ref GridPosition position, ref Gas node)
         {
             // ## Remove nodes that are empty
 
             if (math.abs(node.moles) < 0.00001f)
             {
-                // TODO remove the gas entity when empty
+                //entityCommand.DestroyEntity(index, entity);
                 return;
             }
 
 
             // ## Get the current state
 
-            var data = gasses[node.id];
+            var data = gasData[node.id];
             var pos = AtmosphericsSystem.EncodePosition(position.value);
             var pressure = node.partialPressure;
             var flux = node.flux;
@@ -45,6 +47,8 @@ namespace Atmospherics.Jobs
                 Allocator.Temp, NativeArrayOptions.UninitializedMemory);
             var energyMoved = new NativeArray<float>(directions.Length,
                 Allocator.Temp, NativeArrayOptions.UninitializedMemory);
+            var blocked = new NativeArray<byte>(directions.Length,
+                Allocator.Temp, NativeArrayOptions.UninitializedMemory);
 
             var totalMolesMoved = 0f;
             var totalEnergyMoved = 0f;
@@ -57,6 +61,8 @@ namespace Atmospherics.Jobs
                 // ## Get the neighbor in this direction
 
                 var neighborPos = AtmosphericsSystem.EncodePosition(position.value + directions[i]);
+                blocked[i] = Blocked(neighborPos);
+                if (blocked[i] != 0) continue;
                 neighbor[i] = GetNodeAt(neighborPos, node.id);
 
 
@@ -100,8 +106,11 @@ namespace Atmospherics.Jobs
 
             for (var i = 0; i < directions.Length; i++)
             {
+                if (blocked[i] == 1) continue;
+                
                 var neighborPos = AtmosphericsSystem.EncodePosition(position.value + directions[i]);
 
+                
                 // ## If there's not enough to go around, balance the amount moved fairly
 
                 if (totalMolesMoved > node.moles)
@@ -117,27 +126,35 @@ namespace Atmospherics.Jobs
 
                 // ## Actually move the stuff
 
-                if (neighbor[i].IsCreated)
+                if(neighbor[i].IsCreated)
                 {
                     movedGasses.Add(neighborPos, new MovedGas(node.id, molesMoved[i], energyMoved[i]));
                     movedGasses.Add(pos, new MovedGas(node.id, -molesMoved[i], -energyMoved[i]));
                 }
-                else
-                {
-                    // TODO create new gas node if none exists
-                }
             }
 
             node.flux = flux;
+            
+            neighbor.Dispose();
+            molesMoved.Dispose();
+            energyMoved.Dispose();
+            blocked.Dispose();
+        }
+
+        private byte Blocked(long pos)
+        {
+            return (byte) (blockers.TryGetFirstValue(pos, out _, out _) ? 1 : 0);
         }
 
         private Gas GetNodeAt(long pos, byte gasIndex)
         {
-            if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return default;
+            if (!gasses.TryGetFirstValue(pos, out var gas, out var it)) return default;
             do
+            {
                 if (gas.id == gasIndex)
                     return gas;
-            while (gasMap.TryGetNextValue(out gas, ref it));
+            }
+            while (gasses.TryGetNextValue(out gas, ref it));
             return default;
         }
     }

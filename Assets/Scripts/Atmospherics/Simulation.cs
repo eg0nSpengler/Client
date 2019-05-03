@@ -38,9 +38,9 @@ public class Simulation : MonoBehaviour
 
         var blockers = FindObjectsOfType<GasBlockerProxy>().Select(b => new int3(b.transform.position)).ToList();
 
-        var maxMoles = Moles(2, NormalPres, NormalTemp);
-        var nitrogen = maxMoles * 0.78f;
-        var oxygen = maxMoles * 0.22f;
+        const float maxMoles = 83.14243F; // NormalPres * 2 / (AtmosphericsSystem.GasConstant * NormalTemp);
+        const float nitrogen = maxMoles * 0.78f;
+        const float oxygen = maxMoles * 0.22f;
         
         for (var x = 0; x < wid; x++)
         for (var y = 0; y < hei; y++)
@@ -68,10 +68,6 @@ public class Simulation : MonoBehaviour
     {
         if (gasses.IsCreated) gasses.Dispose();
     }
-
-    [Pure]
-    public static float Moles(float volume, float pressure, float temperature)
-        => temperature > 0 ? (pressure * volume) / (AtmosphericsSystem.GasConstant * temperature) : 0;
 
     private void OnDrawGizmos()
     {

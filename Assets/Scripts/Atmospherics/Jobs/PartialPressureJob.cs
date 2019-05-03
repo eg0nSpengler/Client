@@ -8,8 +8,8 @@ namespace Atmospherics.Jobs
 {
     public struct PartialPressureJob : IJobForEach<GridPosition, Gas>
     {
-        [ReadOnly] public NativeArray<GasData> gasses;
-        [ReadOnly] public NativeMultiHashMap<long, Gas> gasMap;
+        [ReadOnly] public NativeArray<GasData> gasData;
+        [ReadOnly] public NativeMultiHashMap<long, Gas> gasses;
 
         [BurstCompile]
         public void Execute([ReadOnly] ref GridPosition position, ref Gas node)
@@ -23,15 +23,15 @@ namespace Atmospherics.Jobs
             var totalMoles = 0f;
             var totalEnergy = 0f;
             var totalCapacity = 0f;
-            if (!gasMap.TryGetFirstValue(pos, out var gas, out var it)) return 0;
+            if (!gasses.TryGetFirstValue(pos, out var gas, out var it)) return 0;
             do
             {
                 if (gas.id == gasIndex) moles = gas.moles;
                 totalMoles += gas.moles;
                 totalEnergy += gas.energy;
-                totalCapacity += gasses[gas.id].heatCapacity * gas.moles;
+                totalCapacity += gasData[gas.id].heatCapacity * gas.moles;
             }
-            while (gasMap.TryGetNextValue(out gas, ref it));
+            while (gasses.TryGetNextValue(out gas, ref it));
 
             return totalCapacity > 0 && totalMoles > 0
                 ? (moles / totalMoles) *

@@ -1,8 +1,10 @@
+using System;
 using Unity.Entities;
 using Unity.Mathematics;
 
 namespace Atmospherics.Components
 {
+    [Serializable]
     public struct GridPosition : IComponentData
     {
         public int3 value;

@@ -10,7 +10,8 @@ using UnityEngine;
 
 namespace Atmospherics
 {
-    //[UpdateInGroup(typeof(SimulationSystemGroup))]
+    //[UpdateBefore(typeof(EndSimulationEntityCommandBufferSystem))]
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class AtmosphericsSystem : JobComponentSystem
     {
         public const float GasConstant = 8.31445984848f;
@@ -20,35 +21,43 @@ namespace Atmospherics
         public const float ContactCircumference = 6;
         public const float BaseFlux = 120f;
         public const float Drag = 0.996f;
-        
-        
+            
         private EntityQuery gasGroup;
+        private EntityQuery blockerGroup;
+
         private NativeArray<int3> directions;
+        private NativeArray<GasData> gasData;
+        
         private NativeMultiHashMap<long, Gas> gasses;
+        private NativeMultiHashMap<long, GasBlocker> blockers;
         private NativeMultiHashMap<long, MovedGas> movedGasses;
         private NativeMultiHashMap<long, Gas> postMovedGasses;
 
-        private NativeArray<GasData> gasData;
-        private int numGasses;
-        
+
         protected override void OnCreateManager()
         {
             gasGroup = GetEntityQuery(
                 ComponentType.ReadOnly<GridPosition>(),
                 ComponentType.ReadOnly<Gas>());
-            
-            directions = new NativeArray<int3>(new []{
-                new int3(0, 0, 1),new int3(1, 0, 0),new int3(0, 0, -1),new int3(-1, 0, 0),
+            blockerGroup = GetEntityQuery(
+                ComponentType.ReadOnly<GridPosition>(),
+                ComponentType.ReadOnly<GasBlocker>());
+
+            directions = new NativeArray<int3>(new[]
+            {
+                new int3(0, 0, 1), new int3(1, 0, 0), new int3(0, 0, -1), new int3(-1, 0, 0),
             }, Allocator.Persistent);
         }
 
         protected override void OnDestroyManager()
         {
-            if(gasData.IsCreated) gasData.Dispose();
-            if(gasses.IsCreated) gasses.Dispose();
-            if(movedGasses.IsCreated) movedGasses.Dispose();
-            if(postMovedGasses.IsCreated) postMovedGasses.Dispose();
-            if(directions.IsCreated) directions.Dispose();
+            if (directions.IsCreated) directions.Dispose();
+            if (gasData.IsCreated) gasData.Dispose();
+            
+            if (gasses.IsCreated) gasses.Dispose();
+            if (blockers.IsCreated) blockers.Dispose();
+            if (movedGasses.IsCreated) movedGasses.Dispose();
+            if (postMovedGasses.IsCreated) postMovedGasses.Dispose();
         }
 
         public void RegisterGasses(GasData[] data)
@@ -58,18 +67,21 @@ namespace Atmospherics
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
+            
+            // Reallocate arrays if the sizes changed
+            
             var currentGasses = gasGroup.CalculateLength() * directions.Length;
+            var currentBlockers = blockerGroup.CalculateLength();
 
-            if (currentGasses != numGasses)
+            if (!gasses.IsCreated || currentGasses != gasses.Capacity)
             {
-                if(gasses.IsCreated) gasses.Dispose();
-                if(movedGasses.IsCreated) movedGasses.Dispose();
-                if(postMovedGasses.IsCreated) postMovedGasses.Dispose();
+                if (gasses.IsCreated) gasses.Dispose();
+                if (movedGasses.IsCreated) movedGasses.Dispose();
+                if (postMovedGasses.IsCreated) postMovedGasses.Dispose();
 
-                numGasses = currentGasses;
-                gasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);
-                movedGasses = new NativeMultiHashMap<long, MovedGas>(numGasses * 2, Allocator.Persistent);
-                postMovedGasses = new NativeMultiHashMap<long, Gas>(numGasses, Allocator.Persistent);
+                gasses = new NativeMultiHashMap<long, Gas>(currentGasses, Allocator.Persistent);
+                movedGasses = new NativeMultiHashMap<long, MovedGas>(currentGasses * 2, Allocator.Persistent);
+                postMovedGasses = new NativeMultiHashMap<long, Gas>(currentGasses, Allocator.Persistent);
             }
             else
             {
@@ -78,37 +90,63 @@ namespace Atmospherics
                 postMovedGasses.Clear();
             }
 
-            return new EqualizeTemperatureJob
+            if (!blockers.IsCreated || currentBlockers != blockers.Capacity)
+            {
+                if (blockers.IsCreated) blockers.Dispose();
+                blockers = new NativeMultiHashMap<long, GasBlocker>(currentBlockers, Allocator.Persistent);
+            }
+            else
+            {
+                blockers.Clear();
+            }
+
+            
+            // Schedule all the jobs
+            
+            var hashBlockersHandle = new HashGridJob<GasBlocker>
+            {
+                hashedGrid = blockers.ToConcurrent()
+            }.Schedule(this, inputDeps);
+            var hashGassesHandle = new HashGridJob<Gas>
+            {
+                hashedGrid = gasses.ToConcurrent()
+            }.Schedule(this, inputDeps);
+            var partialPressureHandle = new PartialPressureJob
+            {
+                gasData = gasData,
+                
+                gasses = gasses,
+            }.Schedule(this, hashGassesHandle);
+            var gasFluxHandle = new GasFluxJob
+            {
+                deltaTime = Time.deltaTime,
+                gasData = gasData,
+                directions = directions,
+                
+                gasses = gasses,
+                blockers = blockers,
+                
+                movedGasses = movedGasses.ToConcurrent(),
+            }.Schedule(this, JobHandle.CombineDependencies(partialPressureHandle, hashBlockersHandle));
+            var gasMoveHandle = new GasMoveJob
+            {
+                movedGasses = movedGasses,
+                
+                resultGasses = postMovedGasses.ToConcurrent(),
+            }.Schedule(this, gasFluxHandle);
+            var equalizeTemperatureHandle = new EqualizeTemperatureJob
             {
                 gasses = gasData,
                 gasMap = postMovedGasses,
-            }.Schedule(this, new GasMoveJob
-            {
-                movedGasses = movedGasses,
-                resultGasses = postMovedGasses.ToConcurrent(),
-            }.Schedule(this, new GasFluxJob
-            {
-                directions = directions,
-                gasMap = gasses,
-                deltaTime = Time.deltaTime,
-                gasses = gasData,
-                movedGasses = movedGasses.ToConcurrent(),
-            }.Schedule(this, new PartialPressureJob
-            {
-                gasses = gasData,
-                gasMap = gasses,
-            }.Schedule(this, new HashGridJob<Gas>
-            {
-                hashedGrid = gasses.ToConcurrent()
-            }.Schedule(this, inputDeps)))));
+            }.Schedule(this, gasMoveHandle);
+            
+            JobHandle.ScheduleBatchedJobs();
+            return equalizeTemperatureHandle;
         }
 
         internal static long EncodePosition(int3 pos)
         {
-            return ((long)pos.x) | ((long)pos.z << 32);
+            return ((long) pos.x) | ((long) pos.z << 32);
         }
-        
-        internal static float Pressure(float volume, float moles, float temperature)
-            => moles > 0 ? (moles * GasConstant * temperature) / volume : 0;
     }
 }

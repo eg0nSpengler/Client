@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3516723130339220084}
   - component: {fileID: 114412051507835780}
   m_Layer: 0
-  m_Name: Poster4 (1)
+  m_Name: Poster4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,9 +108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c10f8adc7e9ed49a7c92103e496873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generatedIcon: {fileID: 0}
   size: 2
-  PickPosition: {x: 0, y: 0, z: 0}
-  PickRotation: {x: 0, y: 0, z: 0}
+  pickPosition: {x: 0, y: 0, z: 0}
+  pickRotation: {x: 0, y: 0, z: 0}
+  iconRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &114412051507835780
 MonoBehaviour:
   m_ObjectHideFlags: 0

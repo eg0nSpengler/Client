@@ -75,7 +75,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1496086865773650}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -98,7 +98,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openSound: {fileID: 0}
   closeSound: {fileID: 0}
-  accessDeniedSound: {fileID: 0}
   left: {fileID: 4683752981585992}
   right: {fileID: 4730831616211576}
   open: 0
@@ -251,16 +250,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ConnectableSettings: {fileID: 11400000, guid: 7e3a048f40cf12546b5a41aeb66889f2,
     type: 2}
-  adjacents:
-    Connections: 0
-    North: {fileID: 0}
-    East: {fileID: 0}
-    South: {fileID: 0}
-    West: {fileID: 0}
-    NorthEast: {fileID: 0}
-    SouthEast: {fileID: 0}
-    SouthWest: {fileID: 0}
-    NorthWest: {fileID: 0}
+  adjacentData:
+    directions: 0
+    adjacentConnectables: []
+  connectableGroup: {fileID: 0}
   meshFilter: {fileID: 6260167507071936054}
   meshRenderer: {fileID: 5074677204848639328}
 --- !u!1 &1504326560456000
@@ -366,7 +359,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100002, guid: 30a2db20bf6e842418d8cc684c7d8143, type: 3}
+  - {fileID: 2100000, guid: d2e6c7af9fc64f4469d6449a329f9247, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -457,7 +450,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100002, guid: 30a2db20bf6e842418d8cc684c7d8143, type: 3}
+  - {fileID: 2100000, guid: d2e6c7af9fc64f4469d6449a329f9247, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

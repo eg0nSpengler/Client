@@ -26,7 +26,7 @@ namespace Atmospherics.Jobs
         {
             // ## Remove nodes that are empty
 
-            if (math.abs(node.moles) < 0.00001f)
+            if (math.abs(node.moles) < 0.00001f || float.IsNaN(node.moles))
             {
                 commandBuffer.DestroyEntity(index, entity);
                 return;

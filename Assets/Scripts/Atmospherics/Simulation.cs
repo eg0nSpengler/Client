@@ -20,19 +20,18 @@ public class Simulation : MonoBehaviour
     private const float NormalPres = 101325;
 
     private EntityManager manager;
-    private NativeArray<Entity> gasses;
 
     [SerializeField] private int wid = 1;
     [SerializeField] private int hei = 2;
 
-    private void OnEnable()
+    private void Start()
     {
         if (manager == null) manager = World.Active.EntityManager;
         var gasArchetype = manager.CreateArchetype(typeof(GridPosition), typeof(Gas));
 
         World.Active.GetOrCreateSystem<AtmosphericsSystem>().RegisterGasses(gasData);
 
-        gasses = new NativeArray<Entity>(wid*hei*gasData.Length, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
+        var gasses = new NativeArray<Entity>(wid*hei*gasData.Length, Allocator.Temp, NativeArrayOptions.UninitializedMemory);
             
         manager.CreateEntity(gasArchetype, gasses);
 
@@ -54,19 +53,6 @@ public class Simulation : MonoBehaviour
             if(i == 0) manager.SetComponentData(gas, new Gas(i, nitrogen*Random.value*4, NormalTemp));
             if(i == 1) manager.SetComponentData(gas, new Gas(i, oxygen*Random.value*4, NormalTemp));
         }
-    }
-
-    private void OnDisable()
-    {
-        if (!gasses.IsCreated) return;
-        if (Application.isPlaying)
-            manager.DestroyEntity(gasses);
-        gasses.Dispose();
-    }
-
-    private void OnApplicationQuit()
-    {
-        if (gasses.IsCreated) gasses.Dispose();
     }
 
     private void OnDrawGizmos()

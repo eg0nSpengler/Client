@@ -73,8 +73,13 @@ public class Simulation : MonoBehaviour
     {
         if (!Application.isPlaying) return;
 
-        foreach (var entity in gasses)
+        var entities = manager.GetAllEntities();
+
+        foreach (var entity in entities)
         {
+            if(!manager.HasComponent<GridPosition>(entity)) continue;
+            if(!manager.HasComponent<Gas>(entity)) continue;
+            
             Gizmos.color = new Color(0, 0, 0, 0.3f);
             var pos = manager.GetComponentData<GridPosition>(entity);
             var gas = manager.GetComponentData<Gas>(entity);
@@ -104,5 +109,7 @@ public class Simulation : MonoBehaviour
             h = gas.moles * 0.02f;
             Gizmos.DrawCube(pos.value + new float3(-w/2 + w * gas.id, h/2, 1/3f), new Vector3(w, h, 1/3f));
         }
+        
+        entities.Dispose();
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using Atmospherics.Components;
 using Atmospherics.Jobs;
-using JetBrains.Annotations;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -21,21 +20,26 @@ namespace Atmospherics
         public const float ContactCircumference = 6;
         public const float BaseFlux = 120f;
         public const float Drag = 0.996f;
-            
+
+
+        private EntityArchetype gasArchetype;
         private EntityQuery gasGroup;
         private EntityQuery blockerGroup;
 
         private NativeArray<int3> directions;
         private NativeArray<GasData> gasData;
-        
+
         private NativeMultiHashMap<long, Gas> gasses;
         private NativeMultiHashMap<long, GasBlocker> blockers;
         private NativeMultiHashMap<long, MovedGas> movedGasses;
         private NativeMultiHashMap<long, Gas> postMovedGasses;
+        private NativeQueue<int3> createGasList;
+        private EntityCommandBuffer commandBuffer;
 
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
+            gasArchetype = World.EntityManager.CreateArchetype(typeof(GridPosition), typeof(Gas));
             gasGroup = GetEntityQuery(
                 ComponentType.ReadOnly<GridPosition>(),
                 ComponentType.ReadOnly<Gas>());
@@ -49,15 +53,18 @@ namespace Atmospherics
             }, Allocator.Persistent);
         }
 
-        protected override void OnDestroyManager()
+        protected override void OnDestroy()
         {
             if (directions.IsCreated) directions.Dispose();
             if (gasData.IsCreated) gasData.Dispose();
-            
+
             if (gasses.IsCreated) gasses.Dispose();
             if (blockers.IsCreated) blockers.Dispose();
             if (movedGasses.IsCreated) movedGasses.Dispose();
             if (postMovedGasses.IsCreated) postMovedGasses.Dispose();
+
+            if (createGasList.IsCreated) createGasList.Dispose();
+            if (commandBuffer.IsCreated) commandBuffer.Dispose();
         }
 
         public void RegisterGasses(GasData[] data)
@@ -67,9 +74,8 @@ namespace Atmospherics
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            
             // Reallocate arrays if the sizes changed
-            
+
             var currentGasses = gasGroup.CalculateLength() * directions.Length;
             var currentBlockers = blockerGroup.CalculateLength();
 
@@ -100,9 +106,19 @@ namespace Atmospherics
                 blockers.Clear();
             }
 
-            
+
             // Schedule all the jobs
-            
+
+            if (createGasList.IsCreated) createGasList.Clear();
+            else createGasList = new NativeQueue<int3>(Allocator.Persistent);
+
+            if (commandBuffer.IsCreated)
+            {
+                commandBuffer.Playback(EntityManager);
+                commandBuffer.Dispose();
+            }
+            commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
+
             var hashBlockersHandle = new HashGridJob<GasBlocker>
             {
                 hashedGrid = blockers.ToConcurrent()
@@ -114,7 +130,7 @@ namespace Atmospherics
             var partialPressureHandle = new PartialPressureJob
             {
                 gasData = gasData,
-                
+
                 gasses = gasses,
             }.Schedule(this, hashGassesHandle);
             var gasFluxHandle = new GasFluxJob
@@ -122,27 +138,40 @@ namespace Atmospherics
                 deltaTime = Time.deltaTime,
                 gasData = gasData,
                 directions = directions,
-                
+
                 gasses = gasses,
                 blockers = blockers,
-                
+
+                addList = createGasList.ToConcurrent(),
                 movedGasses = movedGasses.ToConcurrent(),
+                commandBuffer = commandBuffer.ToConcurrent(),
             }.Schedule(this, JobHandle.CombineDependencies(partialPressureHandle, hashBlockersHandle));
             var gasMoveHandle = new GasMoveJob
             {
                 movedGasses = movedGasses,
-                
+
                 resultGasses = postMovedGasses.ToConcurrent(),
             }.Schedule(this, gasFluxHandle);
+            var createGasHandle = new CreateGasJob
+            {
+                maxGasses = gasData.Length,
+                gasArchetype = gasArchetype,
+
+                addList = createGasList,
+                movedGasses = movedGasses,
+
+                commandBuffer = commandBuffer,
+            }.Schedule(gasFluxHandle);
             var equalizeTemperatureHandle = new EqualizeTemperatureJob
             {
                 gasses = gasData,
                 gasMap = postMovedGasses,
             }.Schedule(this, gasMoveHandle);
-            
+
             JobHandle.ScheduleBatchedJobs();
-            return equalizeTemperatureHandle;
+            return JobHandle.CombineDependencies(equalizeTemperatureHandle, createGasHandle);
         }
+
 
         internal static long EncodePosition(int3 pos)
         {

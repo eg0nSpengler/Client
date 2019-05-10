@@ -13,11 +13,13 @@ namespace Atmospherics.Jobs
         [ReadOnly] public NativeArray<GasData> gasData;
         [ReadOnly] public float deltaTime;
         [ReadOnly] public NativeArray<int3> directions;
-        
+
         [ReadOnly] public NativeMultiHashMap<long, Gas> gasses;
         [ReadOnly] public NativeMultiHashMap<long, GasBlocker> blockers;
 
+        [WriteOnly] public NativeQueue<int3>.Concurrent addList;
         [WriteOnly] public NativeMultiHashMap<long, MovedGas>.Concurrent movedGasses;
+        [WriteOnly] public EntityCommandBuffer.Concurrent commandBuffer;
 
         [BurstCompile]
         public void Execute(Entity entity, int index, [ReadOnly] ref GridPosition position, ref Gas node)
@@ -26,7 +28,7 @@ namespace Atmospherics.Jobs
 
             if (math.abs(node.moles) < 0.00001f)
             {
-                //entityCommand.DestroyEntity(index, entity);
+                commandBuffer.DestroyEntity(index, entity);
                 return;
             }
 
@@ -84,7 +86,7 @@ namespace Atmospherics.Jobs
                 const float d = 2 * AtmosphericsSystem.ContactArea / AtmosphericsSystem.ContactCircumference;
 
                 molesMoved[i] = d * (flux[i] * deltaTime + 0.5f * acceleration * deltaTime * deltaTime) +
-                    AtmosphericsSystem.BaseFlux * deltaTime;
+                                AtmosphericsSystem.BaseFlux * deltaTime;
                 if (molesMoved[i] < 0) molesMoved[i] = 0;
 
 
@@ -96,7 +98,6 @@ namespace Atmospherics.Jobs
 
                 // ## Count the total we want to move
 
-                if (!neighbor[i].IsCreated) continue;
                 totalMolesMoved += molesMoved[i];
                 totalEnergyMoved += energyMoved[i];
             }
@@ -107,10 +108,10 @@ namespace Atmospherics.Jobs
             for (var i = 0; i < directions.Length; i++)
             {
                 if (blocked[i] == 1) continue;
-                
+
                 var neighborPos = AtmosphericsSystem.EncodePosition(position.value + directions[i]);
 
-                
+
                 // ## If there's not enough to go around, balance the amount moved fairly
 
                 if (totalMolesMoved > node.moles)
@@ -124,17 +125,20 @@ namespace Atmospherics.Jobs
                 if (math.abs(energyMoved[i]) < 0.00001f && math.abs(molesMoved[i]) < 0.00001f) continue;
 
 
+                // ## Create a new node if none exists
+
+                if (!neighbor[i].IsCreated)
+                    addList.Enqueue(position.value + directions[i]);
+
+
                 // ## Actually move the stuff
 
-                if(neighbor[i].IsCreated)
-                {
-                    movedGasses.Add(neighborPos, new MovedGas(node.id, molesMoved[i], energyMoved[i]));
-                    movedGasses.Add(pos, new MovedGas(node.id, -molesMoved[i], -energyMoved[i]));
-                }
+                movedGasses.Add(neighborPos, new MovedGas(node.id, molesMoved[i], energyMoved[i]));
+                movedGasses.Add(pos, new MovedGas(node.id, -molesMoved[i], -energyMoved[i]));
             }
 
             node.flux = flux;
-            
+
             neighbor.Dispose();
             molesMoved.Dispose();
             energyMoved.Dispose();
@@ -155,6 +159,7 @@ namespace Atmospherics.Jobs
                     return gas;
             }
             while (gasses.TryGetNextValue(out gas, ref it));
+
             return default;
         }
     }

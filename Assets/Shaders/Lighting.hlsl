@@ -3,9 +3,8 @@
 
 half3 LightingHalfPhysicallyBased(BRDFData brdfData, half3 lightColor, half3 lightDirectionWS, half lightAttenuation, half3 normalWS, half3 viewDirectionWS)
 {
-    half NdotL = saturate(dot(normalWS, lightDirectionWS));
-    half hNdotL = NdotL * 0.5 + 0.5;
-    half3 radiance = lightColor * (lightAttenuation * hNdotL);
+    half NdotL = saturate(dot(normalWS, lightDirectionWS) * 0.5 + 0.5);
+    half3 radiance = lightColor * (lightAttenuation * NdotL);
     return DirectBDRF(brdfData, normalWS, lightDirectionWS, viewDirectionWS) * radiance;
 }
 half3 LightingHalfPhysicallyBased(BRDFData brdfData, Light light, half3 normalWS, half3 viewDirectionWS)

@@ -634,7 +634,7 @@ PlayerSettings:
     Collab: 0
     ErrorHub: 0
     Hub: 0
-    UNet: 0
+    UNet: 1
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -654,10 +654,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 3
-  cloudProjectId: 
+  cloudProjectId: f919facf-3179-4154-928e-cdcc646f6488
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Re:SS3D Benchmark
+  organizationId: re-ss3d
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 1
   disableOldInputManagerSupport: 0

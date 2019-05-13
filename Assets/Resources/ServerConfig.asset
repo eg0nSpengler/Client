@@ -17,8 +17,8 @@ MonoBehaviour:
     - config.yaml
     port_game: 3553
     port_web: 3550
-    app_name: Space Station 3D
+    app_name: App Name
     update_rate: 30
-    status_report_time: 10
+    status_report_time: 2
   serializer: {fileID: 11400000, guid: 75c227718baaf6b45b3cfa9839e62efe, type: 2}
   actionSet: {fileID: 11400000, guid: 674d555aac4eb834aa249efc72be6524, type: 2}
